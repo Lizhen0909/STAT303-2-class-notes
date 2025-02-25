@@ -24,8 +24,9 @@ book:
     - Lec5_Potential_issues.ipynb
     - Logistic Regression.ipynb
     - Logistic Regression - Decision Boundary and Feature Engineering (Nonlinear Features).ipynb
+    - cross_validation.ipynb
     - Lec9_RidgeRegression_Lasso.ipynb
-    - Crossvalidation.ipynb
+  
     
    
   appendices: 

@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./Lec9_RidgeRegression_Lasso.html" rel="next">
+<link href="./cross_validation.html" rel="next">
 <link href="./Logistic Regression.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -231,14 +231,14 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Lec9_RidgeRegression_Lasso.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Ridge regression and Lasso</span></span></a>
+  <a href="./cross_validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Cross-Validation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Crossvalidation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Cross-validation</span></span></a>
+  <a href="./Lec9_RidgeRegression_Lasso.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Ridge regression and Lasso</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -980,8 +980,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </section>
 <section id="non-linear-decision-boundary" class="level2" data-number="8.2">
 <h2 data-number="8.2" class="anchored" data-anchor-id="non-linear-decision-boundary"><span class="header-section-number">8.2</span> Non-linear Decision Boundary</h2>
-<p>In some occasions, we want to have a more complex boundary, and we can achieve this by transforming our features, if we have features like this <span class="math display">\[(x_1, x_2, x_1x_2, x_1^2, x_2^2)\]</span> That is adding interaction terms and polynominal terms (degree = 2), the decision boundary will look like this <img src="https://media.licdn.com/dms/image/C4E12AQGkxM-afZdClA/article-inline_image-shrink_1000_1488/0/1520148127787?e=1714003200&amp;v=beta&amp;t=iKSOxG1H4p-d0R6DP9D0oMHGZFfXIhK-IOobSKZdZEc.png" class="img-fluid" alt="non-linear decision boundary"></p>
-<p>For instance, when confronted with a training data distribution as illustrated below, <img src="Logistic Regression - Decision Boundary and Feature Engineering (Nonlinear Features)_files/figure-html/68c4db82-1-image-2.png" class="img-fluid" alt="image-2.png"> it becomes imperative to generate polynomial features <span class="math display">\[(x_1^2, x_2^2)\]</span> in order to enhance the delineation between the two classes. <img src="Logistic Regression - Decision Boundary and Feature Engineering (Nonlinear Features)_files/figure-html/68c4db82-2-image-3.png" class="img-fluid" alt="image-3.png"></p>
+<p>In some occasions, we want to have a more complex boundary, and we can achieve this by transforming our features. For instance, when confronted with a training data distribution as illustrated below, <img src="Logistic Regression - Decision Boundary and Feature Engineering (Nonlinear Features)_files/figure-html/68c4db82-1-image-2.png" class="img-fluid" alt="image-2.png"> it becomes imperative to generate polynomial features <span class="math display">\[(x_1^2, x_2^2)\]</span> in order to enhance the delineation between the two classes. <img src="Logistic Regression - Decision Boundary and Feature Engineering (Nonlinear Features)_files/figure-html/68c4db82-2-image-3.png" class="img-fluid" alt="image-3.png"></p>
 <p>Let’s delve into a concrete example below to illustrate this concept.For the purpose of illustrating the decision boundary, I chose not to split the data into training and test sets.</p>
 <div id="6d57ce7a" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load our Dataset for Logistic Regression</span></span>
@@ -4524,8 +4523,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Lec9_RidgeRegression_Lasso.html" class="pagination-link" aria-label="Ridge regression and Lasso">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Ridge regression and Lasso</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./cross_validation.html" class="pagination-link" aria-label="Cross-Validation">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Cross-Validation</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

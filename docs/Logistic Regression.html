@@ -231,14 +231,14 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Lec9_RidgeRegression_Lasso.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Ridge regression and Lasso</span></span></a>
+  <a href="./cross_validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Cross-Validation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Crossvalidation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Cross-validation</span></span></a>
+  <a href="./Lec9_RidgeRegression_Lasso.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Ridge regression and Lasso</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -1570,12 +1570,6 @@ F1 score: 0.6976744186046512</code></pre>
 <img src="./Datasets/ROC_AUC.png">
 </div>
 </div>
-<div id="bc186ebd" class="cell" data-execution_count="41">
-<div class="cell-output cell-output-display" data-execution_count="41">
-<img src="./Datasets/ROC_dynamic.gif">
-</div>
-</div>
-<p>An animation to demonstrate how an ROC curve relates to sensitivity and specificity for all possible cutoffs (<a href="https://github.com/dariyasydykova/open_projects/blob/master/ROC_animation/animations/ROC.gif">Source</a>)</p>
 <p><strong>High Threshold:</strong></p>
 <ul>
 <li>High specificity</li>
@@ -1612,7 +1606,7 @@ F1 score: 0.6976744186046512</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Logistic Regression_files/figure-html/cell-38-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="Logistic Regression_files/figure-html/cell-37-output-2.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1662,7 +1656,7 @@ ROC-AUC = 89.4%</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Logistic Regression_files/figure-html/cell-40-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="Logistic Regression_files/figure-html/cell-39-output-2.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1698,7 +1692,7 @@ ROC-AUC = 89.4%</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Logistic Regression_files/figure-html/cell-41-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="Logistic Regression_files/figure-html/cell-40-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1707,14 +1701,6 @@ ROC-AUC = 89.4%</code></pre>
 <h2 data-number="8.1" class="anchored" data-anchor-id="the-receiver-operating-characteristics-roc-curve-1"><span class="header-section-number">8.1</span> The Receiver Operating Characteristics (ROC) Curve</h2>
 <p>A <strong>ROC(Receiver Operator Characteristic Curve)</strong> is a plot of sensitivity (True Positive Rate) on the y axis against (1−specificity) (False Positive Rate) on the x axis for varying values of the threshold t. The 45° diagonal line connecting (0,0) to (1,1) is the ROC curve corresponding to random chance. The ROC curve for the gold standard is the line connecting (0,0) to (0,1) and (0,1) to (1,1).</p>
 <p><img src="https://miro.medium.com/max/469/1*Y65IEOXvxLRKKqWxlQovsg.png" class="img-fluid"></p>
-<p>An animation to demonstrate how an ROC curve relates to sensitivity and specificity for all possible cutoffs.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://github.com/dariyasydykova/open_projects/blob/master/ROC_animation/animations/ROC.gif?raw=true" class="img-fluid figure-img"></p>
-<figcaption>Alt Text</figcaption>
-</figure>
-</div>
-<p><a href="https://github.com/dariyasydykova/open_projects/blob/master/ROC_animation/animations/ROC.gif">Source</a></p>
 <p><strong>High Threshold:</strong> * High specificity * Low sensitivity</p>
 <p><strong>Low Threshold</strong> * Low specificity * High sensitivity</p>
 <p>The area under ROC is called <em>Area Under the Curve(AUC)</em>. AUC gives the rate of successful classification by the logistic model. To get a more in-depth idea of what a ROC-AUC curve is and how is it calculated, here is a <a href="https://www.analyticsvidhya.com/blog/2020/06/auc-roc-curve-machine-learning/">link</a></p>
@@ -1737,7 +1723,7 @@ ROC-AUC = 89.4%</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Logistic Regression_files/figure-html/cell-42-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="Logistic Regression_files/figure-html/cell-41-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
