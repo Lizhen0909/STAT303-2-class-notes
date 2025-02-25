@@ -375,19 +375,31 @@ window.Quarto = {
 <li><strong>Data Efficiency</strong>: A portion of the dataset is reserved for testing, meaning the model is not trained on all available data, which can be problematic for small datasets.</li>
 <li><strong>Instability</strong>: A single split does not always provide a robust estimate of performance, especially when data is imbalanced or noisy.</li>
 </ul>
-<div id="cell-2" class="cell" data-execution_count="58">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score, f1_score, accuracy_score</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_classification</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-2" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score, f1_score, accuracy_score</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_classification</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'ggplot'</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.pylab <span class="im">import</span> rcParams</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>rcParams[<span class="st">'figure.figsize'</span>] <span class="op">=</span> <span class="dv">5</span>, <span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-3" class="cell" data-execution_count="59">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate synthetic dataset</span></span>
+<div id="cell-3" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate synthetic dataset for binary classification</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_classification(n_samples<span class="op">=</span><span class="dv">1000</span>, n_features<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Please execute the cell below multiple times. It will be evident that the accuracy score varies with each run due to different observations in both the training and test sets.</p>
-<div id="cell-5" class="cell" data-execution_count="99">
+<div id="cell-5" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use train/test split </span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>X_train_class, X_test_class, y_train_class, y_test_class <span class="op">=</span> train_test_split(X, y)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -397,7 +409,7 @@ window.Quarto = {
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> logit_model.predict(X_test_class)</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(accuracy_score(y_test_class, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.864</code></pre>
+<pre><code>0.856</code></pre>
 </div>
 </div>
 </section>
@@ -421,7 +433,7 @@ window.Quarto = {
 <figcaption>5-fold cross-validation</figcaption>
 </figure>
 </div>
-<div id="cell-8" class="cell" data-execution_count="64">
+<div id="cell-8" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate splitting a dataset of 25 observations into 5 folds</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> KFold</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>kf <span class="op">=</span> KFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">False</span>).split(<span class="bu">range</span>(<span class="dv">25</span>))</span>
@@ -474,7 +486,7 @@ window.Quarto = {
 <li>The function returns an array of scores, one for each fold, providing a more reliable estimate of model performance than a single train-test split.</li>
 </ul>
 <p>Using <code>cross_val_score</code> ensures a more robust evaluation by reducing variance and making better use of available data.</p>
-<div id="cell-11" class="cell" data-execution_count="65">
+<div id="cell-11" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> cross_val_score(logit_model, X, y)</span>
@@ -485,10 +497,10 @@ window.Quarto = {
 </div>
 </div>
 <p>Finally, we compute the <strong>mean performance score</strong> across all folds to obtain a robust evaluation.</p>
-<div id="cell-13" class="cell" data-execution_count="66">
+<div id="cell-13" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the mean score</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>scores.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="66">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>0.8560000000000001</code></pre>
 </div>
 </div>
@@ -532,13 +544,12 @@ window.Quarto = {
 <p>If you need shuffling or a different cross-validation strategy, specify a custom cross-validator.</p>
 <section id="enable-shuffling" class="level5" data-number="9.3.1.2.1">
 <h5 data-number="9.3.1.2.1" class="anchored" data-anchor-id="enable-shuffling"><span class="header-section-number">9.3.1.2.1</span> Enable Shuffling</h5>
-<div id="cell-16" class="cell" data-execution_count="67">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score, KFold</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>kf <span class="op">=</span> KFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> cross_val_score(logit_model, X, y, cv<span class="op">=</span>kf, scoring<span class="op">=</span><span class="st">'accuracy'</span>)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>scores</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="67">
+<div id="cell-16" class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn on the shuffle</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>kf <span class="op">=</span> KFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> cross_val_score(logit_model, X, y, cv<span class="op">=</span>kf, scoring<span class="op">=</span><span class="st">'accuracy'</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>scores</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>array([0.83 , 0.875, 0.87 , 0.85 , 0.865])</code></pre>
 </div>
 </div>
@@ -549,13 +560,13 @@ window.Quarto = {
 <ul>
 <li>Each response class should be represented with equal proportions in each of the K folds</li>
 </ul>
-<div id="cell-18" class="cell" data-execution_count="68">
+<div id="cell-18" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> StratifiedKFold</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>skf <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> cross_val_score(logit_model, X, y, cv<span class="op">=</span>skf, scoring<span class="op">=</span><span class="st">'accuracy'</span>)</span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>scores</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="68">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>array([0.83 , 0.84 , 0.875, 0.89 , 0.845])</code></pre>
 </div>
 </div>
@@ -563,72 +574,18 @@ window.Quarto = {
 <section id="use-leave-one-out-loo-cross-validation" class="level5" data-number="9.3.1.2.3">
 <h5 data-number="9.3.1.2.3" class="anchored" data-anchor-id="use-leave-one-out-loo-cross-validation"><span class="header-section-number">9.3.1.2.3</span> Use Leave-One-Out (LOO) Cross-Validation</h5>
 <p>If you don’t have much data, so any split from the full set to the training and validation set is going to result in really very few observations on which you can train. Leave-on-out cross validation (<code>LOOCV</code>) that might work better for cross-validation. Say you have 16 observations. Train on 15 and validate on the other one. Repeat this until you have trained on every set of 15 with the 16th sample left out.</p>
-<div id="cell-20" class="cell" data-execution_count="69">
+<div id="cell-20" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> LeaveOneOut</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>loo <span class="op">=</span> LeaveOneOut()</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> cross_val_score(logit_model, X, y, cv<span class="op">=</span>loo, scoring<span class="op">=</span><span class="st">'accuracy'</span>)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>scores</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="69">
-<pre><code>array([1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 0., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 0., 1., 0., 0.,
-       1., 1., 0., 1., 0., 1., 1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 0., 0., 1., 1., 1., 1., 0., 1., 0., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 0.,
-       1., 1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 1.,
-       1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 0.,
-       1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1.,
-       1., 1., 1., 1., 0., 1., 0., 1., 1., 0., 0., 0., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 0., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 0., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 0., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 1., 1.,
-       0., 0., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 0., 1., 0., 1., 0.,
-       1., 1., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 0., 1., 0., 0., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0.,
-       1., 1., 1., 1., 0., 0., 1., 1., 1., 1., 1., 0., 0., 0., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 0., 0., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 0., 0., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 0., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 0.,
-       1., 1., 1., 1., 0., 1., 1., 0., 1., 1., 1., 1., 0., 0., 1., 1., 1.,
-       0., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1.,
-       1., 1., 1., 0., 1., 0., 1., 0., 1., 1., 1., 0., 1., 0., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 0., 1., 1., 1., 1., 1.,
-       1., 0., 1., 1., 1., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1., 0., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 0., 1.,
-       1., 0., 1., 1., 1., 0., 1., 0., 0., 1., 1., 1., 1., 1., 1., 0., 1.,
-       0., 1., 1., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1., 1., 1., 1., 0.,
-       1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 1., 0.,
-       1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 0., 0.,
-       1., 1., 0., 1., 1., 1., 1., 1., 0., 0., 0., 0., 1., 1., 1., 1., 1.,
-       1., 1., 1., 0., 0., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       0., 1., 1., 0., 1., 1., 1., 0., 1., 0., 1., 1., 1., 0., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 1., 0.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 0., 0., 1., 1., 1.,
-       1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 1., 1., 0., 1., 1.,
-       1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 0., 1., 1.,
-       0., 1., 1., 0., 1., 1., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1., 0.,
-       1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 1.,
-       1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.])</code></pre>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(scores))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>scores[:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1000</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>array([1., 1., 1., 1., 1., 1., 1., 1., 1., 1.])</code></pre>
 </div>
 </div>
 <p><strong>Types of Cross-Validation</strong></p>
@@ -722,12 +679,12 @@ window.Quarto = {
 </table>
 <p>You can refer to the scikit-learn <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">documentation</a>. If a built-in metric doesn’t fit your needs, you can define a custom scoring function</p>
 <p>For classification problems, especially imbalanced datasets, <strong>F1-score</strong> is a better metric than accuracy as it considers both <strong>precision and recall</strong>. Let’s use it as our metric next</p>
-<div id="cell-23" class="cell" data-execution_count="71">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a KFold object with 5 splits </span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>folds <span class="op">=</span> KFold(n_splits <span class="op">=</span> <span class="dv">5</span>, shuffle <span class="op">=</span> <span class="va">True</span>, random_state <span class="op">=</span> <span class="dv">100</span>)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> cross_val_score(logit_model, X, y, cv<span class="op">=</span>folds, scoring<span class="op">=</span> <span class="st">"f1"</span>)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>scores </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="71">
+<div id="cell-23" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a KFold object with 5 splits </span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>folds <span class="op">=</span> KFold(n_splits <span class="op">=</span> <span class="dv">5</span>, shuffle <span class="op">=</span> <span class="va">True</span>, random_state <span class="op">=</span> <span class="dv">100</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> cross_val_score(logit_model, X, y, cv<span class="op">=</span>folds, scoring<span class="op">=</span> <span class="st">"f1"</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>scores </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>array([0.875     , 0.81632653, 0.88151659, 0.87958115, 0.85869565])</code></pre>
 </div>
 </div>
@@ -752,14 +709,14 @@ window.Quarto = {
 </ul></li>
 </ul>
 <p>This function is ideal when you need <strong>deeper insights</strong> into how your model behaves across different folds, beyond just performance scores.</p>
-<div id="cell-25" class="cell" data-execution_count="72">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_validate</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> cross_validate(logit_model, X, y, scoring<span class="op">=</span><span class="st">"accuracy"</span>, return_train_score<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>df_scores <span class="op">=</span> pd.DataFrame(scores)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>df_scores</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="72">
+<div id="cell-25" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_validate</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> cross_validate(logit_model, X, y, scoring<span class="op">=</span><span class="st">"accuracy"</span>, return_train_score<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>df_scores <span class="op">=</span> pd.DataFrame(scores)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>df_scores</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
 <div>
 
 
@@ -776,36 +733,36 @@ window.Quarto = {
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
-<td>0.007191</td>
-<td>0.002272</td>
+<td>0.007137</td>
+<td>0.001002</td>
 <td>0.870</td>
 <td>0.86125</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
-<td>0.009002</td>
-<td>0.000998</td>
+<td>0.006532</td>
+<td>0.000997</td>
 <td>0.855</td>
 <td>0.86750</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
-<td>0.006533</td>
-<td>0.000000</td>
+<td>0.004417</td>
+<td>0.000998</td>
 <td>0.850</td>
 <td>0.87375</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
-<td>0.006768</td>
-<td>0.000000</td>
+<td>0.001992</td>
+<td>0.001005</td>
 <td>0.830</td>
 <td>0.87000</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
-<td>0.004978</td>
-<td>0.000999</td>
+<td>0.001035</td>
+<td>0.000000</td>
 <td>0.875</td>
 <td>0.85750</td>
 </tr>
@@ -816,17 +773,17 @@ window.Quarto = {
 </div>
 </div>
 <p>Let’s use multiple metrics</p>
-<div id="cell-27" class="cell" data-execution_count="73">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define scoring metrics explicitly for multiclass</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>scoring <span class="op">=</span> [<span class="st">'accuracy'</span>, <span class="st">'recall'</span>, <span class="st">'precision'</span>, <span class="st">'f1'</span>, <span class="st">'roc_auc'</span>]</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform cross-validation</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> cross_validate(logit_model, X, y, scoring<span class="op">=</span>scoring, return_train_score<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to DataFrame for better readability</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>df_scores <span class="op">=</span> pd.DataFrame(scores)</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>df_scores</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="73">
+<div id="cell-27" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define scoring metrics explicitly for multiclass</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>scoring <span class="op">=</span> [<span class="st">'accuracy'</span>, <span class="st">'recall'</span>, <span class="st">'precision'</span>, <span class="st">'f1'</span>, <span class="st">'roc_auc'</span>]</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform cross-validation</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> cross_validate(logit_model, X, y, scoring<span class="op">=</span>scoring, return_train_score<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to DataFrame for better readability</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>df_scores <span class="op">=</span> pd.DataFrame(scores)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>df_scores</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
 <div>
 
 
@@ -851,8 +808,8 @@ window.Quarto = {
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
-<td>0.004044</td>
-<td>0.011082</td>
+<td>0.003802</td>
+<td>0.000000</td>
 <td>0.870</td>
 <td>0.86125</td>
 <td>0.868687</td>
@@ -866,8 +823,8 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
-<td>0.008839</td>
-<td>0.005007</td>
+<td>0.004556</td>
+<td>0.004991</td>
 <td>0.855</td>
 <td>0.86750</td>
 <td>0.810000</td>
@@ -881,8 +838,8 @@ window.Quarto = {
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
-<td>0.003430</td>
-<td>0.005012</td>
+<td>0.003989</td>
+<td>0.004989</td>
 <td>0.850</td>
 <td>0.87375</td>
 <td>0.840000</td>
@@ -896,8 +853,8 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
-<td>0.000000</td>
-<td>0.000000</td>
+<td>0.003987</td>
+<td>0.004063</td>
 <td>0.830</td>
 <td>0.87000</td>
 <td>0.840000</td>
@@ -911,8 +868,8 @@ window.Quarto = {
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
-<td>0.001995</td>
 <td>0.000000</td>
+<td>0.011978</td>
 <td>0.875</td>
 <td>0.85750</td>
 <td>0.890000</td>
@@ -943,13 +900,13 @@ window.Quarto = {
 <li>This process repeats <strong>until every instance has been predicted once</strong>, ensuring that each prediction is made on unseen data.</li>
 </ol>
 <p>This approach <strong>mimics real-world predictions</strong>, making it useful for evaluating model performance with <strong>classification reports, confusion matrices, and ROC curves</strong>.</p>
-<div id="cell-29" class="cell" data-execution_count="75">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_predict</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># output the predicted probabilities</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>y_pred_prob <span class="op">=</span> cross_val_predict(logit_model, X, y, cv<span class="op">=</span><span class="dv">5</span>, method<span class="op">=</span><span class="st">'predict_proba'</span>)[:,<span class="dv">1</span>]</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_pred_prob.shape)</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_pred_prob[:<span class="dv">10</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-29" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_predict</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># output the predicted probabilities</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>y_pred_prob <span class="op">=</span> cross_val_predict(logit_model, X, y, cv<span class="op">=</span><span class="dv">5</span>, method<span class="op">=</span><span class="st">'predict_proba'</span>)[:,<span class="dv">1</span>]</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_pred_prob.shape)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_pred_prob[:<span class="dv">10</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(1000,)
 [0.04211674 0.97024937 0.96688462 0.01087727 0.65634726 0.02306063
@@ -1069,45 +1026,26 @@ We build a <strong>linear regression model</strong> and use <strong>cross-valida
 <h4 data-number="9.4.1.2" class="anchored" data-anchor-id="finding-the-optimal-degree-with-cross_val_score"><span class="header-section-number">9.4.1.2</span> Finding the Optimal Degree with <strong>cross_val_score</strong></h4>
 <section id="step-1-lets-begin-by-importing-the-required-libraries." class="level5" data-number="9.4.1.2.1">
 <h5 data-number="9.4.1.2.1" class="anchored" data-anchor-id="step-1-lets-begin-by-importing-the-required-libraries."><span class="header-section-number">9.4.1.2.1</span> Step 1: Let’s begin by importing the required libraries.</h5>
-<div id="cell-33" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> linear_model</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, r2_score</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co"># import pipeline</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline, Pipeline</span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="co"># import cross_val_score</span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler, PolynomialFeatures, OneHotEncoder</span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'ggplot'</span>)</span>
-<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.pylab <span class="im">import</span> rcParams</span>
-<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>rcParams[<span class="st">'figure.figsize'</span>] <span class="op">=</span> <span class="dv">5</span>, <span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-33" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, r2_score</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler, PolynomialFeatures, OneHotEncoder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="step-2-lets-generate-input-data" class="level5" data-number="9.4.1.2.2">
 <h5 data-number="9.4.1.2.2" class="anchored" data-anchor-id="step-2-lets-generate-input-data"><span class="header-section-number">9.4.1.2.2</span> Step 2: Let’s generate input data</h5>
-<div id="cell-35" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate input data</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Define input array with angles from 60deg to 300deg converted to radians</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.array([i<span class="op">*</span>np.pi<span class="op">/</span><span class="dv">180</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">360</span>)])</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">10</span>)  <span class="co">#Setting seed for reproducibility</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.sin(x) <span class="op">+</span> np.random.normal(<span class="dv">0</span>,<span class="fl">0.15</span>,<span class="bu">len</span>(x))</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.DataFrame(np.column_stack([x,y]),columns<span class="op">=</span>[<span class="st">'x'</span>,<span class="st">'y'</span>])</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>plt.plot(data[<span class="st">'x'</span>],data[<span class="st">'y'</span>],<span class="st">'.'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-35" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate input data</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Define input array with angles from 60deg to 300deg converted to radians</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.array([i<span class="op">*</span>np.pi<span class="op">/</span><span class="dv">180</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">360</span>)])</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">10</span>)  <span class="co">#Setting seed for reproducibility</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.sin(x) <span class="op">+</span> np.random.normal(<span class="dv">0</span>,<span class="fl">0.15</span>,<span class="bu">len</span>(x))</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.DataFrame(np.column_stack([x,y]),columns<span class="op">=</span>[<span class="st">'x'</span>,<span class="st">'y'</span>])</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>plt.plot(data[<span class="st">'x'</span>],data[<span class="st">'y'</span>],<span class="st">'.'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1119,67 +1057,67 @@ We build a <strong>linear regression model</strong> and use <strong>cross-valida
 </section>
 <section id="step-3-train-test-split" class="level5" data-number="9.4.1.2.3">
 <h5 data-number="9.4.1.2.3" class="anchored" data-anchor-id="step-3-train-test-split"><span class="header-section-number">9.4.1.2.3</span> Step 3: Train-Test Split</h5>
-<div id="cell-37" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data[<span class="st">'x'</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> data[<span class="st">'y'</span>].values</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># train test split</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-37" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data[<span class="st">'x'</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> data[<span class="st">'y'</span>].values</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># train test split</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="step-4-using-cross_val_score-to-tune-the-p-in-polynomialfeatures" class="level5" data-number="9.4.1.2.4">
 <h5 data-number="9.4.1.2.4" class="anchored" data-anchor-id="step-4-using-cross_val_score-to-tune-the-p-in-polynomialfeatures"><span class="header-section-number">9.4.1.2.4</span> Step 4: Using <code>cross_val_score</code> to tune the <em><code>p</code></em> in polynomialFeatures</h5>
 <p>In sklearn, polynomial features can be generated using the <code>PolynomialFeatures</code> class. Also, to perform <code>LinearRegression</code> and <code>PolynomialFeatures</code> in tandem, we will use the module <code>sklearn_pipeline</code> - it basically creates the features and feeds the output to the model (in that sequence).</p>
-<div id="cell-39" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cross_validation_score(X_train, y_train, max_degree<span class="op">=</span><span class="dv">10</span>, scoring<span class="op">=</span><span class="st">'r2'</span>):</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Perform cross-validation for polynomial regression models with different degrees.</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">        X_train (array-like): Training feature data.</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">        y_train (array-like): Training target data.</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co">        max_degree (int): Maximum polynomial degree to evaluate.</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co">        scoring (str): Scoring metric ('r2' for R², 'rmse' for root mean squared error).</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co">        degrees (list): List of polynomial degrees evaluated.</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="co">        scores_df (DataFrame): DataFrame of cross-validation scores across different degrees.</span></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    degrees <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, max_degree <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    cv_scores <span class="op">=</span> []</span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> degree <span class="kw">in</span> degrees:</span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create polynomial regression model</span></span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>        model <span class="op">=</span> make_pipeline(</span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>            PolynomialFeatures(degree),</span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>            LinearRegression()</span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute cross-validation scores</span></span>
-<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> scoring <span class="op">==</span> <span class="st">'rmse'</span>:</span>
-<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>            raw_scores <span class="op">=</span> cross_val_score(model, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'neg_mean_squared_error'</span>)</span>
-<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>            cv_score <span class="op">=</span> np.sqrt(<span class="op">-</span>raw_scores)  <span class="co"># Convert negative MSE to RMSE</span></span>
-<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>            score_label <span class="op">=</span> <span class="st">"RMSE (lower is better)"</span></span>
-<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:  <span class="co"># Default to R²</span></span>
-<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>            cv_score <span class="op">=</span> cross_val_score(model, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'r2'</span>)</span>
-<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>            score_label <span class="op">=</span> <span class="st">"R² (higher is better)"</span></span>
-<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>        cv_scores.append(cv_score)</span>
-<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Convert scores to a DataFrame</span></span>
-<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>    scores_df <span class="op">=</span> pd.DataFrame(np.array(cv_scores), index<span class="op">=</span>degrees, columns<span class="op">=</span>[<span class="ss">f'Fold </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(cv_scores[<span class="dv">0</span>].shape[<span class="dv">0</span>])])</span>
-<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Cross-validation scores (</span><span class="sc">{</span>score_label<span class="sc">}</span><span class="ss">):"</span>)</span>
-<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> degrees, scores_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="cell-40" class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example Usage:</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>scoring_metric <span class="op">=</span> <span class="st">'rmse'</span>  <span class="co"># Change to 'r2' if needed</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>degrees, scores <span class="op">=</span> cross_validation_score(X_train, y_train, scoring<span class="op">=</span><span class="st">"rmse"</span>)</span>
+<div id="cell-39" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cross_validation_score(X_train, y_train, max_degree<span class="op">=</span><span class="dv">10</span>, scoring<span class="op">=</span><span class="st">'r2'</span>):</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Perform cross-validation for polynomial regression models with different degrees.</span></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the formatted score matrix</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co">        X_train (array-like): Training feature data.</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co">        y_train (array-like): Training target data.</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co">        max_degree (int): Maximum polynomial degree to evaluate.</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co">        scoring (str): Scoring metric ('r2' for R², 'rmse' for root mean squared error).</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co">        degrees (list): List of polynomial degrees evaluated.</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="co">        scores_df (DataFrame): DataFrame of cross-validation scores across different degrees.</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    degrees <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, max_degree <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    cv_scores <span class="op">=</span> []</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> degree <span class="kw">in</span> degrees:</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create polynomial regression model</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>        model <span class="op">=</span> make_pipeline(</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>            PolynomialFeatures(degree),</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>            LinearRegression()</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute cross-validation scores</span></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> scoring <span class="op">==</span> <span class="st">'rmse'</span>:</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>            raw_scores <span class="op">=</span> cross_val_score(model, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'neg_mean_squared_error'</span>)</span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>            cv_score <span class="op">=</span> np.sqrt(<span class="op">-</span>raw_scores)  <span class="co"># Convert negative MSE to RMSE</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>            score_label <span class="op">=</span> <span class="st">"RMSE (lower is better)"</span></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:  <span class="co"># Default to R²</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>            cv_score <span class="op">=</span> cross_val_score(model, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'r2'</span>)</span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>            score_label <span class="op">=</span> <span class="st">"R² (higher is better)"</span></span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a>        cv_scores.append(cv_score)</span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Convert scores to a DataFrame</span></span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a>    scores_df <span class="op">=</span> pd.DataFrame(np.array(cv_scores), index<span class="op">=</span>degrees, columns<span class="op">=</span>[<span class="ss">f'Fold </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(cv_scores[<span class="dv">0</span>].shape[<span class="dv">0</span>])])</span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Cross-validation scores (</span><span class="sc">{</span>score_label<span class="sc">}</span><span class="ss">):"</span>)</span>
+<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> degrees, scores_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-40" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example Usage:</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>scoring_metric <span class="op">=</span> <span class="st">'rmse'</span>  <span class="co"># Change to 'r2' if needed</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>degrees, scores <span class="op">=</span> cross_validation_score(X_train, y_train, scoring<span class="op">=</span><span class="st">"rmse"</span>)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the formatted score matrix</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Cross-validation scores (RMSE (lower is better)):
       Fold 1    Fold 2    Fold 3    Fold 4    Fold 5
@@ -1195,10 +1133,10 @@ We build a <strong>linear regression model</strong> and use <strong>cross-valida
 10  0.152122  0.139420  0.145089  0.147192  0.154581</code></pre>
 </div>
 </div>
-<div id="cell-41" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take mean of each row and add it as the last column of the scores dataframe</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>scores[<span class="st">'mean'</span>] <span class="op">=</span> scores.mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-41" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take mean of each row and add it as the last column of the scores dataframe</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>scores[<span class="st">'mean'</span>] <span class="op">=</span> scores.mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      Fold 1    Fold 2    Fold 3    Fold 4    Fold 5      mean
 1   0.500794  0.456810  0.472232  0.484231  0.461889  0.475191
@@ -1213,15 +1151,15 @@ We build a <strong>linear regression model</strong> and use <strong>cross-valida
 10  0.152122  0.139420  0.145089  0.147192  0.154581  0.147681</code></pre>
 </div>
 </div>
-<div id="cell-42" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the mean scores for each degree</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>plt.plot(degrees, scores[<span class="st">'mean'</span>], <span class="st">'o-'</span>, label<span class="op">=</span><span class="st">'Cross-validation RMSE'</span>)</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Degree'</span>)</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Mean CV Score'</span>)</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Polynomial Degree vs. Mean CV RMSE'</span>)</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-42" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the mean scores for each degree</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>plt.plot(degrees, scores[<span class="st">'mean'</span>], <span class="st">'o-'</span>, label<span class="op">=</span><span class="st">'Cross-validation RMSE'</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Degree'</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Mean CV Score'</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Polynomial Degree vs. Mean CV RMSE'</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1230,20 +1168,20 @@ We build a <strong>linear regression model</strong> and use <strong>cross-valida
 </div>
 </div>
 </div>
-<div id="cell-43" class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find optimal degree based on the mean cross-validation scores</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>optimal_degree <span class="op">=</span> scores[<span class="st">'mean'</span>].idxmin()</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Optimal polynomial degree: </span><span class="sc">{</span>optimal_degree<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-43" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find optimal degree based on the mean cross-validation scores</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>optimal_degree <span class="op">=</span> scores[<span class="st">'mean'</span>].idxmin()</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Optimal polynomial degree: </span><span class="sc">{</span>optimal_degree<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Optimal polynomial degree: 5</code></pre>
 </div>
 </div>
-<div id="cell-44" class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use r2 as performance metric, note that r2 is default metric in the function defination</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>degrees, scores <span class="op">=</span> cross_validation_score(X_train, y_train)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the formatted score matrix</span></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-44" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use r2 as performance metric, note that r2 is default metric in the function defination</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>degrees, scores <span class="op">=</span> cross_validation_score(X_train, y_train)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the formatted score matrix</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Cross-validation scores (R² (higher is better)):
       Fold 1    Fold 2    Fold 3    Fold 4    Fold 5
@@ -1259,10 +1197,10 @@ We build a <strong>linear regression model</strong> and use <strong>cross-valida
 10  0.951549  0.961590  0.959159  0.961606  0.954121</code></pre>
 </div>
 </div>
-<div id="cell-45" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take mean of each row and add it as the last column of the scores dataframe</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>scores[<span class="st">'mean'</span>] <span class="op">=</span> scores.mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-45" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take mean of each row and add it as the last column of the scores dataframe</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>scores[<span class="st">'mean'</span>] <span class="op">=</span> scores.mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      Fold 1    Fold 2    Fold 3    Fold 4    Fold 5      mean
 1   0.474906  0.587650  0.567349  0.584471  0.590389  0.560953
@@ -1277,15 +1215,15 @@ We build a <strong>linear regression model</strong> and use <strong>cross-valida
 10  0.951549  0.961590  0.959159  0.961606  0.954121  0.957605</code></pre>
 </div>
 </div>
-<div id="cell-46" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the mean scores for each degree</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>plt.plot(degrees, scores[<span class="st">'mean'</span>], <span class="st">'o-'</span>, label<span class="op">=</span><span class="st">'Cross-validation R²'</span>)</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Degree'</span>)</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Mean CV Score'</span>)</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Polynomial Degree vs. Mean CV Score'</span>)</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-46" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the mean scores for each degree</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>plt.plot(degrees, scores[<span class="st">'mean'</span>], <span class="st">'o-'</span>, label<span class="op">=</span><span class="st">'Cross-validation R²'</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Degree'</span>)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Mean CV Score'</span>)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Polynomial Degree vs. Mean CV Score'</span>)</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1294,10 +1232,10 @@ We build a <strong>linear regression model</strong> and use <strong>cross-valida
 </div>
 </div>
 </div>
-<div id="cell-47" class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find optimal degree based on the mean cross-validation scores</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>optimal_degree <span class="op">=</span> scores[<span class="st">'mean'</span>].idxmax()</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Optimal polynomial degree: </span><span class="sc">{</span>optimal_degree<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-47" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find optimal degree based on the mean cross-validation scores</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>optimal_degree <span class="op">=</span> scores[<span class="st">'mean'</span>].idxmax()</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Optimal polynomial degree: </span><span class="sc">{</span>optimal_degree<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Optimal polynomial degree: 5</code></pre>
 </div>
@@ -1309,27 +1247,27 @@ We build a <strong>linear regression model</strong> and use <strong>cross-valida
 This ensures that the model fully utilizes all available training data for the best possible fit.</p>
 <p><strong>Steps:</strong> 1. <strong>Build the final model</strong> using a polynomial transformation with the optimal degree (<code>p=5</code>). 2. <strong>Train the model</strong> on the full training dataset. 3. <strong>Generate predictions</strong> and visualize how well the polynomial regression fits the data.</p>
 <p>The plot below shows the <strong>final polynomial regression fit</strong>, highlighting how the model captures patterns in the dataset.</p>
-<div id="cell-49" class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit final model with optimal degree</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>final_model <span class="op">=</span> make_pipeline(</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    PolynomialFeatures(optimal_degree),</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    LinearRegression()</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>final_model.fit(X_train, y_train)</span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot final model predictions</span></span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>X_sorted <span class="op">=</span> np.sort(X)</span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> final_model.predict(X_sorted)</span>
-<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>plt.scatter(X, y, color<span class="op">=</span><span class="st">'blue'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">'Data points'</span>)</span>
-<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>plt.plot(X_sorted, y_pred, color<span class="op">=</span><span class="st">'red'</span>, label<span class="op">=</span><span class="ss">f'Polynomial degree </span><span class="sc">{</span>optimal_degree<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
-<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span>)</span>
-<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Polynomial Regression Fit'</span>)</span>
-<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-49" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit final model with optimal degree</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>final_model <span class="op">=</span> make_pipeline(</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    PolynomialFeatures(optimal_degree),</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    LinearRegression()</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>final_model.fit(X_train, y_train)</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot final model predictions</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>X_sorted <span class="op">=</span> np.sort(X)</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> final_model.predict(X_sorted)</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>plt.scatter(X, y, color<span class="op">=</span><span class="st">'blue'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">'Data points'</span>)</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>plt.plot(X_sorted, y_pred, color<span class="op">=</span><span class="st">'red'</span>, label<span class="op">=</span><span class="ss">f'Polynomial degree </span><span class="sc">{</span>optimal_degree<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span>)</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Polynomial Regression Fit'</span>)</span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1341,16 +1279,16 @@ This ensures that the model fully utilizes all available training data for the b
 </section>
 <section id="step-6-output-the-final-model-performance" class="level5" data-number="9.4.1.2.6">
 <h5 data-number="9.4.1.2.6" class="anchored" data-anchor-id="step-6-output-the-final-model-performance"><span class="header-section-number">9.4.1.2.6</span> Step 6: Output the final model performance</h5>
-<div id="cell-51" class="cell" data-execution_count="46">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print final model performance metrics</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final Model Performance:"</span>)</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training R²: </span><span class="sc">{</span>final_model<span class="sc">.</span>score(X_train, y_train)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test R²: </span><span class="sc">{</span>final_model<span class="sc">.</span>score(X_test, y_test)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-51" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print final model performance metrics</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final Model Performance:"</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training R²: </span><span class="sc">{</span>final_model<span class="sc">.</span>score(X_train, y_train)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test R²: </span><span class="sc">{</span>final_model<span class="sc">.</span>score(X_test, y_test)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Final Model Performance:
-Training R²: 0.9605
-Test R²: 0.9540</code></pre>
+Training R²: 0.9613
+Test R²: 0.9521</code></pre>
 </div>
 </div>
 </section>
@@ -1362,199 +1300,65 @@ Test R²: 0.9540</code></pre>
 <li><p>It allows specifying multiple metrics for evaluation.</p></li>
 <li><p>It returns a dict containing fit-times, score-times (and optionally training scores, fitted estimators, train-test split indices) in addition to the test score.</p></li>
 </ul>
-<div id="cell-53" class="cell" data-execution_count="48">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_validate</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cross_validation_scores(X_train, y_train, max_degree<span class="op">=</span><span class="dv">10</span>):</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Perform cross-validation for polynomial regression models with different degrees.</span></span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Computes both R² and RMSE scores using cross_validate.</span></span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="co">        X_train (array-like): Training feature data.</span></span>
-<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="co">        y_train (array-like): Training target data.</span></span>
-<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a><span class="co">        max_degree (int): Maximum polynomial degree to evaluate.</span></span>
-<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a><span class="co">        scores_df (DataFrame): DataFrame of cross-validation R² and RMSE scores across different degrees.</span></span>
-<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>    degrees <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, max_degree <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> []</span>
-<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> degree <span class="kw">in</span> degrees:</span>
-<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create polynomial regression model</span></span>
-<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a>        model <span class="op">=</span> make_pipeline(</span>
-<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>            PolynomialFeatures(degree),</span>
-<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>            LinearRegression()</span>
-<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Perform cross-validation for both R² and RMSE</span></span>
-<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>        cv_results <span class="op">=</span> cross_validate(model, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, </span>
-<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a>                                    scoring<span class="op">=</span>[<span class="st">'r2'</span>, <span class="st">'neg_root_mean_squared_error'</span>], return_train_score<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb44-31"><a href="#cb44-31" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extract mean scores</span></span>
-<span id="cb44-32"><a href="#cb44-32" aria-hidden="true" tabindex="-1"></a>        mean_r2 <span class="op">=</span> np.mean(cv_results[<span class="st">'test_r2'</span>])</span>
-<span id="cb44-33"><a href="#cb44-33" aria-hidden="true" tabindex="-1"></a>        mean_rmse <span class="op">=</span> <span class="op">-</span>np.mean(cv_results[<span class="st">'test_neg_root_mean_squared_error'</span>])  <span class="co"># Negate since sklearn returns negative RMSE</span></span>
-<span id="cb44-34"><a href="#cb44-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-35"><a href="#cb44-35" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Store results</span></span>
-<span id="cb44-36"><a href="#cb44-36" aria-hidden="true" tabindex="-1"></a>        results.append([degree, mean_r2, mean_rmse])</span>
-<span id="cb44-37"><a href="#cb44-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-38"><a href="#cb44-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Convert to DataFrame</span></span>
-<span id="cb44-39"><a href="#cb44-39" aria-hidden="true" tabindex="-1"></a>    scores_df <span class="op">=</span> pd.DataFrame(results, columns<span class="op">=</span>[<span class="st">"Degree"</span>, <span class="st">"Mean R²"</span>, <span class="st">"Mean RMSE"</span>])</span>
-<span id="cb44-40"><a href="#cb44-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-41"><a href="#cb44-41" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Cross-validation scores (Higher R² is better, Lower RMSE is better):"</span>)</span>
-<span id="cb44-42"><a href="#cb44-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> scores_df</span>
-<span id="cb44-43"><a href="#cb44-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-44"><a href="#cb44-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Example Usage:</span></span>
-<span id="cb44-45"><a href="#cb44-45" aria-hidden="true" tabindex="-1"></a>scores_df <span class="op">=</span> cross_validation_scores(X_train, y_train, max_degree<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb44-46"><a href="#cb44-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-47"><a href="#cb44-47" aria-hidden="true" tabindex="-1"></a>scores_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Cross-validation scores (Higher R² is better, Lower RMSE is better):</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="48">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">Degree</th>
-<th data-quarto-table-cell-role="th">Mean R²</th>
-<th data-quarto-table-cell-role="th">Mean RMSE</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>1</td>
-<td>0.582142</td>
-<td>0.466153</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>2</td>
-<td>0.581522</td>
-<td>0.466506</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>3</td>
-<td>0.949362</td>
-<td>0.161792</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
-<td>4</td>
-<td>0.949329</td>
-<td>0.161854</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>5</td>
-<td>0.958964</td>
-<td>0.145800</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">5</td>
-<td>6</td>
-<td>0.958471</td>
-<td>0.146715</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">6</td>
-<td>7</td>
-<td>0.957989</td>
-<td>0.147495</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">7</td>
-<td>8</td>
-<td>0.957525</td>
-<td>0.148343</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">8</td>
-<td>9</td>
-<td>0.957362</td>
-<td>0.148613</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">9</td>
-<td>10</td>
-<td>0.957049</td>
-<td>0.149188</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-<div id="cell-54" class="cell" data-execution_count="51">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_validate</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cross_validation_full_results(X_train, y_train, max_degree<span class="op">=</span><span class="dv">10</span>):</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Perform cross-validation for polynomial regression models with different degrees.</span></span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Captures all cross-validation results including R², RMSE, fit time, score time, etc.</span></span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="co">        X_train (array-like): Training feature data.</span></span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="co">        y_train (array-like): Training target data.</span></span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="co">        max_degree (int): Maximum polynomial degree to evaluate.</span></span>
-<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a><span class="co">        full_results_df (DataFrame): DataFrame containing all cross-validation metrics for each degree.</span></span>
-<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>    degrees <span class="op">=</span> []</span>
-<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>    results_dict <span class="op">=</span> {</span>
-<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Fold"</span>: [],</span>
-<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Fit Time"</span>: [],</span>
-<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Score Time"</span>: [],</span>
-<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"R²"</span>: [],</span>
-<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"RMSE"</span>: []</span>
-<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> degree <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, max_degree <span class="op">+</span> <span class="dv">1</span>):</span>
-<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create polynomial regression model</span></span>
-<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a>        model <span class="op">=</span> make_pipeline(</span>
-<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a>            PolynomialFeatures(degree),</span>
-<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a>            LinearRegression()</span>
-<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Perform cross-validation for both R² and RMSE, capturing additional metrics</span></span>
-<span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a>        cv_results <span class="op">=</span> cross_validate(model, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, </span>
-<span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a>                                    scoring<span class="op">=</span>[<span class="st">'r2'</span>, <span class="st">'neg_root_mean_squared_error'</span>], return_train_score<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb46-37"><a href="#cb46-37" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Store each fold's results separately</span></span>
-<span id="cb46-38"><a href="#cb46-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> fold <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):  <span class="co"># 5 folds</span></span>
-<span id="cb46-39"><a href="#cb46-39" aria-hidden="true" tabindex="-1"></a>            degrees.append(degree)</span>
-<span id="cb46-40"><a href="#cb46-40" aria-hidden="true" tabindex="-1"></a>            results_dict[<span class="st">"Fold"</span>].append(fold <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb46-41"><a href="#cb46-41" aria-hidden="true" tabindex="-1"></a>            results_dict[<span class="st">"Fit Time"</span>].append(cv_results[<span class="st">"fit_time"</span>][fold])</span>
-<span id="cb46-42"><a href="#cb46-42" aria-hidden="true" tabindex="-1"></a>            results_dict[<span class="st">"Score Time"</span>].append(cv_results[<span class="st">"score_time"</span>][fold])</span>
-<span id="cb46-43"><a href="#cb46-43" aria-hidden="true" tabindex="-1"></a>            results_dict[<span class="st">"R²"</span>].append(cv_results[<span class="st">"test_r2"</span>][fold])</span>
-<span id="cb46-44"><a href="#cb46-44" aria-hidden="true" tabindex="-1"></a>            results_dict[<span class="st">"RMSE"</span>].append(<span class="op">-</span>cv_results[<span class="st">"test_neg_root_mean_squared_error"</span>][fold])  <span class="co"># Convert negative RMSE to positive</span></span>
-<span id="cb46-45"><a href="#cb46-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-46"><a href="#cb46-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Convert to DataFrame</span></span>
-<span id="cb46-47"><a href="#cb46-47" aria-hidden="true" tabindex="-1"></a>    full_results_df <span class="op">=</span> pd.DataFrame(results_dict)</span>
-<span id="cb46-48"><a href="#cb46-48" aria-hidden="true" tabindex="-1"></a>    full_results_df.insert(<span class="dv">0</span>, <span class="st">"Degree"</span>, degrees)  <span class="co"># Add Degree column at the front</span></span>
-<span id="cb46-49"><a href="#cb46-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-50"><a href="#cb46-50" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Complete Cross-Validation Results (Higher R² is better, Lower RMSE is better, Fit Time &amp; Score Time included):"</span>)</span>
-<span id="cb46-51"><a href="#cb46-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> full_results_df</span>
-<span id="cb46-52"><a href="#cb46-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-53"><a href="#cb46-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-54"><a href="#cb46-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Example Usage:</span></span>
-<span id="cb46-55"><a href="#cb46-55" aria-hidden="true" tabindex="-1"></a>scores_df <span class="op">=</span> cross_validation_full_results(X_train, y_train, max_degree<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb46-56"><a href="#cb46-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-57"><a href="#cb46-57" aria-hidden="true" tabindex="-1"></a>scores_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-53" class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_validate</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cross_validation_full_results(X_train, y_train, max_degree<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Perform cross-validation for polynomial regression models with different degrees.</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Captures all cross-validation results including R², RMSE, fit time, score time, etc.</span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="co">        X_train (array-like): Training feature data.</span></span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="co">        y_train (array-like): Training target data.</span></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a><span class="co">        max_degree (int): Maximum polynomial degree to evaluate.</span></span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a><span class="co">        full_results_df (DataFrame): DataFrame containing all cross-validation metrics for each degree.</span></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>    degrees <span class="op">=</span> []</span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>    results_dict <span class="op">=</span> {</span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Fold"</span>: [],</span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Fit Time"</span>: [],</span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Score Time"</span>: [],</span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"R²"</span>: [],</span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"RMSE"</span>: []</span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> degree <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, max_degree <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create polynomial regression model</span></span>
+<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a>        model <span class="op">=</span> make_pipeline(</span>
+<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a>            PolynomialFeatures(degree),</span>
+<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a>            LinearRegression()</span>
+<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb45-31"><a href="#cb45-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-32"><a href="#cb45-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Perform cross-validation for both R² and RMSE, capturing additional metrics</span></span>
+<span id="cb45-33"><a href="#cb45-33" aria-hidden="true" tabindex="-1"></a>        cv_results <span class="op">=</span> cross_validate(model, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, </span>
+<span id="cb45-34"><a href="#cb45-34" aria-hidden="true" tabindex="-1"></a>                                    scoring<span class="op">=</span>[<span class="st">'r2'</span>, <span class="st">'neg_root_mean_squared_error'</span>], return_train_score<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb45-35"><a href="#cb45-35" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb45-36"><a href="#cb45-36" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Store each fold's results separately</span></span>
+<span id="cb45-37"><a href="#cb45-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> fold <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):  <span class="co"># 5 folds</span></span>
+<span id="cb45-38"><a href="#cb45-38" aria-hidden="true" tabindex="-1"></a>            degrees.append(degree)</span>
+<span id="cb45-39"><a href="#cb45-39" aria-hidden="true" tabindex="-1"></a>            results_dict[<span class="st">"Fold"</span>].append(fold <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb45-40"><a href="#cb45-40" aria-hidden="true" tabindex="-1"></a>            results_dict[<span class="st">"Fit Time"</span>].append(cv_results[<span class="st">"fit_time"</span>][fold])</span>
+<span id="cb45-41"><a href="#cb45-41" aria-hidden="true" tabindex="-1"></a>            results_dict[<span class="st">"Score Time"</span>].append(cv_results[<span class="st">"score_time"</span>][fold])</span>
+<span id="cb45-42"><a href="#cb45-42" aria-hidden="true" tabindex="-1"></a>            results_dict[<span class="st">"R²"</span>].append(cv_results[<span class="st">"test_r2"</span>][fold])</span>
+<span id="cb45-43"><a href="#cb45-43" aria-hidden="true" tabindex="-1"></a>            results_dict[<span class="st">"RMSE"</span>].append(<span class="op">-</span>cv_results[<span class="st">"test_neg_root_mean_squared_error"</span>][fold])  <span class="co"># Convert negative RMSE to positive</span></span>
+<span id="cb45-44"><a href="#cb45-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-45"><a href="#cb45-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Convert to DataFrame</span></span>
+<span id="cb45-46"><a href="#cb45-46" aria-hidden="true" tabindex="-1"></a>    full_results_df <span class="op">=</span> pd.DataFrame(results_dict)</span>
+<span id="cb45-47"><a href="#cb45-47" aria-hidden="true" tabindex="-1"></a>    full_results_df.insert(<span class="dv">0</span>, <span class="st">"Degree"</span>, degrees)  <span class="co"># Add Degree column at the front</span></span>
+<span id="cb45-48"><a href="#cb45-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-49"><a href="#cb45-49" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Complete Cross-Validation Results (Higher R² is better, Lower RMSE is better, Fit Time &amp; Score Time included):"</span>)</span>
+<span id="cb45-50"><a href="#cb45-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> full_results_df</span>
+<span id="cb45-51"><a href="#cb45-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-52"><a href="#cb45-52" aria-hidden="true" tabindex="-1"></a>scores_df <span class="op">=</span> cross_validation_full_results(X_train, y_train, max_degree<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb45-53"><a href="#cb45-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-54"><a href="#cb45-54" aria-hidden="true" tabindex="-1"></a>scores_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Complete Cross-Validation Results (Higher R² is better, Lower RMSE is better, Fit Time &amp; Score Time included):</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="51">
+<div class="cell-output cell-output-display" data-execution_count="29">
 <div>
 
 
@@ -1575,19 +1379,19 @@ Test R²: 0.9540</code></pre>
 <td data-quarto-table-cell-role="th">0</td>
 <td>1</td>
 <td>1</td>
-<td>0.002000</td>
-<td>0.001000</td>
-<td>0.570426</td>
-<td>0.466694</td>
+<td>0.001993</td>
+<td>0.002523</td>
+<td>0.474906</td>
+<td>0.500794</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
 <td>1</td>
 <td>2</td>
-<td>0.000990</td>
-<td>0.001000</td>
-<td>0.608229</td>
-<td>0.422815</td>
+<td>0.001994</td>
+<td>0.002033</td>
+<td>0.587650</td>
+<td>0.456810</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
@@ -1595,305 +1399,305 @@ Test R²: 0.9540</code></pre>
 <td>3</td>
 <td>0.000000</td>
 <td>0.000000</td>
-<td>0.601911</td>
-<td>0.459753</td>
+<td>0.567349</td>
+<td>0.472232</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
 <td>1</td>
 <td>4</td>
-<td>0.005932</td>
-<td>0.001000</td>
-<td>0.525827</td>
-<td>0.519343</td>
+<td>0.000996</td>
+<td>0.000996</td>
+<td>0.584471</td>
+<td>0.484231</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
 <td>1</td>
 <td>5</td>
-<td>0.001000</td>
-<td>0.001999</td>
-<td>0.604316</td>
-<td>0.462159</td>
+<td>0.000997</td>
+<td>0.001993</td>
+<td>0.590389</td>
+<td>0.461889</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">5</td>
 <td>2</td>
 <td>1</td>
-<td>0.002001</td>
-<td>0.001000</td>
-<td>0.570479</td>
-<td>0.466665</td>
+<td>0.001482</td>
+<td>0.000000</td>
+<td>0.476036</td>
+<td>0.500255</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">6</td>
 <td>2</td>
 <td>2</td>
-<td>0.000835</td>
-<td>0.000000</td>
-<td>0.607127</td>
-<td>0.423410</td>
+<td>0.006236</td>
+<td>0.002004</td>
+<td>0.589297</td>
+<td>0.455897</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">7</td>
 <td>2</td>
 <td>3</td>
-<td>0.003848</td>
-<td>0.001000</td>
-<td>0.601958</td>
-<td>0.459725</td>
+<td>0.000996</td>
+<td>0.000997</td>
+<td>0.561564</td>
+<td>0.475378</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">8</td>
 <td>2</td>
 <td>4</td>
-<td>0.000000</td>
-<td>0.000998</td>
-<td>0.525949</td>
-<td>0.519276</td>
+<td>0.000997</td>
+<td>0.000997</td>
+<td>0.582378</td>
+<td>0.485450</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">9</td>
 <td>2</td>
 <td>5</td>
-<td>0.000992</td>
-<td>0.001001</td>
-<td>0.602098</td>
-<td>0.463452</td>
+<td>0.000997</td>
+<td>0.000997</td>
+<td>0.591156</td>
+<td>0.461456</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">10</td>
 <td>3</td>
 <td>1</td>
-<td>0.000998</td>
-<td>0.000000</td>
-<td>0.939209</td>
-<td>0.175563</td>
+<td>0.000996</td>
+<td>0.000997</td>
+<td>0.943020</td>
+<td>0.164968</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">11</td>
 <td>3</td>
 <td>2</td>
-<td>0.001000</td>
-<td>0.000000</td>
-<td>0.947260</td>
-<td>0.155134</td>
+<td>0.000997</td>
+<td>0.001250</td>
+<td>0.950323</td>
+<td>0.158555</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">12</td>
 <td>3</td>
 <td>3</td>
-<td>0.001012</td>
+<td>0.001089</td>
 <td>0.000000</td>
-<td>0.952417</td>
-<td>0.158949</td>
+<td>0.952529</td>
+<td>0.156423</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">13</td>
 <td>3</td>
 <td>4</td>
 <td>0.000000</td>
-<td>0.000999</td>
-<td>0.949697</td>
-<td>0.169154</td>
+<td>0.000000</td>
+<td>0.958609</td>
+<td>0.152829</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">14</td>
 <td>3</td>
 <td>5</td>
-<td>0.001000</td>
 <td>0.000000</td>
-<td>0.958230</td>
-<td>0.150159</td>
+<td>0.000000</td>
+<td>0.949655</td>
+<td>0.161931</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">15</td>
 <td>4</td>
 <td>1</td>
 <td>0.000000</td>
-<td>0.001000</td>
-<td>0.939288</td>
-<td>0.175449</td>
+<td>0.000000</td>
+<td>0.942638</td>
+<td>0.165521</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">16</td>
 <td>4</td>
 <td>2</td>
-<td>0.001002</td>
 <td>0.000000</td>
-<td>0.947347</td>
-<td>0.155005</td>
+<td>0.000000</td>
+<td>0.950283</td>
+<td>0.158619</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">17</td>
 <td>4</td>
 <td>3</td>
-<td>0.000998</td>
-<td>0.000576</td>
-<td>0.951964</td>
-<td>0.159704</td>
+<td>0.000996</td>
+<td>0.000996</td>
+<td>0.952535</td>
+<td>0.156413</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">18</td>
 <td>4</td>
 <td>4</td>
-<td>0.000000</td>
-<td>0.000000</td>
-<td>0.949796</td>
-<td>0.168988</td>
+<td>0.000997</td>
+<td>0.000996</td>
+<td>0.958321</td>
+<td>0.153359</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">19</td>
 <td>4</td>
 <td>5</td>
-<td>0.000000</td>
-<td>0.000000</td>
-<td>0.958250</td>
-<td>0.150123</td>
+<td>0.000997</td>
+<td>0.000997</td>
+<td>0.949376</td>
+<td>0.162379</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">20</td>
 <td>5</td>
 <td>1</td>
-<td>0.000000</td>
-<td>0.000000</td>
-<td>0.953286</td>
-<td>0.153899</td>
+<td>0.000996</td>
+<td>0.000992</td>
+<td>0.955439</td>
+<td>0.145887</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">21</td>
 <td>5</td>
 <td>2</td>
-<td>0.000000</td>
-<td>0.000000</td>
-<td>0.958243</td>
-<td>0.138038</td>
+<td>0.000997</td>
+<td>0.001001</td>
+<td>0.962054</td>
+<td>0.138576</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">22</td>
 <td>5</td>
 <td>3</td>
-<td>0.000000</td>
-<td>0.000000</td>
-<td>0.963379</td>
-<td>0.139444</td>
+<td>0.000997</td>
+<td>0.000993</td>
+<td>0.959965</td>
+<td>0.143649</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">23</td>
 <td>5</td>
 <td>4</td>
-<td>0.000000</td>
-<td>0.000000</td>
-<td>0.955023</td>
-<td>0.159949</td>
+<td>0.000996</td>
+<td>0.000997</td>
+<td>0.964546</td>
+<td>0.141445</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">24</td>
 <td>5</td>
 <td>5</td>
 <td>0.000000</td>
-<td>0.012913</td>
-<td>0.964890</td>
-<td>0.137669</td>
+<td>0.000000</td>
+<td>0.955074</td>
+<td>0.152968</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">25</td>
 <td>6</td>
 <td>1</td>
-<td>0.000028</td>
-<td>0.001009</td>
-<td>0.952553</td>
-<td>0.155102</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.955373</td>
+<td>0.145995</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">26</td>
 <td>6</td>
 <td>2</td>
-<td>0.001000</td>
 <td>0.000000</td>
-<td>0.958416</td>
-<td>0.137753</td>
+<td>0.000000</td>
+<td>0.961790</td>
+<td>0.139056</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">27</td>
 <td>6</td>
 <td>3</td>
-<td>0.001000</td>
 <td>0.000000</td>
-<td>0.962487</td>
-<td>0.141132</td>
+<td>0.000000</td>
+<td>0.960110</td>
+<td>0.143390</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">28</td>
 <td>6</td>
 <td>4</td>
 <td>0.000000</td>
-<td>0.000998</td>
-<td>0.955011</td>
-<td>0.159970</td>
+<td>0.000996</td>
+<td>0.962963</td>
+<td>0.144567</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">29</td>
 <td>6</td>
 <td>5</td>
-<td>0.001106</td>
 <td>0.000000</td>
-<td>0.963887</td>
-<td>0.139621</td>
+<td>0.000997</td>
+<td>0.954543</td>
+<td>0.153870</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">30</td>
 <td>7</td>
 <td>1</td>
-<td>0.001000</td>
-<td>0.001006</td>
-<td>0.949688</td>
-<td>0.159715</td>
+<td>0.000998</td>
+<td>0.001304</td>
+<td>0.952190</td>
+<td>0.151113</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">31</td>
 <td>7</td>
 <td>2</td>
-<td>0.000998</td>
-<td>0.000000</td>
-<td>0.959019</td>
-<td>0.136750</td>
+<td>0.000997</td>
+<td>0.001003</td>
+<td>0.962267</td>
+<td>0.138186</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">32</td>
 <td>7</td>
 <td>3</td>
 <td>0.000000</td>
-<td>0.001001</td>
-<td>0.962043</td>
-<td>0.141965</td>
+<td>0.000997</td>
+<td>0.959701</td>
+<td>0.144122</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">33</td>
 <td>7</td>
 <td>4</td>
 <td>0.000000</td>
-<td>0.001015</td>
-<td>0.955195</td>
-<td>0.159643</td>
+<td>0.000993</td>
+<td>0.963145</td>
+<td>0.144211</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">34</td>
 <td>7</td>
 <td>5</td>
-<td>0.000000</td>
-<td>0.001073</td>
-<td>0.964001</td>
-<td>0.139400</td>
+<td>0.000997</td>
+<td>0.000997</td>
+<td>0.954797</td>
+<td>0.153438</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">35</td>
 <td>8</td>
 <td>1</td>
-<td>0.001224</td>
-<td>0.000000</td>
-<td>0.949119</td>
-<td>0.160617</td>
+<td>0.000997</td>
+<td>0.000842</td>
+<td>0.952636</td>
+<td>0.150406</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">36</td>
@@ -1901,8 +1705,8 @@ Test R²: 0.9540</code></pre>
 <td>2</td>
 <td>0.000000</td>
 <td>0.000000</td>
-<td>0.958975</td>
-<td>0.136823</td>
+<td>0.962722</td>
+<td>0.137350</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">37</td>
@@ -1910,17 +1714,17 @@ Test R²: 0.9540</code></pre>
 <td>3</td>
 <td>0.000000</td>
 <td>0.000000</td>
-<td>0.962007</td>
-<td>0.142032</td>
+<td>0.960162</td>
+<td>0.143297</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">38</td>
 <td>8</td>
 <td>4</td>
-<td>0.000000</td>
-<td>0.000000</td>
-<td>0.955216</td>
-<td>0.159605</td>
+<td>0.010667</td>
+<td>0.000995</td>
+<td>0.961735</td>
+<td>0.146944</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">39</td>
@@ -1928,8 +1732,8 @@ Test R²: 0.9540</code></pre>
 <td>5</td>
 <td>0.000000</td>
 <td>0.000000</td>
-<td>0.962310</td>
-<td>0.142636</td>
+<td>0.954136</td>
+<td>0.154557</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">40</td>
@@ -1937,44 +1741,44 @@ Test R²: 0.9540</code></pre>
 <td>1</td>
 <td>0.000000</td>
 <td>0.000000</td>
-<td>0.948581</td>
-<td>0.161464</td>
+<td>0.952201</td>
+<td>0.151095</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">41</td>
 <td>9</td>
 <td>2</td>
-<td>0.000999</td>
 <td>0.000000</td>
-<td>0.958964</td>
-<td>0.136841</td>
+<td>0.000000</td>
+<td>0.962322</td>
+<td>0.138084</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">42</td>
 <td>9</td>
 <td>3</td>
-<td>0.000990</td>
-<td>0.001007</td>
-<td>0.961970</td>
-<td>0.142101</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.960205</td>
+<td>0.143219</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">43</td>
 <td>9</td>
 <td>4</td>
-<td>0.001004</td>
-<td>0.000975</td>
-<td>0.955057</td>
-<td>0.159889</td>
+<td>0.000996</td>
+<td>0.001993</td>
+<td>0.961795</td>
+<td>0.146828</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">44</td>
 <td>9</td>
 <td>5</td>
+<td>0.000170</td>
 <td>0.000000</td>
-<td>0.000000</td>
-<td>0.962239</td>
-<td>0.142771</td>
+<td>0.954111</td>
+<td>0.154599</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">45</td>
@@ -1982,8 +1786,8 @@ Test R²: 0.9540</code></pre>
 <td>1</td>
 <td>0.000000</td>
 <td>0.000000</td>
-<td>0.948875</td>
-<td>0.161001</td>
+<td>0.951549</td>
+<td>0.152122</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">46</td>
@@ -1991,35 +1795,35 @@ Test R²: 0.9540</code></pre>
 <td>2</td>
 <td>0.000000</td>
 <td>0.000000</td>
-<td>0.959018</td>
-<td>0.136752</td>
+<td>0.961590</td>
+<td>0.139420</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">47</td>
 <td>10</td>
 <td>3</td>
 <td>0.000000</td>
-<td>0.000000</td>
-<td>0.961224</td>
-<td>0.143488</td>
+<td>0.012748</td>
+<td>0.959159</td>
+<td>0.145089</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">48</td>
 <td>10</td>
 <td>4</td>
-<td>0.010602</td>
-<td>0.001063</td>
-<td>0.953702</td>
-<td>0.162281</td>
+<td>0.000996</td>
+<td>0.001614</td>
+<td>0.961606</td>
+<td>0.147192</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">49</td>
 <td>10</td>
 <td>5</td>
-<td>0.000943</td>
 <td>0.000000</td>
-<td>0.962425</td>
-<td>0.142418</td>
+<td>0.000000</td>
+<td>0.954121</td>
+<td>0.154581</td>
 </tr>
 </tbody>
 </table>
@@ -2027,10 +1831,10 @@ Test R²: 0.9540</code></pre>
 </div>
 </div>
 </div>
-<div id="cell-55" class="cell" data-execution_count="52">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>mean_results_df <span class="op">=</span> scores_df.groupby(<span class="st">"Degree"</span>)[[<span class="st">"R²"</span>, <span class="st">"RMSE"</span>]].mean().reset_index()</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>mean_results_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="52">
+<div id="cell-54" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>mean_results_df <span class="op">=</span> scores_df.groupby(<span class="st">"Degree"</span>)[[<span class="st">"R²"</span>, <span class="st">"RMSE"</span>]].mean().reset_index()</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>mean_results_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
 <div>
 
 
@@ -2047,62 +1851,62 @@ Test R²: 0.9540</code></pre>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
 <td>1</td>
-<td>0.582142</td>
-<td>0.466153</td>
+<td>0.560953</td>
+<td>0.475191</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
 <td>2</td>
-<td>0.581522</td>
-<td>0.466506</td>
+<td>0.560086</td>
+<td>0.475687</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
 <td>3</td>
-<td>0.949362</td>
-<td>0.161792</td>
+<td>0.950827</td>
+<td>0.158941</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
 <td>4</td>
-<td>0.949329</td>
-<td>0.161854</td>
+<td>0.950631</td>
+<td>0.159258</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
 <td>5</td>
-<td>0.958964</td>
-<td>0.145800</td>
+<td>0.959416</td>
+<td>0.144505</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">5</td>
 <td>6</td>
-<td>0.958471</td>
-<td>0.146715</td>
+<td>0.958956</td>
+<td>0.145376</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">6</td>
 <td>7</td>
-<td>0.957989</td>
-<td>0.147495</td>
+<td>0.958420</td>
+<td>0.146214</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">7</td>
 <td>8</td>
-<td>0.957525</td>
-<td>0.148343</td>
+<td>0.958278</td>
+<td>0.146511</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">8</td>
 <td>9</td>
-<td>0.957362</td>
-<td>0.148613</td>
+<td>0.958127</td>
+<td>0.146765</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">9</td>
 <td>10</td>
-<td>0.957049</td>
-<td>0.149188</td>
+<td>0.957605</td>
+<td>0.147681</td>
 </tr>
 </tbody>
 </table>
@@ -2126,29 +1930,28 @@ For each combination, the model is trained and evaluated using cross-validation 
 The combination that yields the best validation performance is chosen as the optimal set of hyperparameters.</li>
 </ol>
 <p>Grid search ensures that we explore multiple hyperparameter settings in a structured way, improving the model’s performance without manually adjusting parameters.</p>
-<div id="cell-57" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> make_scorer, r2_score, mean_squared_error</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV, KFold</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the pipeline</span></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> make_pipeline(PolynomialFeatures(), LinearRegression())</span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the hyperparameter grid</span></span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>param_grid <span class="op">=</span> {<span class="st">'polynomialfeatures__degree'</span>: np.arange(<span class="dv">1</span>, <span class="dv">11</span>)}</span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="co"># define a KFold cross-validation with shuffling</span></span>
-<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> KFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform Grid Search with Cross-Validation</span></span>
-<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>grid_search <span class="op">=</span> GridSearchCV(model, param_grid, cv<span class="op">=</span>cv, scoring<span class="op">=</span> <span class="st">'r2'</span>, return_train_score<span class="op">=</span><span class="va">True</span>, verbose<span class="op">=</span><span class="dv">1</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model</span></span>
-<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>grid_search.fit(X_train, y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-56" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the pipeline</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> make_pipeline(PolynomialFeatures(), LinearRegression())</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the hyperparameter grid</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>param_grid <span class="op">=</span> {<span class="st">'polynomialfeatures__degree'</span>: np.arange(<span class="dv">1</span>, <span class="dv">11</span>)}</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a><span class="co"># define a KFold cross-validation with shuffling</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> KFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform Grid Search with Cross-Validation</span></span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>grid_search <span class="op">=</span> GridSearchCV(model, param_grid, cv<span class="op">=</span>cv, scoring<span class="op">=</span> <span class="st">'r2'</span>, return_train_score<span class="op">=</span><span class="va">True</span>, verbose<span class="op">=</span><span class="dv">1</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model</span></span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>grid_search.fit(X_train, y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Fitting 5 folds for each of 10 candidates, totalling 50 fits</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="31">
 <style>#sk-container-id-1 {
   /* Definition of color scheme common for light and dark mode */
   --sklearn-color-text: #000;
@@ -2582,10 +2385,10 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
                 ('linearregression', LinearRegression())])</pre></div> </div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox"><label for="sk-estimator-id-3" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>PolynomialFeatures</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.preprocessing.PolynomialFeatures.html">?<span>Documentation for PolynomialFeatures</span></a></div></label><div class="sk-toggleable__content fitted"><pre>PolynomialFeatures(degree=5)</pre></div> </div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox"><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>LinearRegression</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.linear_model.LinearRegression.html">?<span>Documentation for LinearRegression</span></a></div></label><div class="sk-toggleable__content fitted"><pre>LinearRegression()</pre></div> </div></div></div></div></div></div></div></div></div></div></div>
 </div>
 </div>
-<div id="cell-58" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>cv_results <span class="op">=</span> pd.DataFrame(grid_search.cv_results_)</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>cv_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div id="cell-57" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>cv_results <span class="op">=</span> pd.DataFrame(grid_search.cv_results_)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>cv_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
 <div>
 
 
@@ -2619,10 +2422,10 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
-<td>0.018254</td>
-<td>0.016248</td>
-<td>0.002019</td>
-<td>0.004016</td>
+<td>0.014676</td>
+<td>0.001534</td>
+<td>0.002452</td>
+<td>0.000697</td>
 <td>1</td>
 <td>{'polynomialfeatures__degree': 1}</td>
 <td>0.514869</td>
@@ -2643,10 +2446,10 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
-<td>0.013028</td>
-<td>0.003667</td>
-<td>0.003720</td>
-<td>0.004580</td>
+<td>0.014464</td>
+<td>0.001952</td>
+<td>0.002246</td>
+<td>0.000386</td>
 <td>2</td>
 <td>{'polynomialfeatures__degree': 2}</td>
 <td>0.516412</td>
@@ -2667,10 +2470,10 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
-<td>0.012604</td>
-<td>0.002339</td>
-<td>0.000265</td>
-<td>0.000325</td>
+<td>0.010744</td>
+<td>0.001704</td>
+<td>0.001196</td>
+<td>0.000399</td>
 <td>3</td>
 <td>{'polynomialfeatures__degree': 3}</td>
 <td>0.948330</td>
@@ -2691,10 +2494,10 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
-<td>0.005307</td>
-<td>0.004245</td>
-<td>0.001067</td>
-<td>0.001804</td>
+<td>0.003352</td>
+<td>0.001858</td>
+<td>0.001900</td>
+<td>0.000197</td>
 <td>4</td>
 <td>{'polynomialfeatures__degree': 4}</td>
 <td>0.948137</td>
@@ -2715,10 +2518,10 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
-<td>0.002221</td>
-<td>0.002720</td>
-<td>0.000000</td>
-<td>0.000000</td>
+<td>0.003586</td>
+<td>0.002212</td>
+<td>0.001844</td>
+<td>0.000487</td>
 <td>5</td>
 <td>{'polynomialfeatures__degree': 5}</td>
 <td>0.957618</td>
@@ -2739,10 +2542,10 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">5</td>
-<td>0.003713</td>
-<td>0.003687</td>
-<td>0.000140</td>
-<td>0.000279</td>
+<td>0.002876</td>
+<td>0.001588</td>
+<td>0.001994</td>
+<td>0.000631</td>
 <td>6</td>
 <td>{'polynomialfeatures__degree': 6}</td>
 <td>0.957569</td>
@@ -2763,10 +2566,10 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">6</td>
-<td>0.002014</td>
-<td>0.004027</td>
-<td>0.002014</td>
-<td>0.004027</td>
+<td>0.003966</td>
+<td>0.003833</td>
+<td>0.001792</td>
+<td>0.000374</td>
 <td>7</td>
 <td>{'polynomialfeatures__degree': 7}</td>
 <td>0.957219</td>
@@ -2787,10 +2590,10 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">7</td>
-<td>0.006420</td>
-<td>0.005254</td>
-<td>0.000788</td>
-<td>0.000737</td>
+<td>0.002766</td>
+<td>0.000773</td>
+<td>0.001784</td>
+<td>0.000394</td>
 <td>8</td>
 <td>{'polynomialfeatures__degree': 8}</td>
 <td>0.957222</td>
@@ -2811,10 +2614,10 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">8</td>
-<td>0.001613</td>
-<td>0.000807</td>
-<td>0.000701</td>
-<td>0.000579</td>
+<td>0.002394</td>
+<td>0.000487</td>
+<td>0.001599</td>
+<td>0.000487</td>
 <td>9</td>
 <td>{'polynomialfeatures__degree': 9}</td>
 <td>0.955364</td>
@@ -2835,10 +2638,10 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">9</td>
-<td>0.000849</td>
-<td>0.001379</td>
-<td>0.000711</td>
-<td>0.001422</td>
+<td>0.002936</td>
+<td>0.000066</td>
+<td>0.001993</td>
+<td>0.000036</td>
 <td>10</td>
 <td>{'polynomialfeatures__degree': 10}</td>
 <td>0.955130</td>
@@ -2864,10 +2667,10 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </div>
 </div>
 </div>
-<div id="cell-59" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.float_format'</span>, <span class="st">'</span><span class="sc">{:.6f}</span><span class="st">'</span>.<span class="bu">format</span>) </span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>cv_results[[<span class="st">"mean_test_score"</span>, <span class="st">"mean_train_score"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div id="cell-58" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.float_format'</span>, <span class="st">'</span><span class="sc">{:.6f}</span><span class="st">'</span>.<span class="bu">format</span>) </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>cv_results[[<span class="st">"mean_test_score"</span>, <span class="st">"mean_train_score"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
 <div>
 
 
@@ -2936,29 +2739,29 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </div>
 </div>
 </div>
-<div id="cell-60" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plotting cv results</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">16</span>,<span class="dv">6</span>))</span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>plt.plot(cv_results[<span class="st">"param_polynomialfeatures__degree"</span>], cv_results[<span class="st">"mean_test_score"</span>])</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>plt.plot(cv_results[<span class="st">"param_polynomialfeatures__degree"</span>], cv_results[<span class="st">"mean_train_score"</span>])</span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'degree'</span>)</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'r-squared'</span>)</span>
-<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Optimal polynomial degree"</span>)</span>
-<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">'test score'</span>, <span class="st">'train score'</span>], loc<span class="op">=</span><span class="st">'upper left'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-59" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plotting cv results</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">16</span>,<span class="dv">6</span>))</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>plt.plot(cv_results[<span class="st">"param_polynomialfeatures__degree"</span>], cv_results[<span class="st">"mean_test_score"</span>])</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>plt.plot(cv_results[<span class="st">"param_polynomialfeatures__degree"</span>], cv_results[<span class="st">"mean_train_score"</span>])</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'degree'</span>)</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'r-squared'</span>)</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Optimal polynomial degree"</span>)</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">'test score'</span>, <span class="st">'train score'</span>], loc<span class="op">=</span><span class="st">'upper left'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="cross_validation_files/figure-html/cell-35-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="cross_validation_files/figure-html/cell-34-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="cell-61" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print out the best hyperparameters and the best score</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(grid_search.best_params_)</span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(grid_search.best_score_)</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(grid_search.best_estimator_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-60" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print out the best hyperparameters and the best score</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(grid_search.best_params_)</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(grid_search.best_score_)</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(grid_search.best_estimator_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'polynomialfeatures__degree': 5}
 0.9586200484884486
@@ -3001,71 +2804,67 @@ Pipeline(steps=[('polynomialfeatures', PolynomialFeatures(degree=5)),
 <p>By default, classifiers use <code>0.5</code> as the threshold for classification. However, adjusting this threshold can improve <code>precision</code>, <code>recall</code>, or <code>F1-score</code> depending on the application. Let’s use cross_val_predict to tune the Classification Threshold</p>
 <section id="using-tunedthresholdclassifiercv-from-sklearn-version-1.5" class="level4" data-number="9.4.2.1">
 <h4 data-number="9.4.2.1" class="anchored" data-anchor-id="using-tunedthresholdclassifiercv-from-sklearn-version-1.5"><span class="header-section-number">9.4.2.1</span> Using <code>TunedThresholdClassifierCV</code> from sklearn ( <strong>&gt;= Version 1.5</strong>)</h4>
-<div id="cell-64" class="cell" data-execution_count="100">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_classification</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score, f1_score</span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> StratifiedKFold</span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> TunedThresholdClassifierCV</span>
-<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Define cross-validation strategy</span></span>
-<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Define TunedThresholdClassifierCV</span></span>
-<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>tuned_clf <span class="op">=</span> TunedThresholdClassifierCV(</span>
-<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>    estimator<span class="op">=</span>logit_model,</span>
-<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>    scoring<span class="op">=</span><span class="st">"f1"</span>,  <span class="co"># Optimize for F1-score</span></span>
-<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>    cv<span class="op">=</span>cv</span>
-<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model</span></span>
-<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a>tuned_clf.fit(X_train_class, y_train_class)</span>
-<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-21"><a href="#cb56-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-22"><a href="#cb56-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the best threshold and the corresponding score</span></span>
-<span id="cb56-23"><a href="#cb56-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Best threshold: </span><span class="sc">{</span>tuned_clf<span class="sc">.</span>best_threshold_<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb56-24"><a href="#cb56-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Best F1-score: </span><span class="sc">{</span>tuned_clf<span class="sc">.</span>best_score_<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-63" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> TunedThresholdClassifierCV</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define cross-validation strategy</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Define TunedThresholdClassifierCV</span></span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>tuned_clf <span class="op">=</span> TunedThresholdClassifierCV(</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>    estimator<span class="op">=</span>logit_model,</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>    scoring<span class="op">=</span><span class="st">"f1"</span>,  <span class="co"># Optimize for F1-score</span></span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>    cv<span class="op">=</span>cv</span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model</span></span>
+<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>tuned_clf.fit(X_train_class, y_train_class)</span>
+<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-17"><a href="#cb55-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-18"><a href="#cb55-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the best threshold and the corresponding score</span></span>
+<span id="cb55-19"><a href="#cb55-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Best threshold: </span><span class="sc">{</span>tuned_clf<span class="sc">.</span>best_threshold_<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb55-20"><a href="#cb55-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Best F1-score: </span><span class="sc">{</span>tuned_clf<span class="sc">.</span>best_score_<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Best threshold: 0.33
-Best F1-score: 0.8684</code></pre>
+<pre><code>Best threshold: 0.39
+Best F1-score: 0.8757</code></pre>
 </div>
 </div>
 </section>
 <section id="using-cross_val_predict" class="level4" data-number="9.4.2.2">
 <h4 data-number="9.4.2.2" class="anchored" data-anchor-id="using-cross_val_predict"><span class="header-section-number">9.4.2.2</span> Using <code>cross_val_predict</code></h4>
-<div id="cell-66" class="cell" data-execution_count="104">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the knn to tune the threshold for classification, the threshold is among np.arange(0.1, 0.9, 0.1), using 5 fold cross validation for tuning the threshold</span></span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>thresholds <span class="op">=</span> np.arange(<span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span>)</span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> []</span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> threshold <span class="kw">in</span> thresholds:</span>
-<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>    y_pred_prob <span class="op">=</span> cross_val_predict(logit_model, X, y, cv<span class="op">=</span><span class="dv">5</span>, method<span class="op">=</span><span class="st">'predict_proba'</span>)[:,<span class="dv">1</span>]</span>
-<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> (y_pred_prob <span class="op">&gt;</span> threshold).astype(<span class="bu">int</span>)</span>
-<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>    scores.append(accuracy_score(y, y_pred))</span>
-<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> pd.Series(scores, index<span class="op">=</span>thresholds)</span>
-<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>df_scores <span class="op">=</span> pd.DataFrame({<span class="st">'threshold'</span>: thresholds, <span class="st">'accuracy'</span>: scores}, )</span>
-<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_scores.to_string(index<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-65" class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the knn to tune the threshold for classification, the threshold is among np.arange(0.1, 0.9, 0.1), using 5 fold cross validation for tuning the threshold</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>thresholds <span class="op">=</span> np.arange(<span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span>)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> []</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> threshold <span class="kw">in</span> thresholds:</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>    y_pred_class_prob <span class="op">=</span> cross_val_predict(logit_model, X_train_class, y_train_class, cv<span class="op">=</span><span class="dv">5</span>, method<span class="op">=</span><span class="st">'predict_proba'</span>)[:,<span class="dv">1</span>]</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>    y_pred_class <span class="op">=</span> (y_pred_class_prob <span class="op">&gt;</span> threshold).astype(<span class="bu">int</span>)</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>    scores.append(accuracy_score(y_train_class, y_pred_class))</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> pd.Series(scores, index<span class="op">=</span>thresholds)</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>df_scores <span class="op">=</span> pd.DataFrame({<span class="st">'threshold'</span>: thresholds, <span class="st">'accuracy'</span>: scores}, )</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_scores.to_string(index<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> threshold  accuracy
-  0.100000  0.723000
-  0.200000  0.823000
-  0.300000  0.857000
-  0.400000  0.865000
-  0.500000  0.856000
-  0.600000  0.859000
-  0.700000  0.840000
-  0.800000  0.809000</code></pre>
+  0.100000  0.716000
+  0.200000  0.832000
+  0.300000  0.864000
+  0.400000  0.868000
+  0.500000  0.865333
+  0.600000  0.861333
+  0.700000  0.841333
+  0.800000  0.810667</code></pre>
 </div>
 </div>
-<div id="cell-67" class="cell" data-execution_count="102">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print out the best threshold  and the cv score for the best threshold</span></span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>best_threshold <span class="op">=</span> scores.idxmax()</span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(best_threshold)</span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores.loc[best_threshold])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-66" class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print out the best threshold  and the cv score for the best threshold</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>best_threshold <span class="op">=</span> scores.idxmax()</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(best_threshold)</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores.loc[best_threshold])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.4
-0.865</code></pre>
+0.868</code></pre>
 </div>
 </div>
 
