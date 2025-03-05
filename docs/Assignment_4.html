@@ -5147,14 +5147,14 @@ vertical-align: -.125em;
 <p>For all datasets:</p>
 <ul>
 <li>One-hot-encode the categorical predictors. <strong>(2 points)</strong></li>
-<li>Scale your continous predictors.</li>
+<li>Scale your continous predictors.<strong>(2 points)</strong></li>
 <li>Get the interactions of <strong>all</strong> the predictors. (Numeric and one-hot-encoded) <strong>(3 points)</strong>
 <ul>
 <li>Note that there is a very quick way of doing this with <code>PolynomialFeatures</code> (degree=2)</li>
 <li>Don’t forget to exclude the bias.</li>
 </ul></li>
-<li>Scale these interaction predictors to ensure that the regularization penalty is applied fairly across all features, regardless of their magnitudes. <strong>(2 points)</strong></li>
 </ul>
+<p>Note: When interaction terms are created between scaled continuous variables and binary categorical variables (dummy/one-hot encoded as 0 or 1), they inherit the scaling properties of the continuous variables, ensuring consistency in feature magnitudes. So you do not need to scale the interaction terms again.</p>
 </section>
 <section id="c-2" class="level3">
 <h3 class="anchored" data-anchor-id="c-2">c)</h3>
