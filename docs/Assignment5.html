@@ -4947,32 +4947,37 @@ vertical-align: -.125em;
 <li>There is no piece of unnecessary / redundant code, and no unnecessary / redundant text. <strong>(1 point)</strong></li>
 </ul></li>
 <li><p>The maximum possible score in the assigment is 100 + 5 = 105 out of 100.</p></li>
+<li><p>In this assignment, you will practice using <strong>low-level cross-validation tools</strong> for optimizing regression and classification models!</p></li>
 </ol>
 </section>
 <section id="cross-validation-for-a-regression-task-50-points" class="level2">
 <h2 class="anchored" data-anchor-id="cross-validation-for-a-regression-task-50-points">1) Cross-validation for a Regression Task (50 points)</h2>
-<p>For this question, we are interested in using lower-level cross-validation tools for a regression task. Read the <strong>soc_ind.csv</strong> file. The column names should be clear on what the variables represent.</p>
+<p>Read the <strong><code>soc_ind.csv</code></strong> file and set the <strong><code>Index</code></strong> column as the index. The column names should be clear on what the variables represent. <strong>(2 points)</strong></p>
 <section id="a" class="level3">
 <h3 class="anchored" data-anchor-id="a">a)</h3>
-<p><code>gdpPerCapita</code> will be the response for this regression analysis. Before anything else, create two density plots to see if we should use it as it is or its log-transformed version. Justify your answer with the plots. <strong>(2 points)</strong></p>
-<p><strong>Hint:</strong> sns.kdeplot</p>
+<p><code>gdpPerCapita</code> will be the response for this regression analysis. Before anything else, create two density plots to see if we should use it as it is or its log-transformed version. Justify your answer with the plots. <strong>(4 points)</strong></p>
+<p><strong>Hint:</strong> <code>sns.kdeplot</code></p>
 </section>
 <section id="b" class="level3">
 <h3 class="anchored" data-anchor-id="b">b)</h3>
-<p>Create the proper response variable based on your answer in the previous part. The predictors are the rest of the variables except <code>Index</code>, <code>geographic_location</code>, and <code>country</code>. Create a predictor matrix accordingly. <strong>(2 points)</strong></p>
-<p>Using <strong>train_test_split</strong> from <strong>sklearn.model_selection</strong> create the training and test data. (You may need to read its <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html">documentation</a>.) Use a 80%-20% train-test split and use <code>random_state=2</code> for reproducible results. <strong>(3 points)</strong></p>
+<p>Create the proper response variable based on your answer in the previous part. The predictors are the rest of the variables except <code>geographic_location</code>, and <code>country</code>. Create a predictor matrix accordingly. <strong>(3 points)</strong></p>
+<p>Using <strong>train_test_split</strong> from <strong>sklearn.model_selection</strong> create the training and test data. Use a 80%-20% train-test split and use <code>random_state=2</code> for reproducible results. <strong>(3 points)</strong></p>
 </section>
 <section id="c" class="level3">
 <h3 class="anchored" data-anchor-id="c">c)</h3>
 <ul>
 <li>One-hot encode categorical predictors <strong>(2 points)</strong></li>
-<li>Scale continuous variables for regularization <strong>(2 points)</strong></li>
+<li>Scale all predictors for regularization <strong>(2 points)</strong></li>
 <li>Apply these transformations to both the training and test datasets. <strong>(2 points)</strong></li>
 </ul>
 </section>
 <section id="d" class="level3">
 <h3 class="anchored" data-anchor-id="d">d)</h3>
-<p>Using a hyperparameter vector of <code>np.logspace(2,0.5,200)</code>, cross-validate a Ridge Regression model. Use 5 folds and <code>neg_mean_absolute_error</code> as the scoring metric. <strong>(4 points)</strong> Save all your cross-validation (CV) scores in a numpy array. <strong>(1 point)</strong></p>
+<ul>
+<li>Train a <strong>Ridge Regression model</strong> using <strong>5-fold cross-validation</strong> with a hyperparameter grid of <code>np.logspace(2, 0.5, 200)</code>. Use <strong>negative mean absolute error (<code>neg_mean_absolute_error</code>)</strong> as the scoring metric. <strong>(4 points)</strong><br>
+</li>
+<li>Store all cross-validation (CV) scores in a <strong>NumPy array</strong>. <strong>(1 point)</strong></li>
+</ul>
 </section>
 <section id="e" class="level3">
 <h3 class="anchored" data-anchor-id="e">e)</h3>
@@ -4984,15 +4989,15 @@ vertical-align: -.125em;
 </section>
 <section id="g" class="level3">
 <h3 class="anchored" data-anchor-id="g">g)</h3>
-<p>Create a final model with the optimal hyperparameter value you found in the previous question. Return the test MAE. <strong>You need to return the test MAE in terms of actual GDP values for credit.</strong> <strong>(3 points)</strong></p>
+<p>Create a final model with the optimal hyperparameter value you found in the previous question. Return the test MAE. <strong>You need to return the test MAE in terms of actual GDP values for credit.</strong> <strong>(5 points)</strong></p>
 </section>
 <section id="h" class="level3">
 <h3 class="anchored" data-anchor-id="h">h)</h3>
-<p>Now, it is time to calculate proper MAE values for the cross-validation results and optimize the hyperparameter value based on them. <strong>Using cross_val_predict</strong>, return the CV predictions for all hyperparameter values. Use a hyperparameter vector of <code>np.logspace(2,0.5,200)</code>. (Same as part d.). <strong>(4 points)</strong> Save all the predictions in a DataFrame. <strong>(1 point)</strong></p>
+<p>Now, it is time to calculate proper MAE values for the cross-validation results and optimize the hyperparameter value based on them. <strong>Using cross_val_predict</strong>, return the CV predictions for all hyperparameter values. Use a hyperparameter vector of <code>np.logspace(2,0.5,200)</code>. (Same as part d.). <strong>(6 points)</strong> Save all the predictions in a DataFrame. <strong>(2 point)</strong></p>
 </section>
 <section id="i" class="level3">
 <h3 class="anchored" data-anchor-id="i">i)</h3>
-<p>Using the DataFrame you created in the previous part, find the optimal hyperparameter value and the best CV MAE that corresponds to it. <strong>(4 points)</strong></p>
+<p>Using the DataFrame you created in the previous part, find the optimal hyperparameter value and the best CV MAE that corresponds to it. <strong>(5 points)</strong></p>
 <p><strong>Note:</strong></p>
 <ol type="1">
 <li>The MAE should be in terms of actual GDP values for credit.</li>
@@ -5001,23 +5006,23 @@ vertical-align: -.125em;
 </section>
 <section id="j" class="level3">
 <h3 class="anchored" data-anchor-id="j">j)</h3>
-<p>With the hyperparameter value you found in the previous part, train a final model and print its test MAE. <strong>(2 points)</strong> How does it compare to the test MAE you found with <code>cross_val_score</code>? <strong>(1 point)</strong> Why do you think this is the case? <strong>(1 point)</strong></p>
+<p>With the hyperparameter value you found in the previous part, train a final model and print its test MAE. <strong>(3 points)</strong> How does it compare to the test MAE you found with <code>cross_val_score</code>? <strong>(1 point)</strong> Why do you think this is the case? <strong>(1 point)</strong></p>
 </section>
 </section>
 <section id="cross-validation-for-a-classification-task-50-points" class="level2">
 <h2 class="anchored" data-anchor-id="cross-validation-for-a-classification-task-50-points">2) Cross-validation for a Classification Task (50 points)</h2>
-<p>For this question, we are interested in using lower-level cross-validation tools for a classification task. Read the diabetes_train.csv and diabetes_test.csv files. The <code>Outcome</code> variable represents whether the patient has diabetes or not. The rest of the variables are medical predictors we will use to predict the outcome.</p>
+<p>Read the <code>diabetes_train.csv</code> and <code>diabetes_test.csv</code> files. The <code>Outcome</code> variable represents whether the patient has diabetes or not. The rest of the variables are medical predictors we will use to predict the outcome.</p>
 <section id="a-1" class="level3">
 <h3 class="anchored" data-anchor-id="a-1">a)</h3>
 <p>Create the training and the test data. <strong>(2 points)</strong></p>
 </section>
 <section id="b-1" class="level3">
 <h3 class="anchored" data-anchor-id="b-1">b)</h3>
-<p>Scale the datasets. <strong>(1 point)</strong></p>
+<p>Scale the datasets for regularization. <strong>(2 point)</strong></p>
 </section>
 <section id="c-1" class="level3">
 <h3 class="anchored" data-anchor-id="c-1">c)</h3>
-<p>Using a hyperparameter vector of <code>Cs = np.logspace(2,-2,200)</code>, cross-validate a Lasso Classification model. Use 5 folds and the default scoring metric (which is accuracy.) <strong>(4 points)</strong> Save all your cross-validation (CV) scores in a numpy array. <strong>(1 point)</strong></p>
+<p>Using a hyperparameter vector of <code>Cs = np.logspace(2,-2,200)</code>, cross-validate a Lasso Classification model. Use 5 folds and the default scoring metric (which is <code>accuracy</code>.) <strong>(4 points)</strong> Save all your cross-validation (CV) scores in a numpy array. <strong>(2 point)</strong></p>
 </section>
 <section id="d-1" class="level3">
 <h3 class="anchored" data-anchor-id="d-1">d)</h3>
@@ -5025,37 +5030,71 @@ vertical-align: -.125em;
 </section>
 <section id="e-1" class="level3">
 <h3 class="anchored" data-anchor-id="e-1">e)</h3>
-<p>Create a final model with the optimal hyperparameter value you found in the previous question. Return the test accuracy, recall and AUC with a threshold of 0.5. <strong>(4 points)</strong> Which metric looks problematic? <strong>(1 point)</strong></p>
+<ul>
+<li>Build a <strong>final model</strong> using the <strong>optimal hyperparameter value</strong> identified in the previous step. <strong>(2 point)</strong></li>
+<li>Evaluate the model on the <strong>test set</strong> and report the following metrics:
+<ul>
+<li><strong>Accuracy</strong><br>
+</li>
+<li><strong>Recall</strong><br>
+</li>
+<li><strong>AUC (Area Under the Curve)</strong> using a <strong>threshold of 0.5</strong>. <strong>(3 points)</strong></li>
+</ul></li>
+<li>Identify which metric appears problematic and explain why. <strong>(2 point)</strong></li>
+</ul>
 </section>
 <section id="f-1" class="level3">
 <h3 class="anchored" data-anchor-id="f-1">f)</h3>
-<p>What was the threshold cross_val_score used to return the accuracy scores? <strong>(1 point)</strong> How did that contribute to the problem in the previous part? <strong>(1 point)</strong></p>
+<ul>
+<li>What threshold did <strong><code>cross_val_score</code></strong> use to compute the accuracy scores? <strong>(1 point)</strong><br>
+</li>
+<li>How did this threshold choice contribute to the issue identified in the previous question? <strong>(2 point)</strong></li>
+</ul>
 </section>
 <section id="g-1" class="level3">
 <h3 class="anchored" data-anchor-id="g-1">g)</h3>
-<p>Now, it is time to return the CV predictions and optimize the threshold based on them. Using cross_val_predict, return the CV <strong>prediction probabilities</strong> for the best hyperparameter value your found in part d.&nbsp;<strong>(3 points)</strong> Note that you don’t need any loops for this question, because you already know which C value to use.</p>
+<p>Now, it’s time to generate cross-validated predictions and optimize the decision threshold.</p>
+<ul>
+<li>Use <strong><code>cross_val_predict</code></strong> to obtain the <strong>predicted probabilities</strong> from cross-validation, using the <strong>optimal hyperparameter value</strong> identified in Part D. <strong>(5 points)</strong></li>
+</ul>
+<p>Note that no loops are needed, as the best <strong>C value</strong> has already been determined.</p>
 </section>
 <section id="h-1" class="level3">
 <h3 class="anchored" data-anchor-id="h-1">h)</h3>
-<p>Using the output of the previous part, calculate and store the accuracy, recall and AUC of all possible threshold values from 0 to 1 with a stepsize of 0.001. <strong>(4 points)</strong></p>
+<p>Using the predicted probabilities from the previous step, compute and store the <strong>accuracy</strong>, <strong>recall</strong>, and <strong>AUC</strong> for all possible threshold values ranging from <strong>0 to 1</strong> with a step size of <strong>0.001</strong>. <strong>(5 points)</strong></p>
 </section>
 <section id="i-1" class="level3">
 <h3 class="anchored" data-anchor-id="i-1">i)</h3>
-<p>Plot the accuracy, recall and AUC values against the threshold on the same graph. <strong>(2 points)</strong> Include a legend. <strong>(1 point)</strong></p>
+<p>Plot <strong>accuracy</strong>, <strong>recall</strong>, and <strong>AUC</strong> against the threshold on the same graph. <strong>(4 points)</strong> Be sure to include a <strong>legend</strong> for clarity. <strong>(1 point)</strong></p>
 </section>
 <section id="j-1" class="level3">
 <h3 class="anchored" data-anchor-id="j-1">j)</h3>
-<p>In the plot, you should see a threshold value where the accuracy, recall and AUC values are all the same. Find that value. <strong>(3 points)</strong></p>
-<p><strong>Note:</strong></p>
+<p>In the plot, identify the <strong>threshold value</strong> where <strong>accuracy, recall, and AUC</strong> are approximately equal. <strong>(5 points)</strong></p>
+<p><strong>Important Notes:</strong></p>
 <ol type="1">
-<li>The metric values are the same if you round them to 2 digits after the decimal point. (That is just the rounded integer values if you multiply the metric values by 100 in the previous question.)</li>
-<li>Trial-and-error will not receive any credit for this question. You need to use logical indexing.</li>
-<li><strong>np.where</strong> and <strong>np.round</strong> should be helpful. (Along with the <strong>&amp; operator</strong>.)</li>
+<li>The metric values should be considered <strong>equal when rounded to two decimal places</strong> (or equivalently, as whole numbers when multiplied by 100).<br>
+</li>
+<li><strong>Trial-and-error approaches will not receive credit.</strong> You must use logical indexing to find the threshold.<br>
+</li>
+<li><strong>Helpful functions:</strong> <code>np.where</code>, <code>np.round</code>, and the logical <strong><code>&amp;</code> operator</strong>.</li>
 </ol>
 </section>
 <section id="k" class="level3">
 <h3 class="anchored" data-anchor-id="k">k)</h3>
-<p>Using the threshold value you found in the previous question and the best hyperparameter value you found in part d, train a final Lasso Classification model and return its test accuracy, recall and AUC. <strong>(3 points)</strong> How do the accuracy and recall results compare to part e? <strong>(1 point)</strong> Did AUC change? <strong>(1 point)</strong> Why or why not? <strong>(1 point)</strong></p>
+<ul>
+<li>Train a <strong>final Lasso Classification model</strong> using the <strong>optimal hyperparameter value</strong> from Part d and the <strong>threshold</strong> identified in the previous question. <strong>(2 points)</strong></li>
+<li>Evaluate and report the following metrics on the <strong>test set</strong>:
+<ul>
+<li><strong>Accuracy</strong><br>
+</li>
+<li><strong>Recall</strong><br>
+</li>
+<li><strong>AUC</strong> <strong>(3 points)</strong></li>
+</ul></li>
+<li>Compare the <strong>accuracy</strong> and <strong>recall</strong> to the results from Part e. <strong>(1 point)</strong><br>
+</li>
+<li>Did the <strong>AUC</strong> change? <strong>(1 point)</strong> If so, explain why. <strong>(1 point)</strong></li>
+</ul>
 
 
 </section>
