@@ -8,6 +8,7 @@ book:
   title: "Data Science II with python (Class notes)"
   subtitle: "STAT 303-2-Sec20&21"
   date: "1/7/2025"
+  author: "Lizhen Shi"
   
   sidebar:
     search: true
