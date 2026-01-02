@@ -6,8 +6,8 @@ project:
 
 book:
   title: "Data Science II with python (Class notes)"
-  subtitle: "STAT 303-2-Sec20&21"
-  date: "1/7/2025"
+  subtitle: "STAT 303-2-Sec20"
+  date: "1/2/2026"
   author: "Lizhen Shi"
   
   sidebar:
@@ -33,10 +33,10 @@ book:
    
   appendices: 
     - Assignment_1_wi25.ipynb
-    - Assignment 2.ipynb
-    - Assignment 3.ipynb
-    - Assignment_4.ipynb
-    - Assignment5.ipynb
+    #- Assignment 2.ipynb
+    #- Assignment 3.ipynb
+    #- Assignment_4.ipynb
+    #- Assignment5.ipynb
     - Datasets.ipynb
 format:
   html:
