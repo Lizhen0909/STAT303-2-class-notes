@@ -7,7 +7,7 @@ This edition builds on foundational materials developed by **Professor Arvind Kr
 
 Throughout the quarter, we will update and refine these notes to improve clarity, depth, and alignment with course objectives. Because this is a living document, feedback is always welcome. Contributions from students, instructors, and the broader academic community help make it stronger and more effective.
 
-If you have suggestions, please share them using our dedicated **Textbook Improvement Form**.
+If you have suggestions, please share them using our dedicated [Textbook Improvement Form](https://forms.office.com/Pages/ResponsePage.aspx?id=YdN2fXeCCEekd2ToNmzRvFkUhM6kW_BCnBZ2OTet_zpUQkk3SVoxUUgxM1RZN0dSNkZUV1U3VDUxNC4u).
 
 We hope these notes become a helpful companion as you build skills and confidence in data science with Python.
 
