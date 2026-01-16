@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; Extending Linear Regression (statsmodels) – Data Science II with python (Class notes)</title>
+<title>4&nbsp; Extending Linear Regression – Data Science II with python (Class notes)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -147,7 +147,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Lec3_VariableTransformations_and_Interactions.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Extending Linear Regression (statsmodels)</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Lec3_VariableTransformations_and_Interactions.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Extending Linear Regression</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -196,7 +196,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Lec3_VariableTransformations_and_Interactions.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Extending Linear Regression (statsmodels)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Extending Linear Regression</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -280,23 +280,21 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#variable-interactions" id="toc-variable-interactions" class="nav-link active" data-scroll-target="#variable-interactions"><span class="header-section-number">4.1</span> Variable interactions</a>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">4.1</span> Learning objectives</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset"><span class="header-section-number">4.2</span> Dataset</a></li>
+  <li><a href="#statsmodels-formula-api" id="toc-statsmodels-formula-api" class="nav-link" data-scroll-target="#statsmodels-formula-api"><span class="header-section-number">4.3</span> statsmodels (formula API)</a>
   <ul>
-  <li><a href="#variable-interaction-between-continuous-predictors" id="toc-variable-interaction-between-continuous-predictors" class="nav-link" data-scroll-target="#variable-interaction-between-continuous-predictors"><span class="header-section-number">4.1.1</span> Variable interaction between continuous predictors</a></li>
-  <li><a href="#including-qualitative-predictors-in-the-model" id="toc-including-qualitative-predictors-in-the-model" class="nav-link" data-scroll-target="#including-qualitative-predictors-in-the-model"><span class="header-section-number">4.1.2</span> Including qualitative predictors in the model</a></li>
-  <li><a href="#including-qualitative-predictors-and-their-interaction-with-continuous-predictors-in-the-model" id="toc-including-qualitative-predictors-and-their-interaction-with-continuous-predictors-in-the-model" class="nav-link" data-scroll-target="#including-qualitative-predictors-and-their-interaction-with-continuous-predictors-in-the-model"><span class="header-section-number">4.1.3</span> Including qualitative predictors and their interaction with continuous predictors in the model</a></li>
+  <li><a href="#interaction-terms-continuous-predictors" id="toc-interaction-terms-continuous-predictors" class="nav-link" data-scroll-target="#interaction-terms-continuous-predictors"><span class="header-section-number">4.3.1</span> Interaction terms (continuous predictors)</a></li>
+  <li><a href="#qualitative-predictors" id="toc-qualitative-predictors" class="nav-link" data-scroll-target="#qualitative-predictors"><span class="header-section-number">4.3.2</span> Qualitative predictors</a></li>
+  <li><a href="#interaction-between-qualitative-and-continuous-predictors" id="toc-interaction-between-qualitative-and-continuous-predictors" class="nav-link" data-scroll-target="#interaction-between-qualitative-and-continuous-predictors"><span class="header-section-number">4.3.3</span> Interaction between qualitative and continuous predictors</a></li>
+  <li><a href="#polynomial-transformations" id="toc-polynomial-transformations" class="nav-link" data-scroll-target="#polynomial-transformations"><span class="header-section-number">4.3.4</span> Polynomial transformations</a>
+  <ul class="collapse">
+  <li><a href="#quadratic-transformation" id="toc-quadratic-transformation" class="nav-link" data-scroll-target="#quadratic-transformation"><span class="header-section-number">4.3.4.1</span> Quadratic transformation</a></li>
+  <li><a href="#cubic-transformation" id="toc-cubic-transformation" class="nav-link" data-scroll-target="#cubic-transformation"><span class="header-section-number">4.3.4.2</span> Cubic transformation</a></li>
+  <li><a href="#putting-interaction-and-transformation-together" id="toc-putting-interaction-and-transformation-together" class="nav-link" data-scroll-target="#putting-interaction-and-transformation-together"><span class="header-section-number">4.3.4.3</span> Putting interaction and transformation together</a></li>
   </ul></li>
-  <li><a href="#variable-transformations" id="toc-variable-transformations" class="nav-link" data-scroll-target="#variable-transformations"><span class="header-section-number">4.2</span> Variable transformations</a>
-  <ul>
-  <li><a href="#quadratic-transformation" id="toc-quadratic-transformation" class="nav-link" data-scroll-target="#quadratic-transformation"><span class="header-section-number">4.2.1</span> Quadratic transformation</a></li>
-  <li><a href="#cubic-transformation" id="toc-cubic-transformation" class="nav-link" data-scroll-target="#cubic-transformation"><span class="header-section-number">4.2.2</span> Cubic transformation</a></li>
   </ul></li>
-  <li><a href="#polynomialfeatures" id="toc-polynomialfeatures" class="nav-link" data-scroll-target="#polynomialfeatures"><span class="header-section-number">4.3</span> <code>PolynomialFeatures()</code></a>
-  <ul>
-  <li><a href="#generating-polynomial-features" id="toc-generating-polynomial-features" class="nav-link" data-scroll-target="#generating-polynomial-features"><span class="header-section-number">4.3.1</span> Generating polynomial features</a></li>
-  <li><a href="#fitting-the-model" id="toc-fitting-the-model" class="nav-link" data-scroll-target="#fitting-the-model"><span class="header-section-number">4.3.2</span> Fitting the model</a></li>
-  <li><a href="#testing-the-model" id="toc-testing-the-model" class="nav-link" data-scroll-target="#testing-the-model"><span class="header-section-number">4.3.3</span> Testing the model</a></li>
-  </ul></li>
+  <li><a href="#sklearn-polynomialfeatures" id="toc-sklearn-polynomialfeatures" class="nav-link" data-scroll-target="#sklearn-polynomialfeatures"><span class="header-section-number">4.4</span> sklearn (<code>PolynomialFeatures</code>)</a></li>
   </ul>
 </nav>
     </div>
@@ -305,7 +303,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Extending Linear Regression (statsmodels)</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Extending Linear Regression</span></h1>
 </div>
 
 
@@ -322,29 +320,56 @@ window.Quarto = {
 </header>
 
 
-<p><em>Read sections 3.3.1 and 3.3.2 of the book before using these notes.</em></p>
-<p><em>Note that in this course, lecture notes are not sufficient, you must read the book for better understanding. Lecture notes are just implementing the concepts of the book on a dataset, but not explaining the concepts elaborately.</em></p>
-<section id="variable-interactions" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="variable-interactions"><span class="header-section-number">4.1</span> Variable interactions</h2>
-<div id="bdb5a335" class="cell" data-execution_count="35">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Read sections 3.3.1 and 3.3.2 of the book before using these notes.</p>
+<p>Note: these notes focus on implementation. The book provides the conceptual explanations.</p>
+<div id="5e464f8a" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> root_mean_squared_error, mean_absolute_error, r2_score</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>, font_scale<span class="op">=</span><span class="fl">1.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="4ffcff8f" class="cell" data-execution_count="39">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trainf <span class="op">=</span> pd.read_csv(<span class="st">'./Datasets/Car_features_train.csv'</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>trainp <span class="op">=</span> pd.read_csv(<span class="st">'./Datasets/Car_prices_train.csv'</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>testf <span class="op">=</span> pd.read_csv(<span class="st">'./Datasets/Car_features_test.csv'</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>testp <span class="op">=</span> pd.read_csv(<span class="st">'./Datasets/Car_prices_test.csv'</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> pd.merge(trainf,trainp)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> pd.merge(testf,testp)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>train.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="39">
+<section id="learning-objectives" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">4.1</span> Learning objectives</h2>
+<p>By the end of this notebook you should be able to:</p>
+<ul>
+<li>Add and interpret interaction terms in linear regression models.</li>
+<li>Incorporate qualitative predictors and understand baseline-level encoding.</li>
+<li>Model interactions between qualitative and continuous predictors.</li>
+<li>Apply polynomial transformations to capture non-linear relationships.</li>
+<li>Use <code>PolynomialFeatures</code> in <code>sklearn</code> to generate polynomial terms and interactions.</li>
+</ul>
+</section>
+<section id="dataset" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="dataset"><span class="header-section-number">4.2</span> Dataset</h2>
+<ul>
+<li>Training set: <code>Datasets/Car_features_train.csv</code>, <code>Datasets/Car_prices_train.csv</code></li>
+<li>Test set: <code>Datasets/Car_features_test.csv</code>, <code>Datasets/Car_prices_test.csv</code></li>
+</ul>
+<p>We replace <code>year</code> with <code>age</code>, computed as <code>reference_year - year</code>, where <code>reference_year</code> is the most recent model year in the training data.</p>
+<div id="b79142e7" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>trainf <span class="op">=</span> pd.read_csv(<span class="st">'./Datasets/Car_features_train.csv'</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>trainp <span class="op">=</span> pd.read_csv(<span class="st">'./Datasets/Car_prices_train.csv'</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>testf <span class="op">=</span> pd.read_csv(<span class="st">'./Datasets/Car_features_test.csv'</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>testp <span class="op">=</span> pd.read_csv(<span class="st">'./Datasets/Car_prices_test.csv'</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> pd.merge(trainf, trainp)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> pd.merge(testf, testp)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create age feature using the most recent model year in the training data</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>reference_year <span class="op">=</span> train[<span class="st">"year"</span>].<span class="bu">max</span>()</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>train[<span class="st">"age"</span>] <span class="op">=</span> reference_year <span class="op">-</span> train[<span class="st">"year"</span>]</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>test[<span class="st">"age"</span>] <span class="op">=</span> reference_year <span class="op">-</span> test[<span class="st">"year"</span>]</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>train.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
 
@@ -363,6 +388,7 @@ window.Quarto = {
 <th data-quarto-table-cell-role="th">mpg</th>
 <th data-quarto-table-cell-role="th">engineSize</th>
 <th data-quarto-table-cell-role="th">price</th>
+<th data-quarto-table-cell-role="th">age</th>
 </tr>
 </thead>
 <tbody>
@@ -379,6 +405,7 @@ window.Quarto = {
 <td>53.3282</td>
 <td>3.0</td>
 <td>37980</td>
+<td>0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
@@ -393,6 +420,7 @@ window.Quarto = {
 <td>53.0430</td>
 <td>3.0</td>
 <td>33980</td>
+<td>1</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
@@ -407,6 +435,7 @@ window.Quarto = {
 <td>53.4379</td>
 <td>3.0</td>
 <td>36850</td>
+<td>0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
@@ -421,6 +450,7 @@ window.Quarto = {
 <td>51.5140</td>
 <td>3.0</td>
 <td>25998</td>
+<td>3</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
@@ -435,6 +465,7 @@ window.Quarto = {
 <td>51.4903</td>
 <td>3.0</td>
 <td>18990</td>
+<td>5</td>
 </tr>
 </tbody>
 </table>
@@ -442,15 +473,20 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Until now, we have assumed that the association between a predictor <span class="math inline">\(X_j\)</span> and response <span class="math inline">\(Y\)</span> does not depend on the value of other predictors. For example, the multiple linear regression model that we developed in Chapter <a href="https://nustat.github.io/STAT303-2-class-notes/Lec2_MultipleLinearRegression.html">2</a> assumes that the average increase in price associated with a unit increase in engineSize is always $12,180, regardless of the value of other predictors. However, this assumption may be incorrect.</p>
-<section id="variable-interaction-between-continuous-predictors" class="level3" data-number="4.1.1">
-<h3 data-number="4.1.1" class="anchored" data-anchor-id="variable-interaction-between-continuous-predictors"><span class="header-section-number">4.1.1</span> Variable interaction between continuous predictors</h3>
-<p>We can relax this assumption by considering another predictor, called an interaction term. Let us assume that the average increase in <code>price</code> associated with a one-unit increase in <code>engineSize</code> depends on the model <code>year</code> of the car. In other words, there is an interaction between <code>engineSize</code> and <code>year</code>. This interaction can be included as a predictor, which is the product of <code>engineSize</code> and <code>year</code>. <em>Note that there are several possible interactions that we can consider. Here the interaction between <code>engineSize</code> and <code>year</code> is just an example.</em></p>
-<div id="04a16955" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Considering interaction between engineSize and year</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ols_object <span class="op">=</span> smf.ols(formula <span class="op">=</span> <span class="st">'price~year*engineSize+mileage+mpg'</span>, data <span class="op">=</span> train)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ols_object.fit()</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>model.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="statsmodels-formula-api" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="statsmodels-formula-api"><span class="header-section-number">4.3</span> statsmodels (formula API)</h2>
+<section id="interaction-terms-continuous-predictors" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="interaction-terms-continuous-predictors"><span class="header-section-number">4.3.1</span> Interaction terms (continuous predictors)</h3>
+<p>We relax the constant-association assumption by adding an interaction between <code>engineSize</code> and <code>age</code>.</p>
+<div id="ce531e29" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Interaction between engineSize and age</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>model_sm_interaction <span class="op">=</span> smf.ols(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    formula<span class="op">=</span><span class="st">'price ~ age*engineSize + mileage + mpg'</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>train,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>).fit()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>model_sm_interaction.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <caption>OLS Regression Results</caption>
@@ -475,13 +511,13 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Date:</td>
-<td>Tue, 24 Jan 2023</td>
+<td>Fri, 16 Jan 2026</td>
 <td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
 <td>0.00</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Time:</td>
-<td>15:28:11</td>
+<td>10:55:41</td>
 <td data-quarto-table-cell-role="th">Log-Likelihood:</td>
 <td>-52338.</td>
 </tr>
@@ -526,39 +562,39 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Intercept</td>
-<td>5.606e+05</td>
-<td>2.74e+05</td>
-<td>2.048</td>
-<td>0.041</td>
-<td>2.4e+04</td>
-<td>1.1e+06</td>
+<td>4313.7409</td>
+<td>804.871</td>
+<td>5.360</td>
+<td>0.000</td>
+<td>2735.838</td>
+<td>5891.644</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">year</td>
-<td>-275.3833</td>
+<td data-quarto-table-cell-role="th">age</td>
+<td>275.3833</td>
 <td>135.695</td>
-<td>-2.029</td>
+<td>2.029</td>
 <td>0.042</td>
-<td>-541.405</td>
-<td>-9.361</td>
+<td>9.361</td>
+<td>541.405</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">engineSize</td>
-<td>-1.796e+06</td>
-<td>9.97e+04</td>
-<td>-18.019</td>
+<td>1.52e+04</td>
+<td>248.298</td>
+<td>61.231</td>
 <td>0.000</td>
-<td>-1.99e+06</td>
-<td>-1.6e+06</td>
+<td>1.47e+04</td>
+<td>1.57e+04</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">year:engineSize</td>
-<td>896.7687</td>
+<td data-quarto-table-cell-role="th">age:engineSize</td>
+<td>-896.7687</td>
 <td>49.431</td>
-<td>18.142</td>
+<td>-18.142</td>
 <td>0.000</td>
-<td>799.861</td>
-<td>993.676</td>
+<td>-993.676</td>
+<td>-799.861</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">mileage</td>
@@ -606,64 +642,54 @@ window.Quarto = {
 <td data-quarto-table-cell-role="th">Kurtosis:</td>
 <td>14.423</td>
 <td data-quarto-table-cell-role="th">Cond. No.</td>
-<td>7.66e+07</td>
+<td>2.22e+05</td>
 </tr>
 </tbody>
 </table>
-<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.<br>[2] The condition number is large, 7.66e+07. This might indicate that there are<br>strong multicollinearity or other numerical problems.
+<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.<br>[2] The condition number is large, 2.22e+05. This might indicate that there are<br>strong multicollinearity or other numerical problems.
 </div>
 </div>
-<p>Note that the R-squared has increased as compared to the model in Chapter <a href="https://nustat.github.io/STAT303-2-class-notes/Lec2_MultipleLinearRegression.html">2</a> since we added a predictor.</p>
 <p>The model equation is:</p>
 <p><span class="math display">\[\begin{equation}
-price = \beta_0 + \beta_1*year + \beta_2*engineSize + \beta_3*(year * engineSize) + \beta4*mileage + \beta_5*mpg,
-\end{equation}\]</span>or</p>
-<p><span class="math display">\[\begin{equation}
-price = \beta_0 + \beta_1*year + (\beta_2+\beta_3*year)*engineSize + \beta4*mileage + \beta_5*mpg,
-\end{equation}\]</span>or</p>
-<p><span class="math display">\[\begin{equation}
-price = \beta_0 + \beta_1*year + \tilde \beta*engineSize + \beta4*mileage + \beta_5*mpg,
+price = \beta_0 + \beta_1*age + \beta_2*engineSize + \beta_3*(age * engineSize) + \beta_4*mileage + \beta_5*mpg
 \end{equation}\]</span></p>
-<p>Since <span class="math inline">\(\tilde \beta\)</span> is a function of <code>year</code>, the association between <code>engineSize</code> and <code>price</code> is no longer a constant. A change in the value of <code>year</code> will change the association between <code>price</code> and <code>engineSize</code>.</p>
-<p>Substituting the values of the coefficients:</p>
-<p><code>price</code> = 5.606e5 - 275.3833<em><code>year</code> + (-1.796e6+896.7687<code>year</code>)</em><code>engineSize</code> -0.1525<em><code>mileage</code> -84.3417</em><code>mpg</code></p>
-<p>Thus, for cars launched in the year 2010, the average increase in price for one liter increase in engine size is -1.796e6 + 896.7687 * 2010 <span class="math inline">\(\approx\)</span> \$6,500, assuming all the other predictors are constant. However, for cars launched in the year 2020, the average increase in price for one liter increase in engine size is -1.796e6 + 896.7687*2020 <span class="math inline">\(\approx\)</span> \$15,500 , assuming all the other predictors are constant.</p>
-<p>Similarly, the equation can be re-arranged as:</p>
-<p><code>price</code> = 5.606e5 +(-275.3833+896.7687<em><code>engineSize</code>)</em><code>year</code> -1.796e6<em><code>engineSize</code> -0.1525</em><code>mileage</code> -84.3417*<code>mpg</code></p>
-<p>Thus, for cars with an engine size of 2 litres, the average increase in price for a one year newer model is -275.3833+896.7687 * 2 <span class="math inline">\(\approx\)</span> \$1500, assuming all the other predictors are constant. However, for cars with an engine size of 3 litres, the average increase in price for a one year newer model is -275.3833+896.7687 * 3 <span class="math inline">\(\approx\)</span> \$2400, assuming all the other predictors are constant.</p>
-<div id="7d013a28" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Computing the RMSE of the model with the interaction term</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pred_price <span class="op">=</span> model.predict(testf)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>np.sqrt(((testp.price <span class="op">-</span> pred_price)<span class="op">**</span><span class="dv">2</span>).mean())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The effect of <code>engineSize</code> on price now depends on <code>age</code>, and the effect of <code>age</code> depends on <code>engineSize</code>.</p>
+<div id="113acc0d" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RMSE on test data</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pred_price <span class="op">=</span> model_sm_interaction.predict(test)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>np.sqrt(((test.price <span class="op">-</span> pred_price) <span class="op">**</span> <span class="dv">2</span>).mean())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
-<pre><code>9423.598872501092</code></pre>
+<pre><code>9423.598872488523</code></pre>
 </div>
 </div>
-<p>Note that the RMSE is lower than that of the model in Chapter <a href="https://nustat.github.io/STAT303-2-class-notes/Lec2_MultipleLinearRegression.html">2</a>. This is because the interaction term between <code>engineSize</code> and <code>year</code> is significant and relaxes the assumption of constant association between price and engine size, and between price and year. This added flexibility makes the model better fit the data. Caution: Too much flexibility may lead to overfitting!</p>
-<p>Note that interaction terms corresponding to other variable pairs, and higher order interaction terms (such as those containing 3 or 4 variables) may also be significant and improve the model fit &amp; thereby the prediction accuracy of the model.</p>
+<p>Interaction terms add flexibility to the model, which can improve fit but may also increase the risk of overfitting.</p>
 </section>
-<section id="including-qualitative-predictors-in-the-model" class="level3" data-number="4.1.2">
-<h3 data-number="4.1.2" class="anchored" data-anchor-id="including-qualitative-predictors-in-the-model"><span class="header-section-number">4.1.2</span> Including qualitative predictors in the model</h3>
-<p>Let us develop a model for predicting <code>price</code> based on <code>engineSize</code> and the qualitative predictor <code>transmission</code>.</p>
-<div id="229d2e1d" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#checking the distribution of values of transmission</span></span>
+<section id="qualitative-predictors" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="qualitative-predictors"><span class="header-section-number">4.3.2</span> Qualitative predictors</h3>
+<p>Develop a model for predicting <code>price</code> based on <code>engineSize</code> and the qualitative predictor <code>transmission</code>.</p>
+<div id="eec17bee" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the distribution of transmission values</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>train.transmission.value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
-<pre><code>Manual       1948
+<pre><code>transmission
+Manual       1948
 Automatic    1660
 Semi-Auto    1351
 Other           1
-Name: transmission, dtype: int64</code></pre>
+Name: count, dtype: int64</code></pre>
 </div>
 </div>
-<p>Note that the <em>Other</em> category of the variable <em>transmission</em> contains only a single observation, which is likely to be insufficient to train the model. We’ll remove that observation from the training data. Another option may be to combine the observation in the <em>Other</em> category with the nearest category, and keep it in the data.</p>
-<div id="04b620c9" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>train_updated <span class="op">=</span> train[train.transmission<span class="op">!=</span><span class="st">'Other'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <em>Other</em> category has very few observations. We remove it here (another option is to combine it with a nearby category).</p>
+<div id="2c450135" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>train_updated <span class="op">=</span> train[train.transmission <span class="op">!=</span> <span class="st">'Other'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="6ea95322" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ols_object <span class="op">=</span> smf.ols(formula <span class="op">=</span> <span class="st">'price ~ engineSize + transmission'</span>, data <span class="op">=</span> train_updated)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ols_object.fit()</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>model.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="86bc96bc" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model_sm_trans <span class="op">=</span> smf.ols(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    formula<span class="op">=</span><span class="st">'price ~ engineSize + transmission'</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>train_updated,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>).fit()</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>model_sm_trans.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <caption>OLS Regression Results</caption>
@@ -688,13 +714,13 @@ Name: transmission, dtype: int64</code></pre>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Date:</td>
-<td>Tue, 24 Jan 2023</td>
+<td>Fri, 16 Jan 2026</td>
 <td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
 <td>0.00</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Time:</td>
-<td>15:28:21</td>
+<td>10:56:19</td>
 <td data-quarto-table-cell-role="th">Log-Likelihood:</td>
 <td>-53644.</td>
 </tr>
@@ -808,25 +834,22 @@ Name: transmission, dtype: int64</code></pre>
 <br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 </div>
 </div>
-<p>Note that there is no coefficient for the <em>Automatic</em> level of the variable <code>Transmission</code>. If a car doesn’t have <em>Manual</em> or <em>Semi-Automatic</em> transmission, then it has an <em>Automatic</em> transmission. Thus, the coefficient of <em>Automatic</em> will be redundant, and the dummy variable corresponding to <em>Automatic</em> transmission is dropped from the model.</p>
-<p>The level of the categorical variable that is dropped from the model is called the baseline level. Here <em>Automatic</em> transmission is the baseline level. The coefficients of other levels of <code>transmission</code> should be interpreted with respect to the baseline level.</p>
-<p><strong>Q:</strong> Interpret the intercept term</p>
-<p><strong>Ans:</strong> For the hypothetical scenario of a car with zero engine size and <em>Automatic</em> transmission, the estimated mean car price is <span class="math inline">\(\approx\)</span> \$3042.</p>
-<p><strong>Q:</strong> Interpret the coefficient of <code>transmission[T.Manual]</code></p>
-<p><strong>Ans:</strong> The estimated mean price of a car with manual transmission is <span class="math inline">\(\approx\)</span> \$6770 less than that of a car with <em>Automatic</em> transmission.</p>
-<p>Let us visualize the developed model.</p>
-<div id="da09b02d" class="cell" data-execution_count="42">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Visualizing the developed model</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"figure.figsize"</span>] <span class="op">=</span> (<span class="dv">9</span>,<span class="dv">6</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>sns.<span class="bu">set</span>(font_scale <span class="op">=</span> <span class="fl">1.3</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(train_updated.engineSize.<span class="bu">min</span>(),train_updated.engineSize.<span class="bu">max</span>(),<span class="dv">100</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.lineplot(x <span class="op">=</span> x, y <span class="op">=</span> model.params[<span class="st">'engineSize'</span>]<span class="op">*</span>x<span class="op">+</span>model.params[<span class="st">'Intercept'</span>], color <span class="op">=</span> <span class="st">'red'</span>)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x <span class="op">=</span> x, y <span class="op">=</span> model.params[<span class="st">'engineSize'</span>]<span class="op">*</span>x<span class="op">+</span>model.params[<span class="st">'Intercept'</span>]<span class="op">+</span>model.params[<span class="st">'transmission[T.Semi-Auto]'</span>], color <span class="op">=</span> <span class="st">'blue'</span>)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x <span class="op">=</span> x, y <span class="op">=</span> model.params[<span class="st">'engineSize'</span>]<span class="op">*</span>x<span class="op">+</span>model.params[<span class="st">'Intercept'</span>]<span class="op">+</span>model.params[<span class="st">'transmission[T.Manual]'</span>], color <span class="op">=</span> <span class="st">'green'</span>)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>plt.legend(labels<span class="op">=</span>[<span class="st">"Automatic"</span>,<span class="st">"Semi-Automatic"</span>, <span class="st">"Manual"</span>])</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Engine size (in litre)'</span>)</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Predicted car price'</span>)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>ax.yaxis.set_major_formatter(<span class="st">'$</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The baseline level is dropped by default (alphabetical order). Here, <em>Automatic</em> is the baseline. Coefficients for other levels are interpreted relative to the baseline.</p>
+<p><strong>Q:</strong> Interpret the intercept term.</p>
+<p><strong>A:</strong> For a hypothetical car with zero engine size and <em>Automatic</em> transmission, the estimated mean price is the intercept.</p>
+<p><strong>Q:</strong> Interpret the coefficient of <code>transmission[T.Manual]</code>.</p>
+<p><strong>A:</strong> Holding engine size fixed, the estimated mean price of a manual car differs from an automatic car by that coefficient.</p>
+<div id="ec7a97aa" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the model</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"figure.figsize"</span>] <span class="op">=</span> (<span class="dv">9</span>, <span class="dv">6</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(train_updated.engineSize.<span class="bu">min</span>(), train_updated.engineSize.<span class="bu">max</span>(), <span class="dv">100</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.lineplot(x<span class="op">=</span>x, y<span class="op">=</span>model_sm_trans.params[<span class="st">'engineSize'</span>]<span class="op">*</span>x <span class="op">+</span> model_sm_trans.params[<span class="st">'Intercept'</span>], color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>x, y<span class="op">=</span>model_sm_trans.params[<span class="st">'engineSize'</span>]<span class="op">*</span>x <span class="op">+</span> model_sm_trans.params[<span class="st">'Intercept'</span>] <span class="op">+</span> model_sm_trans.params[<span class="st">'transmission[T.Semi-Auto]'</span>], color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>x, y<span class="op">=</span>model_sm_trans.params[<span class="st">'engineSize'</span>]<span class="op">*</span>x <span class="op">+</span> model_sm_trans.params[<span class="st">'Intercept'</span>] <span class="op">+</span> model_sm_trans.params[<span class="st">'transmission[T.Manual]'</span>], color<span class="op">=</span><span class="st">'green'</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>plt.legend(labels<span class="op">=</span>[<span class="st">"Automatic"</span>, <span class="st">"Semi-Automatic"</span>, <span class="st">"Manual"</span>])</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Engine size (in litre)'</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Predicted car price'</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>ax.yaxis.set_major_formatter(<span class="st">'$</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -835,170 +858,18 @@ Name: transmission, dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<p>Based on the developed model, for a given engine size, the car with a semi-automatic transmission is estimated to be the most expensive on average, while the car with a manual transmission is estimated to be the least expensive on average.</p>
-<p><strong>Changing the baseline level:</strong> By default, the baseline level is chosen as the one that comes first if the levels are arranged in alphabetical order. However, you can change the baseline level by specifying one explicitly.</p>
-<p>Internally, statsmodels uses the patsy package to convert formulas and data to the matrices that are used in model fitting. You may refer to this <a href="https://patsy.readthedocs.io/en/latest/API-reference.html#patsy.Treatment">section</a> in the patsy documentation to specify a particular level of the categorical variable as the baseline.</p>
-<p>For example, suppose we wish to change the baseline level to <em>Manual</em> transmission. We can specify this in the formula as follows:</p>
-<div id="40636704" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ols_object <span class="op">=</span> smf.ols(formula <span class="op">=</span> <span class="st">'price~engineSize+C(transmission, Treatment("Manual"))'</span>, data <span class="op">=</span> train_updated)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ols_object.fit()</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>model.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
-<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>OLS Regression Results</caption>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Dep. Variable:</td>
-<td>price</td>
-<td data-quarto-table-cell-role="th">R-squared:</td>
-<td>0.459</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">Model:</td>
-<td>OLS</td>
-<td data-quarto-table-cell-role="th">Adj. R-squared:</td>
-<td>0.458</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Method:</td>
-<td>Least Squares</td>
-<td data-quarto-table-cell-role="th">F-statistic:</td>
-<td>1400.</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">Date:</td>
-<td>Tue, 24 Jan 2023</td>
-<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
-<td>0.00</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Time:</td>
-<td>15:28:39</td>
-<td data-quarto-table-cell-role="th">Log-Likelihood:</td>
-<td>-53644.</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">No. Observations:</td>
-<td>4959</td>
-<td data-quarto-table-cell-role="th">AIC:</td>
-<td>1.073e+05</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Df Residuals:</td>
-<td>4955</td>
-<td data-quarto-table-cell-role="th">BIC:</td>
-<td>1.073e+05</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">Df Model:</td>
-<td>3</td>
-<td data-quarto-table-cell-role="th"></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Covariance Type:</td>
-<td>nonrobust</td>
-<td data-quarto-table-cell-role="th"></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-
-
-<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd">
-<td></td>
-<td data-quarto-table-cell-role="th">coef</td>
-<td data-quarto-table-cell-role="th">std err</td>
-<td data-quarto-table-cell-role="th">t</td>
-<td data-quarto-table-cell-role="th">P&gt;|t|</td>
-<td data-quarto-table-cell-role="th">[0.025</td>
-<td data-quarto-table-cell-role="th">0.975]</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">Intercept</td>
-<td>-3727.9400</td>
-<td>492.917</td>
-<td>-7.563</td>
-<td>0.000</td>
-<td>-4694.275</td>
-<td>-2761.605</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">C(transmission, Treatment("Manual"))[T.Automatic]</td>
-<td>6770.6165</td>
-<td>442.116</td>
-<td>15.314</td>
-<td>0.000</td>
-<td>5903.873</td>
-<td>7637.360</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">C(transmission, Treatment("Manual"))[T.Semi-Auto]</td>
-<td>1.176e+04</td>
-<td>473.110</td>
-<td>24.867</td>
-<td>0.000</td>
-<td>1.08e+04</td>
-<td>1.27e+04</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">engineSize</td>
-<td>1.023e+04</td>
-<td>247.485</td>
-<td>41.323</td>
-<td>0.000</td>
-<td>9741.581</td>
-<td>1.07e+04</td>
-</tr>
-</tbody>
-</table>
-
-
-<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Omnibus:</td>
-<td>1575.518</td>
-<td data-quarto-table-cell-role="th">Durbin-Watson:</td>
-<td>0.579</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">Prob(Omnibus):</td>
-<td>0.000</td>
-<td data-quarto-table-cell-role="th">Jarque-Bera (JB):</td>
-<td>11006.609</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Skew:</td>
-<td>1.334</td>
-<td data-quarto-table-cell-role="th">Prob(JB):</td>
-<td>0.00</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">Kurtosis:</td>
-<td>9.793</td>
-<td data-quarto-table-cell-role="th">Cond. No.</td>
-<td>8.62</td>
-</tr>
-</tbody>
-</table>
-<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
-</div>
-</div>
 </section>
-<section id="including-qualitative-predictors-and-their-interaction-with-continuous-predictors-in-the-model" class="level3" data-number="4.1.3">
-<h3 data-number="4.1.3" class="anchored" data-anchor-id="including-qualitative-predictors-and-their-interaction-with-continuous-predictors-in-the-model"><span class="header-section-number">4.1.3</span> Including qualitative predictors and their interaction with continuous predictors in the model</h3>
-<p>Note that the qualitative predictor leads to fitting 3 parallel lines to the data, as there are 3 categories.</p>
-<p>However, note that we have made the constant association assumption. The fact that the lines are parallel means that the average increase in car price for one litre increase in engine size does not depend on the type of transmission. This represents a potentially serious limitation of the model, since in fact a change in engine size may have a very different association on the price of an automatic car versus a semi-automatic or manual car.</p>
-<p>This limitation can be addressed by adding an interaction variable, which is the product of <code>engineSize</code> and the dummy variables for semi-automatic and manual transmissions.</p>
-<div id="f2c90abc" class="cell" data-execution_count="44">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Using the ols function to create an ols object. 'ols' stands for 'Ordinary least squares'</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ols_object <span class="op">=</span> smf.ols(formula <span class="op">=</span> <span class="st">'price~engineSize*transmission'</span>, data <span class="op">=</span> train_updated)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ols_object.fit()</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>model.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="44">
+<section id="interaction-between-qualitative-and-continuous-predictors" class="level3" data-number="4.3.3">
+<h3 data-number="4.3.3" class="anchored" data-anchor-id="interaction-between-qualitative-and-continuous-predictors"><span class="header-section-number">4.3.3</span> Interaction between qualitative and continuous predictors</h3>
+<p>The parallel lines above assume the effect of engine size is the same for each transmission type. We can relax that by adding an interaction between <code>engineSize</code> and <code>transmission</code>.</p>
+<div id="1e673622" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model_sm_trans_inter <span class="op">=</span> smf.ols(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    formula<span class="op">=</span><span class="st">'price ~ engineSize*transmission'</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>train_updated,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>).fit()</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>model_sm_trans_inter.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
 <table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <caption>OLS Regression Results</caption>
 <tbody>
@@ -1022,13 +893,13 @@ Name: transmission, dtype: int64</code></pre>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Date:</td>
-<td>Sun, 22 Jan 2023</td>
+<td>Fri, 16 Jan 2026</td>
 <td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
 <td>0.00</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Time:</td>
-<td>22:55:55</td>
+<td>10:57:06</td>
 <td data-quarto-table-cell-role="th">Log-Likelihood:</td>
 <td>-53550.</td>
 </tr>
@@ -1160,31 +1031,54 @@ Name: transmission, dtype: int64</code></pre>
 <br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 </div>
 </div>
-<p>The model equation for the model with interactions is:</p>
-<p>Automatic transmission: <code>price</code> = 3754.7238 + 9928.6082 * <code>engineSize</code>,</p>
-<p>Semi-Automatic transmission: <code>price</code> = 3754.7238 + 9928.6082 * <code>engineSize</code> + (-5282.7164+4162.2428*<code>engineSize</code>),<br>
-</p>
-<p>Manual transmission: <code>price</code> = 3754.7238 + 9928.6082 * <code>engineSize</code> +(1768.5856-5285.9059 * <code>engineSize</code>),</p>
-<p>or</p>
-<p>Automatic transmission: <code>price</code> = 3754.7238 + 9928.6082 * <code>engineSize</code>,</p>
-<p>Semi-Automatic transmission: <code>price</code> = -1527 + 7046 * <code>engineSize</code>,</p>
-<p>Manual transmission: <code>price</code> = 5523 + 4642 * <code>engineSize</code></p>
-<p><strong>Q:</strong> Interpret the coefficient of manual tranmission, i.e., the coefficient of <code>transmission[T.Manual]</code>.</p>
-<p><strong>A:</strong> For a hypothetical scenario of zero engine size, the estimated mean <code>price</code> of a car with <em>Manual</em> <code>transmission</code> is <span class="math inline">\(\approx\)</span> \$1768 more than the estimated mean <code>price</code> of a car with <em>Automatic</em> <code>transmission</code>.</p>
-<p><strong>Q:</strong> Interpret the coefficient of the interaction between engine size and manual transmission, i.e., the coefficient of <code>engineSize:transmission[T.Manual]</code>.</p>
-<p><strong>A:</strong> For a unit (or a litre) increase in <code>engineSize</code> , the increase in estimated mean <code>price</code> of a car with <em>Manual</em> transmission is <span class="math inline">\(\approx\)</span> \$5285 less than the increase in estimated mean <code>price</code> of a car with <em>Automatic</em> transmission.</p>
-<div id="f8d39935" class="cell" data-execution_count="39">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Visualizing the developed model with interaction terms</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"figure.figsize"</span>] <span class="op">=</span> (<span class="dv">9</span>,<span class="dv">6</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>sns.<span class="bu">set</span>(font_scale <span class="op">=</span> <span class="fl">1.3</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(train_updated.engineSize.<span class="bu">min</span>(),train_updated.engineSize.<span class="bu">max</span>(),<span class="dv">100</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.lineplot(x <span class="op">=</span> x, y <span class="op">=</span> model.params[<span class="st">'engineSize'</span>]<span class="op">*</span>x<span class="op">+</span>model.params[<span class="st">'Intercept'</span>], label<span class="op">=</span><span class="st">'Automatic'</span>, color <span class="op">=</span> <span class="st">'red'</span>)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>plt.plot(x, (model.params[<span class="st">'engineSize'</span>]<span class="op">+</span>model.params[<span class="st">'engineSize:transmission[T.Semi-Auto]'</span>])<span class="op">*</span>x<span class="op">+</span>model.params[<span class="st">'Intercept'</span>]<span class="op">+</span>model.params[<span class="st">'transmission[T.Semi-Auto]'</span>], <span class="st">'-b'</span>, label<span class="op">=</span><span class="st">'Semi-Automatic'</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>plt.plot(x, (model.params[<span class="st">'engineSize'</span>]<span class="op">+</span>model.params[<span class="st">'engineSize:transmission[T.Manual]'</span>])<span class="op">*</span>x<span class="op">+</span>model.params[<span class="st">'Intercept'</span>]<span class="op">+</span>model.params[<span class="st">'transmission[T.Manual]'</span>], <span class="st">'-g'</span>, label<span class="op">=</span><span class="st">'Manual'</span>)</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Engine size (in litre)'</span>)</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Predicted car price'</span>)</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>ax.yaxis.set_major_formatter(<span class="st">'$</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Q:</strong> Interpret the coefficient of <code>transmission[T.Manual]</code>.</p>
+<p><strong>A:</strong> It shifts the intercept for manual cars relative to automatic cars.</p>
+<p><strong>Q:</strong> Interpret the coefficient of <code>engineSize:transmission[T.Manual]</code>.</p>
+<p><strong>A:</strong> It adjusts the slope of engine size for manual cars relative to automatic cars.</p>
+<div id="a5bf1ec5" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the model with interaction terms</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"figure.figsize"</span>] <span class="op">=</span> (<span class="dv">9</span>, <span class="dv">6</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(train_updated.engineSize.<span class="bu">min</span>(), train_updated.engineSize.<span class="bu">max</span>(), <span class="dv">100</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.lineplot(x<span class="op">=</span>x, y<span class="op">=</span>model_sm_trans_inter.params[<span class="st">'engineSize'</span>]<span class="op">*</span>x <span class="op">+</span> model_sm_trans_inter.params[<span class="st">'Intercept'</span>], label<span class="op">=</span><span class="st">'Automatic'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    x,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    (model_sm_trans_inter.params[<span class="st">'engineSize'</span>] <span class="op">+</span> model_sm_trans_inter.params[<span class="st">'engineSize:transmission[T.Semi-Auto]'</span>])<span class="op">*</span>x</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> model_sm_trans_inter.params[<span class="st">'Intercept'</span>]</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> model_sm_trans_inter.params[<span class="st">'transmission[T.Semi-Auto]'</span>],</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'-b'</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">'Semi-Automatic'</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    x,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    (model_sm_trans_inter.params[<span class="st">'engineSize'</span>] <span class="op">+</span> model_sm_trans_inter.params[<span class="st">'engineSize:transmission[T.Manual]'</span>])<span class="op">*</span>x</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> model_sm_trans_inter.params[<span class="st">'Intercept'</span>]</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> model_sm_trans_inter.params[<span class="st">'transmission[T.Manual]'</span>],</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'-g'</span>,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">'Manual'</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Engine size (in litre)'</span>)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Predicted car price'</span>)</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>ax.yaxis.set_major_formatter(<span class="st">'$</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lec3_VariableTransformations_and_Interactions_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="polynomial-transformations" class="level3" data-number="4.3.4">
+<h3 data-number="4.3.4" class="anchored" data-anchor-id="polynomial-transformations"><span class="header-section-number">4.3.4</span> Polynomial transformations</h3>
+<p>So far we assumed linear relationships. If the relationship between <code>price</code> and <code>mileage</code> is curved, polynomial terms can help.</p>
+<div id="4c46219c" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Relationship between price and mileage</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.regplot(x<span class="op">=</span>train_updated.mileage, y<span class="op">=</span>train_updated.price, color<span class="op">=</span><span class="st">'orange'</span>, line_kws<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'blue'</span>})</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Mileage'</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Predicted car price'</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ax.yaxis.set_major_formatter(<span class="st">'$</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>ax.xaxis.set_major_formatter(<span class="st">'</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1193,46 +1087,21 @@ Name: transmission, dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<p>Note the interaction term adds flexibility to the model.</p>
-<p>The slope of the regression line for semi-automatic cars is the largest. This suggests that increase in engine size is associated with a higher increase in car price for semi-automatic cars, as compared to other cars.</p>
-</section>
-</section>
-<section id="variable-transformations" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="variable-transformations"><span class="header-section-number">4.2</span> Variable transformations</h2>
-<p>So far we have considered only a linear relationship between the predictors and the response. However, the relationship may be non-linear.</p>
-<p>Consider the regression plot of <code>price</code> on <code>mileage</code>.</p>
-<div id="7edea36e" class="cell" data-execution_count="47">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.regplot(x <span class="op">=</span> train_updated.mileage, y <span class="op">=</span>train_updated.price,color <span class="op">=</span> <span class="st">'orange'</span>, line_kws <span class="op">=</span> {<span class="st">'color'</span>:<span class="st">'blue'</span>})</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Mileage'</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Predicted car price'</span>)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>ax.yaxis.set_major_formatter(<span class="st">'$</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>ax.xaxis.set_major_formatter(<span class="st">'</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Lec3_VariableTransformations_and_Interactions_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="bcbbd7b4" class="cell" data-execution_count="53">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#R-squared of the model with just mileage</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> smf.ols(<span class="st">'price~mileage'</span>, data <span class="op">=</span> train_updated).fit()</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>model.rsquared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="53">
+<div id="b3230738" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R-squared of the model with just mileage</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>model_sm_mileage <span class="op">=</span> smf.ols(<span class="st">'price ~ mileage'</span>, data<span class="op">=</span>train_updated).fit()</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>model_sm_mileage.rsquared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>0.22928048993376182</code></pre>
 </div>
 </div>
-<p>From the first scatterplot, we see that the relationship between <code>price</code> and <code>mileage</code> doesn’t seem to be linear, as the points do not lie on a straight line. Also, we see the regression line (or the curve), which is the best fit line doesn’t seem to fit the points well. However, <code>price</code> on average seems to decrease with <code>mileage</code>, albeit in a non-linear manner.</p>
-<section id="quadratic-transformation" class="level3" data-number="4.2.1">
-<h3 data-number="4.2.1" class="anchored" data-anchor-id="quadratic-transformation"><span class="header-section-number">4.2.1</span> Quadratic transformation</h3>
-<p>So, we guess that if we model price as a quadratic function of <code>mileage</code>, the model may better fit the points (or the curve may better fit the points). Let us transform the predictor <code>mileage</code> to include <span class="math inline">\(mileage^2\)</span> (i.e., perform a quadratic transformation on the predictor).</p>
-<div id="bd85038f" class="cell" data-execution_count="49">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Including mileage squared as a predictor and developing the model</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ols_object <span class="op">=</span> smf.ols(formula <span class="op">=</span> <span class="st">'price~mileage+I(mileage**2)'</span>, data <span class="op">=</span> train_updated)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ols_object.fit()</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>model.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="49">
+<section id="quadratic-transformation" class="level4" data-number="4.3.4.1">
+<h4 data-number="4.3.4.1" class="anchored" data-anchor-id="quadratic-transformation"><span class="header-section-number">4.3.4.1</span> Quadratic transformation</h4>
+<p>Add a squared term for <code>mileage</code> using the <code>I()</code> operator to keep it as a separate predictor.</p>
+<div id="7d6382e3" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>model_sm_quad <span class="op">=</span> smf.ols(<span class="st">'price ~ mileage + I(mileage**2)'</span>, data<span class="op">=</span>train_updated).fit()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>model_sm_quad.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
 <table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <caption>OLS Regression Results</caption>
 <tbody>
@@ -1256,13 +1125,13 @@ Name: transmission, dtype: int64</code></pre>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Date:</td>
-<td>Sun, 22 Jan 2023</td>
+<td>Fri, 16 Jan 2026</td>
 <td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
 <td>0.00</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Time:</td>
-<td>23:26:05</td>
+<td>10:57:58</td>
 <td data-quarto-table-cell-role="th">Log-Likelihood:</td>
 <td>-54382.</td>
 </tr>
@@ -1367,36 +1236,31 @@ Name: transmission, dtype: int64</code></pre>
 <br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.<br>[2] The condition number is large, 4.81e+09. This might indicate that there are<br>strong multicollinearity or other numerical problems.
 </div>
 </div>
-<p>Note that in the formula specified within the <code>ols()</code> function, the <code>I()</code> operator isolates or insulates the contents within I(…) from the regular formula operators. Without the <code>I()</code> operator, <code>mileage**2</code> will be treated as the interaction of <code>mileage</code> with itself, which is <code>mileage</code>. Thus, to add the square of <code>mileage</code> as a separate predictor, we need to use the <code>I()</code> operator.</p>
-<p>Let us visualize the model fit with the quadratic transformation of the predictor - <code>mileage</code>.</p>
-<div id="8283839d" class="cell" data-execution_count="52">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Visualizing the regression line with the model consisting of the quadratic transformation of the predictor - mileage</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>pred_price <span class="op">=</span> model.predict(train_updated)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.scatterplot(x <span class="op">=</span> <span class="st">'mileage'</span>, y <span class="op">=</span> <span class="st">'price'</span>, data <span class="op">=</span> train_updated, color <span class="op">=</span> <span class="st">'orange'</span>)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x <span class="op">=</span> train_updated.mileage, y <span class="op">=</span> pred_price, color <span class="op">=</span> <span class="st">'blue'</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Mileage'</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Predicted car price'</span>)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>ax.yaxis.set_major_formatter(<span class="st">'$</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>ax.xaxis.set_major_formatter(<span class="st">'</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="109468aa" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the quadratic fit</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>pred_price <span class="op">=</span> model_sm_quad.predict(train_updated)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.scatterplot(x<span class="op">=</span><span class="st">'mileage'</span>, y<span class="op">=</span><span class="st">'price'</span>, data<span class="op">=</span>train_updated, color<span class="op">=</span><span class="st">'orange'</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>train_updated.mileage, y<span class="op">=</span>pred_price, color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Mileage'</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Predicted car price'</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>ax.yaxis.set_major_formatter(<span class="st">'$</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>ax.xaxis.set_major_formatter(<span class="st">'</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Lec3_VariableTransformations_and_Interactions_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="Lec3_VariableTransformations_and_Interactions_files/figure-html/cell-15-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>The above model seems to better fit the data (as compared to the model without transformation) at least upto mileage around 125,000. The <span class="math inline">\(R^2\)</span> of the model with the quadratic transformation of <code>mileage</code> is also higher than that of the model without transformation indicating a better fit.</p>
 </section>
-<section id="cubic-transformation" class="level3" data-number="4.2.2">
-<h3 data-number="4.2.2" class="anchored" data-anchor-id="cubic-transformation"><span class="header-section-number">4.2.2</span> Cubic transformation</h3>
-<p>Let us see if a cubic transformation of <code>mileage</code> can further improve the model fit.</p>
-<div id="bf8a4a31" class="cell" data-scrolled="true" data-execution_count="54">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Including mileage squared and mileage cube as predictors and developing the model</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ols_object <span class="op">=</span> smf.ols(formula <span class="op">=</span> <span class="st">'price~mileage+I(mileage**2)+I(mileage**3)'</span>, data <span class="op">=</span> train_updated)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ols_object.fit()</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>model.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="54">
+<section id="cubic-transformation" class="level4" data-number="4.3.4.2">
+<h4 data-number="4.3.4.2" class="anchored" data-anchor-id="cubic-transformation"><span class="header-section-number">4.3.4.2</span> Cubic transformation</h4>
+<p>Add a cubic term for additional flexibility.</p>
+<div id="8e11a654" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>model_sm_cubic <span class="op">=</span> smf.ols(<span class="st">'price ~ mileage + I(mileage**2) + I(mileage**3)'</span>, data<span class="op">=</span>train_updated).fit()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>model_sm_cubic.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
 <table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <caption>OLS Regression Results</caption>
 <tbody>
@@ -1420,13 +1284,13 @@ Name: transmission, dtype: int64</code></pre>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Date:</td>
-<td>Sun, 22 Jan 2023</td>
+<td>Fri, 16 Jan 2026</td>
 <td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
 <td>0.00</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Time:</td>
-<td>23:33:27</td>
+<td>10:58:10</td>
 <td data-quarto-table-cell-role="th">Log-Likelihood:</td>
 <td>-54340.</td>
 </tr>
@@ -1472,8 +1336,8 @@ Name: transmission, dtype: int64</code></pre>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Intercept</td>
 <td>3.598e+04</td>
-<td>371.926</td>
-<td>96.727</td>
+<td>371.925</td>
+<td>96.728</td>
 <td>0.000</td>
 <td>3.52e+04</td>
 <td>3.67e+04</td>
@@ -1513,7 +1377,7 @@ Name: transmission, dtype: int64</code></pre>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Omnibus:</td>
-<td>2380.788</td>
+<td>2380.789</td>
 <td data-quarto-table-cell-role="th">Durbin-Watson:</td>
 <td>0.321</td>
 </tr>
@@ -1521,7 +1385,7 @@ Name: transmission, dtype: int64</code></pre>
 <td data-quarto-table-cell-role="th">Prob(Omnibus):</td>
 <td>0.000</td>
 <td data-quarto-table-cell-role="th">Jarque-Bera (JB):</td>
-<td>23039.307</td>
+<td>23039.334</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Skew:</td>
@@ -1540,31 +1404,35 @@ Name: transmission, dtype: int64</code></pre>
 <br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.<br>[2] The condition number is large, 7.73e+14. This might indicate that there are<br>strong multicollinearity or other numerical problems.
 </div>
 </div>
-<div id="ae5a78a2" class="cell" data-execution_count="57">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Visualizing the model with the cubic transformation of mileage</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>pred_price <span class="op">=</span> model.predict(train_updated)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.scatterplot(x <span class="op">=</span> <span class="st">'mileage'</span>, y <span class="op">=</span> <span class="st">'price'</span>, data <span class="op">=</span> train_updated, color <span class="op">=</span> <span class="st">'orange'</span>)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x <span class="op">=</span> train_updated.mileage, y <span class="op">=</span> pred_price, color <span class="op">=</span> <span class="st">'blue'</span>)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Mileage'</span>)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Predicted car price'</span>)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>ax.yaxis.set_major_formatter(<span class="st">'$</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>ax.xaxis.set_major_formatter(<span class="st">'</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d31ae413" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the cubic fit</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>pred_price <span class="op">=</span> model_sm_cubic.predict(train_updated)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.scatterplot(x<span class="op">=</span><span class="st">'mileage'</span>, y<span class="op">=</span><span class="st">'price'</span>, data<span class="op">=</span>train_updated, color<span class="op">=</span><span class="st">'orange'</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>train_updated.mileage, y<span class="op">=</span>pred_price, color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Mileage'</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Predicted car price'</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>ax.yaxis.set_major_formatter(<span class="st">'$</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>ax.xaxis.set_major_formatter(<span class="st">'</span><span class="sc">{x:,.0f}</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Lec3_VariableTransformations_and_Interactions_files/figure-html/cell-18-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="Lec3_VariableTransformations_and_Interactions_files/figure-html/cell-17-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Note that the model fit with the cubic transformation of <code>mileage</code> seems slightly better as compared to the models with the quadratic transformation, and no transformation of mileage, for mileage up to 180k. However, the model should not be used to predict car prices of cars with a mileage higher than 180k.</p>
-<p>Let’s update the model created earlier (in the beginning of this chapter) to include the transformed predictor.</p>
-<div id="8e5f942c" class="cell" data-execution_count="73">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Model with an interaction term and a variable transformation term</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ols_object <span class="op">=</span> smf.ols(formula <span class="op">=</span> <span class="st">'price~year*engineSize+mileage+mpg+I(mileage**2)'</span>, data <span class="op">=</span> train_updated)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ols_object.fit()</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>model.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="73">
+</section>
+<section id="putting-interaction-and-transformation-together" class="level4" data-number="4.3.4.3">
+<h4 data-number="4.3.4.3" class="anchored" data-anchor-id="putting-interaction-and-transformation-together"><span class="header-section-number">4.3.4.3</span> Putting interaction and transformation together</h4>
+<p>Combine the interaction term with a quadratic mileage term.</p>
+<div id="68754014" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>model_sm_full <span class="op">=</span> smf.ols(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    formula<span class="op">=</span><span class="st">'price ~ age*engineSize + mileage + mpg + I(mileage**2)'</span>,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>train_updated,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>).fit()</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>model_sm_full.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
 <table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <caption>OLS Regression Results</caption>
 <tbody>
@@ -1588,13 +1456,13 @@ Name: transmission, dtype: int64</code></pre>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Date:</td>
-<td>Sun, 22 Jan 2023</td>
+<td>Fri, 16 Jan 2026</td>
 <td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
 <td>0.00</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Time:</td>
-<td>23:42:13</td>
+<td>10:58:23</td>
 <td data-quarto-table-cell-role="th">Log-Likelihood:</td>
 <td>-52162.</td>
 </tr>
@@ -1639,39 +1507,39 @@ Name: transmission, dtype: int64</code></pre>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Intercept</td>
-<td>1.53e+06</td>
-<td>2.7e+05</td>
-<td>5.671</td>
+<td>3853.3738</td>
+<td>779.161</td>
+<td>4.946</td>
 <td>0.000</td>
-<td>1e+06</td>
-<td>2.06e+06</td>
+<td>2325.873</td>
+<td>5380.875</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">year</td>
-<td>-755.7419</td>
+<td data-quarto-table-cell-role="th">age</td>
+<td>755.7419</td>
 <td>133.791</td>
-<td>-5.649</td>
+<td>5.649</td>
 <td>0.000</td>
-<td>-1018.031</td>
-<td>-493.453</td>
+<td>493.453</td>
+<td>1018.031</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">engineSize</td>
-<td>-2.022e+06</td>
-<td>9.72e+04</td>
-<td>-20.803</td>
+<td>1.565e+04</td>
+<td>241.430</td>
+<td>64.811</td>
 <td>0.000</td>
-<td>-2.21e+06</td>
-<td>-1.83e+06</td>
+<td>1.52e+04</td>
+<td>1.61e+04</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">year:engineSize</td>
-<td>1008.6993</td>
+<td data-quarto-table-cell-role="th">age:engineSize</td>
+<td>-1008.6993</td>
 <td>48.196</td>
-<td>20.929</td>
+<td>-20.929</td>
 <td>0.000</td>
-<td>914.215</td>
-<td>1103.184</td>
+<td>-1103.184</td>
+<td>-914.215</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">mileage</td>
@@ -1716,7 +1584,7 @@ Name: transmission, dtype: int64</code></pre>
 <td data-quarto-table-cell-role="th">Prob(Omnibus):</td>
 <td>0.000</td>
 <td data-quarto-table-cell-role="th">Jarque-Bera (JB):</td>
-<td>38317.404</td>
+<td>38317.406</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Skew:</td>
@@ -1728,81 +1596,653 @@ Name: transmission, dtype: int64</code></pre>
 <td data-quarto-table-cell-role="th">Kurtosis:</td>
 <td>16.101</td>
 <td data-quarto-table-cell-role="th">Cond. No.</td>
-<td>6.40e+12</td>
+<td>1.83e+10</td>
 </tr>
 </tbody>
 </table>
-<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.<br>[2] The condition number is large, 6.4e+12. This might indicate that there are<br>strong multicollinearity or other numerical problems.
+<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.<br>[2] The condition number is large, 1.83e+10. This might indicate that there are<br>strong multicollinearity or other numerical problems.
 </div>
 </div>
-<p>Note that the R-squared has increased as compared to the model with just the interaction term.</p>
-<div id="aac77932" class="cell" data-execution_count="74">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Computing RMSE on test data</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>pred_price <span class="op">=</span> model.predict(testf)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>np.sqrt(((testp.price <span class="op">-</span> pred_price)<span class="op">**</span><span class="dv">2</span>).mean())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="74">
-<pre><code>9074.494088619422</code></pre>
-</div>
-</div>
-<p>Note that the prediction accuracy of the model has further increased, as the RMSE has reduced. The transformed predictor is statistically significant and provides additional flexibility to better capture the trend in the data, leading to an increase in prediction accuracy.</p>
-</section>
-</section>
-<section id="polynomialfeatures" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="polynomialfeatures"><span class="header-section-number">4.3</span> <code>PolynomialFeatures()</code></h2>
-<p>The function <code>PolynomialFeatures()</code> from the <code>sklearn</code> library can be used to generate a predictor matrix that includes all interactions and transformations upto a degree <code>d</code>.</p>
-<div id="adb6c0cb" class="cell" data-execution_count="40">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> train[[<span class="st">'mileage'</span>, <span class="st">'engineSize'</span>, <span class="st">'year'</span>, <span class="st">'mpg'</span>]]</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> train[[<span class="st">'price'</span>]]</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> test[[<span class="st">'mileage'</span>, <span class="st">'engineSize'</span>, <span class="st">'year'</span>, <span class="st">'mpg'</span>]]</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> test[[<span class="st">'price'</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<section id="generating-polynomial-features" class="level3" data-number="4.3.1">
-<h3 data-number="4.3.1" class="anchored" data-anchor-id="generating-polynomial-features"><span class="header-section-number">4.3.1</span> Generating polynomial features</h3>
-<p>Let us generate polynomial features upto degree 2. This will include all the two-factor interactions, and all squared terms of degree 2.</p>
-<div id="db10e2ae" class="cell" data-execution_count="41">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>poly <span class="op">=</span> PolynomialFeatures(<span class="dv">2</span>, include_bias <span class="op">=</span> <span class="va">False</span>) <span class="co"># Create the object - degree is 2</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the polynomial features</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>X_train_poly <span class="op">=</span> poly.fit_transform(X_train) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Note that the <code>LinearRegression()</code> function adds the intercept by default <em>(check the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html"><code>fit_intercept</code></a> argument)</em>. Thus, we have put <code>include_bias = False</code> while generating the polynomial features, as we don’t need the intercept. The term <code>bias</code> here refers to the intercept <em>(you will learn about <code>bias</code> in detail in STAT303-3)</em>. Another option is to include the intercept while generating the polynomial features, and put <code>fit_intercept = False</code> in the <code>LinearRegression()</code> function.</p>
-<p>Below are the polynomial features generated by the <code>PolynomialFeatures()</code> functions.</p>
-<div id="09c8dfda" class="cell" data-execution_count="42">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>poly.get_feature_names_out()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="42">
-<pre><code>array(['mileage', 'engineSize', 'year', 'mpg', 'mileage^2',
-       'mileage engineSize', 'mileage year', 'mileage mpg',
-       'engineSize^2', 'engineSize year', 'engineSize mpg', 'year^2',
-       'year mpg', 'mpg^2'], dtype=object)</code></pre>
+<div id="729000e4" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RMSE on test data</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>pred_price <span class="op">=</span> model_sm_full.predict(test)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>np.sqrt(((test.price <span class="op">-</span> pred_price) <span class="op">**</span> <span class="dv">2</span>).mean())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>9074.49407060908</code></pre>
 </div>
 </div>
 </section>
-<section id="fitting-the-model" class="level3" data-number="4.3.2">
-<h3 data-number="4.3.2" class="anchored" data-anchor-id="fitting-the-model"><span class="header-section-number">4.3.2</span> Fitting the model</h3>
-<div id="d40fa9eb" class="cell" data-execution_count="43">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression() </span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>model.fit(X_train_poly, y_train) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="43">
-<style>#sk-container-id-7 {color: black;background-color: white;}#sk-container-id-7 pre{padding: 0;}#sk-container-id-7 div.sk-toggleable {background-color: white;}#sk-container-id-7 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-7 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-7 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-7 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-7 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-7 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-7 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-7 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-7 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-7 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-7 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-7 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-7 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-7 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-7 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-7 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-7 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-7 div.sk-item {position: relative;z-index: 1;}#sk-container-id-7 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-7 div.sk-item::before, #sk-container-id-7 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-7 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-7 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-7 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-7 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-7 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-7 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-7 div.sk-label-container {text-align: center;}#sk-container-id-7 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-7 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-7" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LinearRegression()</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-7" type="checkbox" checked=""><label for="sk-estimator-id-7" class="sk-toggleable__label sk-toggleable__label-arrow">LinearRegression</label><div class="sk-toggleable__content"><pre>LinearRegression()</pre></div></div></div></div></div>
-</div>
-</div>
 </section>
-<section id="testing-the-model" class="level3" data-number="4.3.3">
-<h3 data-number="4.3.3" class="anchored" data-anchor-id="testing-the-model"><span class="header-section-number">4.3.3</span> Testing the model</h3>
-<div id="533a511f" class="cell" data-execution_count="44">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>X_test_poly <span class="op">=</span> poly.fit_transform(X_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sklearn-polynomialfeatures" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="sklearn-polynomialfeatures"><span class="header-section-number">4.4</span> sklearn (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PolynomialFeatures.html"><code>PolynomialFeatures</code></a>)</h2>
+<p><code>PolynomialFeatures</code> generates polynomial terms and interactions automatically. We then fit a linear regression on the expanded feature set.</p>
+<div id="90ee6fa1" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> train[[<span class="st">'mileage'</span>, <span class="st">'engineSize'</span>, <span class="st">'age'</span>, <span class="st">'mpg'</span>]]</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> train[<span class="st">'price'</span>]</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> test[[<span class="st">'mileage'</span>, <span class="st">'engineSize'</span>, <span class="st">'age'</span>, <span class="st">'mpg'</span>]]</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> test[<span class="st">'price'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="75e3fbe2" class="cell" data-execution_count="48">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#RMSE</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>np.sqrt(mean_squared_error(y_test, model.predict(X_test_poly)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="48">
-<pre><code>8896.175508213777</code></pre>
+<div id="8c3f17b2" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate polynomial features up to degree 2</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>poly <span class="op">=</span> PolynomialFeatures(<span class="dv">2</span>, include_bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>X_train_poly <span class="op">=</span> poly.fit_transform(X_train)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>X_test_poly <span class="op">=</span> poly.transform(X_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>Note that the polynomial features have helped reduced the RMSE further.</p>
+<div id="3bc01435" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>model_skl <span class="op">=</span> LinearRegression()</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>model_skl.fit(X_train_poly, y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<style>#sk-container-id-1 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: #000;
+  --sklearn-color-text-muted: #666;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
+  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-icon: #696969;
+
+  @media (prefers-color-scheme: dark) {
+    /* Redefinition of color scheme for dark theme */
+    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
+    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-icon: #878787;
+  }
+}
+
+#sk-container-id-1 {
+  color: var(--sklearn-color-text);
+}
+
+#sk-container-id-1 pre {
+  padding: 0;
+}
+
+#sk-container-id-1 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+#sk-container-id-1 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
+
+#sk-container-id-1 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-text-repr-fallback {
+  display: none;
+}
+
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-1 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-1 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-1 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-1 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
 
 
-</section>
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-1 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-1 label.sk-toggleable__label {
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+
+#sk-container-id-1 label.sk-toggleable__label .caption {
+  font-size: 0.6rem;
+  font-weight: lighter;
+  color: var(--sklearn-color-text-muted);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-1 div.sk-toggleable__content {
+  max-height: 0;
+  max-width: 0;
+  overflow: hidden;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  max-height: 200px;
+  max-width: 100%;
+  overflow: auto;
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label label.sk-toggleable__label,
+#sk-container-id-1 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-1 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2em;
+}
+
+#sk-container-id-1 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-1 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-1 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 0.5em;
+  text-align: center;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-1);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `<a>` HTML tag */
+
+#sk-container-id-1 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-1 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LinearRegression()</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked=""><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>LinearRegression</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.6/modules/generated/sklearn.linear_model.LinearRegression.html">?<span>Documentation for LinearRegression</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted"><pre>LinearRegression()</pre></div> </div></div></div></div>
+</div>
+</div>
+<div id="878cbafa" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on test data</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>pred_price <span class="op">=</span> model_skl.predict(X_test_poly)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># RMSE on test data</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>rmse <span class="op">=</span> root_mean_squared_error(y_test, pred_price)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>mae <span class="op">=</span> mean_absolute_error(y_test, pred_price)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Sklearn Linear Regression Test RMSE: $</span><span class="sc">{</span>rmse<span class="sc">:,.2f}</span><span class="ss">'</span>)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Sklearn Linear Regression Test MAE: $</span><span class="sc">{</span>mae<span class="sc">:,.2f}</span><span class="ss">'</span>)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co"># r2 score</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>r2 <span class="op">=</span> r2_score(y_test, pred_price)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Sklearn Linear Regression Test R²: </span><span class="sc">{</span>r2<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sklearn Linear Regression Test RMSE: $8,896.17
+Sklearn Linear Regression Test MAE: $5,335.30
+Sklearn Linear Regression Test R²: 0.7127</code></pre>
+</div>
+</div>
+<p>By default, <code>PolynomialFeatures</code> uses <code>degree=2</code> and <code>interaction_only=False</code>, which includes both squared terms and pairwise interactions. If we set <code>interaction_only=True</code>, the design matrix includes only interaction terms (no squared terms). Let’s compare performance.</p>
+<div id="5d2ba18c" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Interaction-only polynomial features (degree 2)</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>poly_inter <span class="op">=</span> PolynomialFeatures(<span class="dv">2</span>, include_bias<span class="op">=</span><span class="va">False</span>, interaction_only<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>X_train_inter <span class="op">=</span> poly_inter.fit_transform(X_train)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>X_test_inter <span class="op">=</span> poly_inter.transform(X_test)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>model_inter <span class="op">=</span> LinearRegression()</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>model_inter.fit(X_train_inter, y_train)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>pred_price_inter <span class="op">=</span> model_inter.predict(X_test_inter)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>rmse_inter <span class="op">=</span> root_mean_squared_error(y_test, pred_price_inter)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>mae_inter <span class="op">=</span> mean_absolute_error(y_test, pred_price_inter)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>r2_inter <span class="op">=</span> r2_score(y_test, pred_price_inter)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Interaction-only Test RMSE: $</span><span class="sc">{</span>rmse_inter<span class="sc">:,.2f}</span><span class="ss">'</span>)</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Interaction-only Test MAE: $</span><span class="sc">{</span>mae_inter<span class="sc">:,.2f}</span><span class="ss">'</span>)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Interaction-only Test R2: </span><span class="sc">{</span>r2_inter<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Interaction-only Test RMSE: $8,729.91
+Interaction-only Test MAE: $5,400.07
+Interaction-only Test R2: 0.7234</code></pre>
+</div>
+</div>
+<p>Compare the two settings side by side.</p>
+<div id="f9dc523d" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>comparison <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Model"</span>: [<span class="st">"Full poly (degree=2)"</span>, <span class="st">"Interaction-only (degree=2)"</span>],</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"RMSE"</span>: [rmse, rmse_inter],</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"MAE"</span>: [mae, mae_inter],</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"R2"</span>: [r2, r2_inter],</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>comparison</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Model</th>
+<th data-quarto-table-cell-role="th">RMSE</th>
+<th data-quarto-table-cell-role="th">MAE</th>
+<th data-quarto-table-cell-role="th">R2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Full poly (degree=2)</td>
+<td>8896.171003</td>
+<td>5335.298018</td>
+<td>0.712714</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Interaction-only (degree=2)</td>
+<td>8729.912067</td>
+<td>5400.071918</td>
+<td>0.723352</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="ffcb786f" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare feature names</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>features_full <span class="op">=</span> pd.Series(poly.get_feature_names_out(input_features<span class="op">=</span>X_train.columns), name<span class="op">=</span><span class="st">"Full poly"</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>features_inter <span class="op">=</span> pd.Series(poly_inter.get_feature_names_out(input_features<span class="op">=</span>X_train.columns), name<span class="op">=</span><span class="st">"Interaction-only"</span>)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>feature_compare <span class="op">=</span> pd.concat([features_full, features_inter], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>feature_compare</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Full poly</th>
+<th data-quarto-table-cell-role="th">Interaction-only</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>mileage</td>
+<td>mileage</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>engineSize</td>
+<td>engineSize</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>age</td>
+<td>age</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>mpg</td>
+<td>mpg</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>mileage^2</td>
+<td>mileage engineSize</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>mileage engineSize</td>
+<td>mileage age</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>mileage age</td>
+<td>mileage mpg</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>mileage mpg</td>
+<td>engineSize age</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>engineSize^2</td>
+<td>engineSize mpg</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>engineSize age</td>
+<td>age mpg</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10</td>
+<td>engineSize mpg</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">11</td>
+<td>age^2</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12</td>
+<td>age mpg</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">13</td>
+<td>mpg^2</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>A key limitation of <code>PolynomialFeatures</code> is that it lacks the flexibility of <code>statsmodels</code>. With <code>statsmodels</code>, you can selectively add specific interaction and polynomial terms. With <code>PolynomialFeatures</code>, you either include all polynomial and interaction terms of a given degree or none at all.</p>
+<p>Despite this limitation, <code>PolynomialFeatures</code> is quite useful for quickly generating polynomial and interaction terms. We will explore it further in the next lab.</p>
+
+
 </section>
 
 </main> <!-- /main -->

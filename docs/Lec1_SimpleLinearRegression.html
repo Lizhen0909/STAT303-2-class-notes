@@ -196,7 +196,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Lec3_VariableTransformations_and_Interactions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Extending Linear Regression (statsmodels)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Extending Linear Regression</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -284,10 +284,11 @@ window.Quarto = {
   <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset"><span class="header-section-number">2.2</span> Dataset</a></li>
   <li><a href="#simple-linear-regression" id="toc-simple-linear-regression" class="nav-link" data-scroll-target="#simple-linear-regression"><span class="header-section-number">2.3</span> Simple Linear Regression</a>
   <ul>
-  <li><a href="#training-with-statsmodels.formula.api" id="toc-training-with-statsmodels.formula.api" class="nav-link" data-scroll-target="#training-with-statsmodels.formula.api"><span class="header-section-number">2.3.1</span> Training with <code>statsmodels.formula.api</code></a></li>
-  <li><a href="#confidence-interval-vs.-prediction-interval" id="toc-confidence-interval-vs.-prediction-interval" class="nav-link" data-scroll-target="#confidence-interval-vs.-prediction-interval"><span class="header-section-number">2.3.2</span> Confidence interval vs.&nbsp;prediction interval</a></li>
-  <li><a href="#training-with-sklearn.linearregression" id="toc-training-with-sklearn.linearregression" class="nav-link" data-scroll-target="#training-with-sklearn.linearregression"><span class="header-section-number">2.3.3</span> Training with <code>sklearn.LinearRegression</code></a></li>
-  <li><a href="#training-with-statesmodels.api" id="toc-training-with-statesmodels.api" class="nav-link" data-scroll-target="#training-with-statesmodels.api"><span class="header-section-number">2.3.4</span> Training with <code>statesmodels.api</code></a></li>
+  <li><a href="#training-with-statsmodels-formula-api" id="toc-training-with-statsmodels-formula-api" class="nav-link" data-scroll-target="#training-with-statsmodels-formula-api"><span class="header-section-number">2.3.1</span> Training with <code>statsmodels</code> (formula API)</a></li>
+  <li><a href="#model-prediction-and-error-metrics" id="toc-model-prediction-and-error-metrics" class="nav-link" data-scroll-target="#model-prediction-and-error-metrics"><span class="header-section-number">2.3.2</span> Model Prediction and Error Metrics</a></li>
+  <li><a href="#confidence-interval-vs.-prediction-interval" id="toc-confidence-interval-vs.-prediction-interval" class="nav-link" data-scroll-target="#confidence-interval-vs.-prediction-interval"><span class="header-section-number">2.3.3</span> Confidence interval vs.&nbsp;prediction interval</a></li>
+  <li><a href="#training-with-sklearn" id="toc-training-with-sklearn" class="nav-link" data-scroll-target="#training-with-sklearn"><span class="header-section-number">2.3.4</span> Training with <code>sklearn</code></a></li>
+  <li><a href="#training-with-statsmodels-api" id="toc-training-with-statsmodels-api" class="nav-link" data-scroll-target="#training-with-statsmodels-api"><span class="header-section-number">2.3.5</span> Training with <code>statsmodels</code> (API)</a></li>
   </ul></li>
   <li><a href="#summary-and-key-takeaways" id="toc-summary-and-key-takeaways" class="nav-link" data-scroll-target="#summary-and-key-takeaways"><span class="header-section-number">2.4</span> Summary and Key Takeaways</a></li>
   </ul>
@@ -564,8 +565,8 @@ window.Quarto = {
 <section id="simple-linear-regression" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="simple-linear-regression"><span class="header-section-number">2.3</span> Simple Linear Regression</h2>
 <p>We will build a simple linear regression model to predict car price based on engine size.</p>
-<section id="training-with-statsmodels.formula.api" class="level3" data-number="2.3.1">
-<h3 data-number="2.3.1" class="anchored" data-anchor-id="training-with-statsmodels.formula.api"><span class="header-section-number">2.3.1</span> Training with <a href="https://www.statsmodels.org/stable/index.html"><code>statsmodels.formula.api</code></a></h3>
+<section id="training-with-statsmodels-formula-api" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="training-with-statsmodels-formula-api"><span class="header-section-number">2.3.1</span> Training with <code>statsmodels</code> (formula API)</h3>
 <p>We will use <code>statsmodels.formula.api</code>. The formula interface lets you specify a model with a compact string (similar to R), which is convenient for statistical modeling.</p>
 <div id="5a13347b" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -785,6 +786,9 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>The light shaded region around the blue line is a 95% confidence interval for the mean response.</p>
+</section>
+<section id="model-prediction-and-error-metrics" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="model-prediction-and-error-metrics"><span class="header-section-number">2.3.2</span> Model Prediction and Error Metrics</h3>
 <p>Now evaluate the fitted model on the test set.</p>
 <div id="13d0a83c" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict car prices for the test set using the fitted statsmodels model</span></span>
@@ -823,8 +827,8 @@ Statsmodels Linear Regression Test MAE: $9,411.33</code></pre>
 </div>
 <p>On this test set, the RMSE is around $13k.</p>
 </section>
-<section id="confidence-interval-vs.-prediction-interval" class="level3" data-number="2.3.2">
-<h3 data-number="2.3.2" class="anchored" data-anchor-id="confidence-interval-vs.-prediction-interval"><span class="header-section-number">2.3.2</span> Confidence interval vs.&nbsp;prediction interval</h3>
+<section id="confidence-interval-vs.-prediction-interval" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="confidence-interval-vs.-prediction-interval"><span class="header-section-number">2.3.3</span> Confidence interval vs.&nbsp;prediction interval</h3>
 <p>Next we compute confidence and prediction intervals for the test-set predictions.</p>
 <div id="53965e2f" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Using the get_prediction() function associated with the 'model_sm' object to get the intervals</span></span>
@@ -985,8 +989,8 @@ Statsmodels Linear Regression Test MAE: $9,411.33</code></pre>
 </div>
 <p>The prediction interval accounts for both noise and uncertainty in coefficient estimates, while the confidence interval only reflects coefficient uncertainty. The prediction interval is wider.</p>
 </section>
-<section id="training-with-sklearn.linearregression" class="level3" data-number="2.3.3">
-<h3 data-number="2.3.3" class="anchored" data-anchor-id="training-with-sklearn.linearregression"><span class="header-section-number">2.3.3</span> Training with <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html"><code>sklearn.LinearRegression</code></a></h3>
+<section id="training-with-sklearn" class="level3" data-number="2.3.4">
+<h3 data-number="2.3.4" class="anchored" data-anchor-id="training-with-sklearn"><span class="header-section-number">2.3.4</span> Training with <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html"><code>sklearn</code></a></h3>
 <p>In <code>sklearn</code>, we typically work with:</p>
 <ul>
 <li><code>X</code>: a feature matrix (DataFrame or ndarray)</li>
@@ -1120,8 +1124,8 @@ Statsmodels Linear Regression Test MAE: $9,411.33</code></pre>
 </div>
 </div>
 </section>
-<section id="training-with-statesmodels.api" class="level3" data-number="2.3.4">
-<h3 data-number="2.3.4" class="anchored" data-anchor-id="training-with-statesmodels.api"><span class="header-section-number">2.3.4</span> Training with <code>statesmodels.api</code></h3>
+<section id="training-with-statsmodels-api" class="level3" data-number="2.3.5">
+<h3 data-number="2.3.5" class="anchored" data-anchor-id="training-with-statsmodels-api"><span class="header-section-number">2.3.5</span> Training with <code>statsmodels</code> (API)</h3>
 <p><code>statsmodels</code> also provides a non-formula API (<code>statsmodels.api</code>) that works with matrices, similar to <code>sklearn</code>. This requires explicitly adding a constant term for the intercept but gives the same inference outputs (p-values, confidence intervals, etc.) as the formula API.</p>
 <div id="1ad7a1e1" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>

@@ -196,7 +196,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Lec3_VariableTransformations_and_Interactions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Extending Linear Regression (statsmodels)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Extending Linear Regression</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -280,16 +280,22 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#simulate-data" id="toc-simulate-data" class="nav-link active" data-scroll-target="#simulate-data"><span class="header-section-number">5.0.1</span> Simulate Data</a></li>
-  <li><a href="#train-test-split" id="toc-train-test-split" class="nav-link" data-scroll-target="#train-test-split"><span class="header-section-number">5.0.2</span> Train-Test Split</a></li>
-  <li><a href="#baseline-model-original-features" id="toc-baseline-model-original-features" class="nav-link" data-scroll-target="#baseline-model-original-features"><span class="header-section-number">5.0.3</span> Baseline Model (original Features)</a></li>
-  <li><a href="#transform-features-with-polynomialfeatures-degree-2" id="toc-transform-features-with-polynomialfeatures-degree-2" class="nav-link" data-scroll-target="#transform-features-with-polynomialfeatures-degree-2"><span class="header-section-number">5.0.4</span> Transform Features with PolynomialFeatures (<code>degree = 2</code>)</a></li>
-  <li><a href="#linear-model-with-transformed-features-degree-2" id="toc-linear-model-with-transformed-features-degree-2" class="nav-link" data-scroll-target="#linear-model-with-transformed-features-degree-2"><span class="header-section-number">5.0.5</span> Linear Model with transformed Features (<code>degree = 2</code>)</a></li>
-  <li><a href="#transform-features-with-polynomialfeatures-degree-3" id="toc-transform-features-with-polynomialfeatures-degree-3" class="nav-link" data-scroll-target="#transform-features-with-polynomialfeatures-degree-3"><span class="header-section-number">5.0.6</span> Transform features with PolynomialFeatures (<code>degree = 3</code>)</a></li>
-  <li><a href="#linear-model-with-transformed-features-degree-3" id="toc-linear-model-with-transformed-features-degree-3" class="nav-link" data-scroll-target="#linear-model-with-transformed-features-degree-3"><span class="header-section-number">5.0.7</span> Linear Model with transformed Features (<code>degree = 3</code>)</a></li>
-  <li><a href="#putting-all-together" id="toc-putting-all-together" class="nav-link" data-scroll-target="#putting-all-together"><span class="header-section-number">5.0.8</span> Putting all together</a></li>
-  <li><a href="#degreee-4" id="toc-degreee-4" class="nav-link" data-scroll-target="#degreee-4"><span class="header-section-number">5.0.9</span> <code>degreee = 4</code></a></li>
-  <li><a href="#key-takeaway" id="toc-key-takeaway" class="nav-link" data-scroll-target="#key-takeaway"><span class="header-section-number">5.1</span> Key takeaway:</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">5.1</span> Learning objectives</a></li>
+  <li><a href="#simulate-data" id="toc-simulate-data" class="nav-link" data-scroll-target="#simulate-data"><span class="header-section-number">5.2</span> Simulate Data</a>
+  <ul>
+  <li><a href="#target-feature-split" id="toc-target-feature-split" class="nav-link" data-scroll-target="#target-feature-split"><span class="header-section-number">5.2.1</span> Target-Feature Split</a></li>
+  <li><a href="#train-test-split" id="toc-train-test-split" class="nav-link" data-scroll-target="#train-test-split"><span class="header-section-number">5.2.2</span> Train-Test Split</a></li>
+  </ul></li>
+  <li><a href="#baseline-model-original-features" id="toc-baseline-model-original-features" class="nav-link" data-scroll-target="#baseline-model-original-features"><span class="header-section-number">5.3</span> Baseline Model (original Features)</a></li>
+  <li><a href="#transform-features-with-polynomialfeatures-degree-2" id="toc-transform-features-with-polynomialfeatures-degree-2" class="nav-link" data-scroll-target="#transform-features-with-polynomialfeatures-degree-2"><span class="header-section-number">5.4</span> Transform Features with PolynomialFeatures (<code>degree = 2</code>)</a>
+  <ul>
+  <li><a href="#linear-model-with-transformed-features-degree-2" id="toc-linear-model-with-transformed-features-degree-2" class="nav-link" data-scroll-target="#linear-model-with-transformed-features-degree-2"><span class="header-section-number">5.4.1</span> Linear Model with transformed Features (<code>degree = 2</code>)</a></li>
+  <li><a href="#transform-features-with-polynomialfeatures-degree-3" id="toc-transform-features-with-polynomialfeatures-degree-3" class="nav-link" data-scroll-target="#transform-features-with-polynomialfeatures-degree-3"><span class="header-section-number">5.4.2</span> Transform features with PolynomialFeatures (<code>degree = 3</code>)</a></li>
+  <li><a href="#linear-model-with-transformed-features-degree-3" id="toc-linear-model-with-transformed-features-degree-3" class="nav-link" data-scroll-target="#linear-model-with-transformed-features-degree-3"><span class="header-section-number">5.4.3</span> Linear Model with transformed Features (<code>degree = 3</code>)</a></li>
+  <li><a href="#degree-4" id="toc-degree-4" class="nav-link" data-scroll-target="#degree-4"><span class="header-section-number">5.4.4</span> <code>degree = 4</code></a></li>
+  <li><a href="#putting-all-together" id="toc-putting-all-together" class="nav-link" data-scroll-target="#putting-all-together"><span class="header-section-number">5.4.5</span> Putting all together</a></li>
+  <li><a href="#key-takeaway" id="toc-key-takeaway" class="nav-link" data-scroll-target="#key-takeaway"><span class="header-section-number">5.4.6</span> Key takeaway:</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -315,9 +321,20 @@ window.Quarto = {
 </header>
 
 
-<section id="simulate-data" class="level3" data-number="5.0.1">
-<h3 data-number="5.0.1" class="anchored" data-anchor-id="simulate-data"><span class="header-section-number">5.0.1</span> Simulate Data</h3>
-<div id="cell-2" class="cell" data-execution_count="2">
+<section id="learning-objectives" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">5.1</span> Learning objectives</h2>
+<p>By the end of this notebook you should be able to:</p>
+<ul>
+<li>Simulate a nonlinear dataset for regression.</li>
+<li>Fit and evaluate a baseline linear regression model.</li>
+<li>Use <code>PolynomialFeatures</code> to add nonlinear terms and interactions.</li>
+<li>Compare model performance across polynomial degrees.</li>
+</ul>
+</section>
+<section id="simulate-data" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="simulate-data"><span class="header-section-number">5.2</span> Simulate Data</h2>
+<p>We simulate two predictors (<code>x1</code>, <code>x2</code>) from uniform distributions and generate the target <code>y</code> from a nonlinear function with added noise. This setup lets us compare linear vs polynomial models on data with known nonlinearity.</p>
+<div id="cell-3" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -331,7 +348,7 @@ window.Quarto = {
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> np.random.uniform(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, N)</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> np.random.uniform(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, N)</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the nonlinear relationship and add noise</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a nonlinear relationship with Gaussian noise</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="fl">1.5</span> <span class="op">*</span> (x1 <span class="op">**</span> <span class="dv">2</span>) <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> (x2 <span class="op">**</span> <span class="dv">3</span>) <span class="op">+</span> np.random.normal(loc<span class="op">=</span><span class="dv">3</span>, scale<span class="op">=</span><span class="dv">3</span>, size<span class="op">=</span>N)</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a pandas DataFrame</span></span>
@@ -421,78 +438,79 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="cell-3" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create X and y arrays</span></span>
+<section id="target-feature-split" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="target-feature-split"><span class="header-section-number">5.2.1</span> Target-Feature Split</h3>
+<div id="cell-5" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create feature matrix and target vector</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df[[<span class="st">'x1'</span>, <span class="st">'x2'</span>]].values</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df[<span class="st">'y'</span>].values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="train-test-split" class="level3" data-number="5.0.2">
-<h3 data-number="5.0.2" class="anchored" data-anchor-id="train-test-split"><span class="header-section-number">5.0.2</span> Train-Test Split</h3>
-<div id="cell-5" class="cell" data-execution_count="4">
+<section id="train-test-split" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="train-test-split"><span class="header-section-number">5.2.2</span> Train-Test Split</h3>
+<div id="cell-7" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data into training and testing sets</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training set shape:"</span>, X_train.shape)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Testing set shape:"</span>, X_test.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training set shape:"</span>, X_train.shape)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Testing set shape:"</span>, X_test.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Training set shape: (4000, 2)
 Testing set shape: (1000, 2)</code></pre>
 </div>
 </div>
 </section>
-<section id="baseline-model-original-features" class="level3" data-number="5.0.3">
-<h3 data-number="5.0.3" class="anchored" data-anchor-id="baseline-model-original-features"><span class="header-section-number">5.0.3</span> Baseline Model (original Features)</h3>
-<div id="cell-7" class="cell" data-execution_count="10">
+</section>
+<section id="baseline-model-original-features" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="baseline-model-original-features"><span class="header-section-number">5.3</span> Baseline Model (original Features)</h2>
+<div id="cell-9" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, r2_score</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> root_mean_squared_error, r2_score</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a linear regression model</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a baseline linear regression model</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>baseline_model <span class="op">=</span> LinearRegression()</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model on the original features</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>baseline_model.fit(X_train, y_train)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the test set</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>y_pred_baseline <span class="op">=</span> baseline_model.predict(X_test)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the training set</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>y_train_pred_baseline <span class="op">=</span> baseline_model.predict(X_train)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>baseline_model.fit(X_train, y_train)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on train and test splits</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>y_pred_baseline <span class="op">=</span> baseline_model.predict(X_test)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>y_train_pred_baseline <span class="op">=</span> baseline_model.predict(X_train)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate on test and training sets</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>rmse_baseline <span class="op">=</span> root_mean_squared_error(y_test, y_pred_baseline)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>r2_baseline <span class="op">=</span> r2_score(y_test, y_pred_baseline)</span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the baseline model</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>mse_baseline <span class="op">=</span> mean_squared_error(y_test, y_pred_baseline)</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>r2_baseline <span class="op">=</span> r2_score(y_test, y_pred_baseline)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the baseline model on the training set</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>mse_train_baseline <span class="op">=</span> mean_squared_error(y_train, y_train_pred_baseline)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>r2_train_baseline <span class="op">=</span> r2_score(y_train, y_train_pred_baseline)</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Baseline Model Performance:"</span>)</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training Set:"</span>)</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MSE:"</span>, mse_train_baseline)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R2:"</span>, r2_train_baseline)</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Testing Set:"</span>)</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MSE:"</span>, mse_baseline)</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R2:"</span>, r2_baseline)</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>rmse_train_baseline <span class="op">=</span> root_mean_squared_error(y_train, y_train_pred_baseline)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>r2_train_baseline <span class="op">=</span> r2_score(y_train, y_train_pred_baseline)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Baseline Model Performance:"</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training Set:"</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"RMSE:"</span>, rmse_train_baseline)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R2:"</span>, r2_train_baseline)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Testing Set:"</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"RMSE:"</span>, rmse_baseline)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R2:"</span>, r2_baseline)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Baseline Model Performance:
 Training Set:
-MSE: 218.84992612063238
+RMSE: 14.793577191492002
 R2: 0.6720857612554578
 
 Testing Set:
-MSE: 218.05222660659857
+RMSE: 14.766591570386126
 R2: 0.6745129537467693</code></pre>
 </div>
 </div>
 </section>
-<section id="transform-features-with-polynomialfeatures-degree-2" class="level3" data-number="5.0.4">
-<h3 data-number="5.0.4" class="anchored" data-anchor-id="transform-features-with-polynomialfeatures-degree-2"><span class="header-section-number">5.0.4</span> Transform Features with PolynomialFeatures (<code>degree = 2</code>)</h3>
-<div id="cell-9" class="cell" data-execution_count="11">
+<section id="transform-features-with-polynomialfeatures-degree-2" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="transform-features-with-polynomialfeatures-degree-2"><span class="header-section-number">5.4</span> Transform Features with PolynomialFeatures (<code>degree = 2</code>)</h2>
+<div id="cell-11" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create PolynomialFeatures object with degree=2 (includes interaction terms)</span></span>
@@ -503,62 +521,59 @@ R2: 0.6745129537467693</code></pre>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>X_test_poly_2 <span class="op">=</span> poly_2.transform(X_test)</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the transformed feature names</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Transformed Feature Names:"</span>)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly_2.get_feature_names_out())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Transformed Feature Names:"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly_2.get_feature_names_out())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Transformed Feature Names:
 ['x0' 'x1' 'x0^2' 'x0 x1' 'x1^2']</code></pre>
 </div>
 </div>
-</section>
-<section id="linear-model-with-transformed-features-degree-2" class="level3" data-number="5.0.5">
-<h3 data-number="5.0.5" class="anchored" data-anchor-id="linear-model-with-transformed-features-degree-2"><span class="header-section-number">5.0.5</span> Linear Model with transformed Features (<code>degree = 2</code>)</h3>
-<div id="cell-11" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a linear regression model for the polynomial features</span></span>
+<section id="linear-model-with-transformed-features-degree-2" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="linear-model-with-transformed-features-degree-2"><span class="header-section-number">5.4.1</span> Linear Model with transformed Features (<code>degree = 2</code>)</h3>
+<div id="cell-13" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a linear regression model on degree-2 polynomial features</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>poly_2_model <span class="op">=</span> LinearRegression()</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model on the transformed features</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>poly_2_model.fit(X_train_poly_2, y_train)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the test set</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>y_pred_poly_2 <span class="op">=</span> poly_2_model.predict(X_test_poly_2)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the training set</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>y_train_pred_poly_2 <span class="op">=</span> poly_2_model.predict(X_train_poly_2)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>poly_2_model.fit(X_train_poly_2, y_train)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on train and test splits</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>y_pred_poly_2 <span class="op">=</span> poly_2_model.predict(X_test_poly_2)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>y_train_pred_poly_2 <span class="op">=</span> poly_2_model.predict(X_train_poly_2)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate on test and training sets</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>rmse_poly_2 <span class="op">=</span> root_mean_squared_error(y_test, y_pred_poly_2)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>r2_poly_2 <span class="op">=</span> r2_score(y_test, y_pred_poly_2)</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the polynomial model</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>mse_poly_2 <span class="op">=</span> mean_squared_error(y_test, y_pred_poly_2)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>r2_poly_2 <span class="op">=</span> r2_score(y_test, y_pred_poly_2)</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the polynomial model on the training set</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>mse_train_poly_2 <span class="op">=</span> mean_squared_error(y_train, y_train_pred_poly_2)</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>r2_train_poly_2 <span class="op">=</span> r2_score(y_train, y_train_pred_poly_2)</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Polynomial Model Performance:"</span>)</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training Set:"</span>)</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MSE:"</span>, mse_train_poly_2)</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R2:"</span>, r2_train_poly_2)</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Testing Set:"</span>)</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MSE:"</span>, mse_poly_2)</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R2:"</span>, r2_poly_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>rmse_train_poly_2 <span class="op">=</span> root_mean_squared_error(y_train, y_train_pred_poly_2)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>r2_train_poly_2 <span class="op">=</span> r2_score(y_train, y_train_pred_poly_2)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Polynomial Model Performance:"</span>)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training Set:"</span>)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"RMSE:"</span>, rmse_train_poly_2)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R2:"</span>, r2_train_poly_2)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Testing Set:"</span>)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"RMSE:"</span>, rmse_poly_2)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R2:"</span>, r2_poly_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Polynomial Model Performance:
 Training Set:
-MSE: 95.31378244224537
+RMSE: 9.762877774623902
 R2: 0.8571863972474734
 
 Testing Set:
-MSE: 90.00139440016171
+RMSE: 9.486906471561829
 R2: 0.8656547173222298</code></pre>
 </div>
 </div>
 </section>
-<section id="transform-features-with-polynomialfeatures-degree-3" class="level3" data-number="5.0.6">
-<h3 data-number="5.0.6" class="anchored" data-anchor-id="transform-features-with-polynomialfeatures-degree-3"><span class="header-section-number">5.0.6</span> Transform features with PolynomialFeatures (<code>degree = 3</code>)</h3>
-<div id="cell-13" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create PolynomialFeatures object with degree=2 (includes interaction terms)</span></span>
+<section id="transform-features-with-polynomialfeatures-degree-3" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="transform-features-with-polynomialfeatures-degree-3"><span class="header-section-number">5.4.2</span> Transform features with PolynomialFeatures (<code>degree = 3</code>)</h3>
+<div id="cell-15" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create PolynomialFeatures object with degree=3</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>poly_3 <span class="op">=</span> PolynomialFeatures(degree<span class="op">=</span><span class="dv">3</span>, include_bias<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform the training and testing features</span></span>
@@ -566,8 +581,9 @@ R2: 0.8656547173222298</code></pre>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>X_test_poly_3 <span class="op">=</span> poly_3.transform(X_test)</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the transformed feature names</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Transformed Feature Names:"</span>)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly_3.get_feature_names_out())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Transformed Feature Names:"</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly_3.get_feature_names_out())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Transformed Feature Names:
@@ -575,71 +591,82 @@ Transformed Feature Names:
 </div>
 </div>
 </section>
-<section id="linear-model-with-transformed-features-degree-3" class="level3" data-number="5.0.7">
-<h3 data-number="5.0.7" class="anchored" data-anchor-id="linear-model-with-transformed-features-degree-3"><span class="header-section-number">5.0.7</span> Linear Model with transformed Features (<code>degree = 3</code>)</h3>
-<div id="cell-15" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a linear regression model for the polynomial features</span></span>
+<section id="linear-model-with-transformed-features-degree-3" class="level3" data-number="5.4.3">
+<h3 data-number="5.4.3" class="anchored" data-anchor-id="linear-model-with-transformed-features-degree-3"><span class="header-section-number">5.4.3</span> Linear Model with transformed Features (<code>degree = 3</code>)</h3>
+<div id="cell-17" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a linear regression model on degree-3 polynomial features</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>poly_3_model <span class="op">=</span> LinearRegression()</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model on the transformed features</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>poly_3_model.fit(X_train_poly_3, y_train)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the test set</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>y_pred_poly_3 <span class="op">=</span> poly_3_model.predict(X_test_poly_3)</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the training set</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>y_pred_train_poly_3 <span class="op">=</span> poly_3_model.predict(X_train_poly_3)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>poly_3_model.fit(X_train_poly_3, y_train)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on train and test splits</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>y_pred_poly_3 <span class="op">=</span> poly_3_model.predict(X_test_poly_3)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>y_pred_train_poly_3 <span class="op">=</span> poly_3_model.predict(X_train_poly_3)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate on test and training sets</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>rmse_poly_3 <span class="op">=</span> root_mean_squared_error(y_test, y_pred_poly_3)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>r2_poly_3 <span class="op">=</span> r2_score(y_test, y_pred_poly_3)</span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the polynomial model</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>mse_poly_3 <span class="op">=</span> mean_squared_error(y_test, y_pred_poly_3)</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>r2_poly_3 <span class="op">=</span> r2_score(y_test, y_pred_poly_3)</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the polynomial model on the training set</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>mse_poly_3_train <span class="op">=</span> mean_squared_error(y_train, y_pred_train_poly_3)</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>r2_poly_3_train <span class="op">=</span> r2_score(y_train, y_pred_train_poly_3)</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Polynomial Model Performance:"</span>)</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training Set:"</span>)</span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MSE:"</span>, mse_poly_3_train)</span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R2:"</span>, r2_poly_3_train)</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Testing Set:"</span>)</span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MSE:"</span>, mse_poly_3)</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R2:"</span>, r2_poly_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>rmse_poly_3_train <span class="op">=</span> root_mean_squared_error(y_train, y_pred_train_poly_3)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>r2_poly_3_train <span class="op">=</span> r2_score(y_train, y_pred_train_poly_3)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Polynomial Model Performance:"</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training Set:"</span>)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"RMSE:"</span>, rmse_poly_3_train)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R2:"</span>, r2_poly_3_train)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Testing Set:"</span>)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"RMSE:"</span>, rmse_poly_3)</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R2:"</span>, r2_poly_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Polynomial Model Performance:
 Training Set:
-MSE: 8.64661284180024
+RMSE: 2.940512343419126
 R2: 0.9870443297925774
 
 Testing Set:
-MSE: 9.034015244301722
+RMSE: 3.0056638608303694
 R2: 0.9865149052434146</code></pre>
 </div>
 </div>
 </section>
-<section id="putting-all-together" class="level3" data-number="5.0.8">
-<h3 data-number="5.0.8" class="anchored" data-anchor-id="putting-all-together"><span class="header-section-number">5.0.8</span> Putting all together</h3>
-<div id="cell-17" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a dataframe to put these 3 models together, including model name, features, training mse, testing mse, training r2, testing r2</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> [<span class="st">'Baseline'</span>, <span class="st">'Polynomial Degree 2'</span>, <span class="st">'Polynomial Degree 3'</span>]</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> [X.shape[<span class="dv">1</span>], <span class="bu">len</span>(poly_2.get_feature_names_out()), <span class="bu">len</span>(poly_3.get_feature_names_out())]</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>training_mse <span class="op">=</span> [mse_train_baseline, mse_train_poly_2, mse_poly_3_train]</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>testing_mse <span class="op">=</span> [mse_baseline, mse_poly_2, mse_poly_3]</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>training_r2 <span class="op">=</span> [r2_train_baseline, r2_train_poly_2, r2_poly_3_train]</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>testing_r2 <span class="op">=</span> [r2_baseline, r2_poly_2, r2_poly_3]</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>model_comparison <span class="op">=</span> pd.DataFrame({   </span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Model'</span>: models,</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Features'</span>: features,</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Training MSE'</span>: training_mse,</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Testing MSE'</span>: testing_mse,</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Training R2'</span>: training_r2,</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Testing R2'</span>: testing_r2</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>model_comparison</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="22">
+<section id="degree-4" class="level3" data-number="5.4.4">
+<h3 data-number="5.4.4" class="anchored" data-anchor-id="degree-4"><span class="header-section-number">5.4.4</span> <code>degree = 4</code></h3>
+<div id="cell-19" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use polynominal degree of 4 to see if it improves the modelpoly_4 = PolynomialFeatures(degree=4, include_bias=False)# Transform the training and testing featuresX_train_poly_4 = poly_4.fit_transform(X_train)X_test_poly_4 = poly_4.transform(X_test)# Create a linear regression model for the polynomial featurespoly_4_model = LinearRegression()# Train the model on the transformed featurespoly_4_model.fit(X_train_poly_4, y_train)# Make predictions on the test sety_pred_poly_4 = poly_4_model.predict(X_test_poly_4)# Make predictions on the training sety_pred_train_poly_4 = poly_4_model.predict(X_train_poly_4)# Evaluate the polynomial modelrmse_poly_4 = root_mean_squared_error(y_test, y_pred_poly_4)r2_poly_4 = r2_score(y_test, y_pred_poly_4)# Evaluate the polynomial model on the training setrmse_poly_4_train = root_mean_squared_error(y_train, y_pred_train_poly_4)r2_poly_4_train = r2_score(y_train, y_pred_train_poly_4)print()print("Polynomial Model Performance:")print("Training Set:")print("RMSE:", rmse_poly_4_train)print("R2:", r2_poly_4_train)print()print("Testing Set:")print("RMSE:", rmse_poly_4)print("R2:", r2_poly_4)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Polynomial Model Performance:
+Training Set:
+RMSE: 2.9383287792953574
+R2: 0.98706356387817
+
+Testing Set:
+RMSE: 2.9985680032522617
+R2: 0.9865785020821749</code></pre>
+</div>
+</div>
+<div id="cell-20" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the feature names for the polynomial degree 4 model</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Number of Features:"</span>, <span class="bu">len</span>(poly_4.get_feature_names_out()))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Transformed Feature Names:"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly_4.get_feature_names_out())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Number of Features: 14
+
+Transformed Feature Names:
+['x0' 'x1' 'x0^2' 'x0 x1' 'x1^2' 'x0^3' 'x0^2 x1' 'x0 x1^2' 'x1^3' 'x0^4'
+ 'x0^3 x1' 'x0^2 x1^2' 'x0 x1^3' 'x1^4']</code></pre>
+</div>
+</div>
+</section>
+<section id="putting-all-together" class="level3" data-number="5.4.5">
+<h3 data-number="5.4.5" class="anchored" data-anchor-id="putting-all-together"><span class="header-section-number">5.4.5</span> Putting all together</h3>
+<div id="cell-22" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize model performance side by sidemodels = ['Baseline', 'Polynomial Degree 2', 'Polynomial Degree 3', 'Polynomial Degree 4']features = [    X.shape[1],    len(poly_2.get_feature_names_out()),    len(poly_3.get_feature_names_out()),    len(poly_4.get_feature_names_out()),]training_rmse = [rmse_train_baseline, rmse_train_poly_2, rmse_poly_3_train, rmse_poly_4_train]testing_rmse = [rmse_baseline, rmse_poly_2, rmse_poly_3, rmse_poly_4]training_r2 = [r2_train_baseline, r2_train_poly_2, r2_poly_3_train, r2_poly_4_train]testing_r2 = [r2_baseline, r2_poly_2, r2_poly_3, r2_poly_4]model_comparison = pd.DataFrame(    {        'Model': models,        'Features': features,        'Training RMSE': training_rmse,        'Testing RMSE': testing_rmse,        'Training R2': training_r2,        'Testing R2': testing_r2,    })model_comparison</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
 <div>
 
 
@@ -660,8 +687,8 @@ R2: 0.9865149052434146</code></pre>
 <td data-quarto-table-cell-role="th">0</td>
 <td>Baseline</td>
 <td>2</td>
-<td>218.849926</td>
-<td>218.052227</td>
+<td>14.793577</td>
+<td>14.766592</td>
 <td>0.672086</td>
 <td>0.674513</td>
 </tr>
@@ -669,8 +696,8 @@ R2: 0.9865149052434146</code></pre>
 <td data-quarto-table-cell-role="th">1</td>
 <td>Polynomial Degree 2</td>
 <td>5</td>
-<td>95.313782</td>
-<td>90.001394</td>
+<td>9.762878</td>
+<td>9.486906</td>
 <td>0.857186</td>
 <td>0.865655</td>
 </tr>
@@ -678,10 +705,19 @@ R2: 0.9865149052434146</code></pre>
 <td data-quarto-table-cell-role="th">2</td>
 <td>Polynomial Degree 3</td>
 <td>9</td>
-<td>8.646613</td>
-<td>9.034015</td>
+<td>2.940512</td>
+<td>3.005664</td>
 <td>0.987044</td>
 <td>0.986515</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Polynomial Degree 4</td>
+<td>14</td>
+<td>2.938329</td>
+<td>2.998568</td>
+<td>0.987064</td>
+<td>0.986579</td>
 </tr>
 </tbody>
 </table>
@@ -689,95 +725,10 @@ R2: 0.9865149052434146</code></pre>
 </div>
 </div>
 </div>
-<div id="cell-18" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print out the feature names for the polynomial degree 3 model</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Transformed Feature Names:"</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly_3.get_feature_names_out())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Transformed Feature Names:
-['x0' 'x1' 'x0^2' 'x0 x1' 'x1^2' 'x0^3' 'x0^2 x1' 'x0 x1^2' 'x1^3']
-9</code></pre>
-</div>
-</div>
-<div id="cell-19" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print out the feature names for the polynomial degree 2 model</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Transformed Feature Names:"</span>)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly_2.get_feature_names_out())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Transformed Feature Names:
-['x0' 'x1' 'x0^2' 'x0 x1' 'x1^2']
-5</code></pre>
-</div>
-</div>
+<p>when increase degree to 4, we can see the performance</p>
 </section>
-<section id="degreee-4" class="level3" data-number="5.0.9">
-<h3 data-number="5.0.9" class="anchored" data-anchor-id="degreee-4"><span class="header-section-number">5.0.9</span> <code>degreee = 4</code></h3>
-<div id="cell-21" class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use polynominal degree of 4 to see if it improves the model</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>poly_4 <span class="op">=</span> PolynomialFeatures(degree<span class="op">=</span><span class="dv">4</span>, include_bias<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform the training and testing features</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>X_train_poly_4 <span class="op">=</span> poly_4.fit_transform(X_train)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>X_test_poly_4 <span class="op">=</span> poly_4.transform(X_test)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a linear regression model for the polynomial features</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>poly_4_model <span class="op">=</span> LinearRegression()</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model on the transformed features</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>poly_4_model.fit(X_train_poly_4, y_train)</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the test set</span></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>y_pred_poly_4 <span class="op">=</span> poly_4_model.predict(X_test_poly_4)</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the training set</span></span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>y_pred_train_poly_4 <span class="op">=</span> poly_4_model.predict(X_train_poly_4)</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the polynomial model</span></span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>mse_poly_4 <span class="op">=</span> mean_squared_error(y_test, y_pred_poly_4)</span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>r2_poly_4 <span class="op">=</span> r2_score(y_test, y_pred_poly_4)</span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the polynomial model on the training set</span></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>mse_poly_4_train <span class="op">=</span> mean_squared_error(y_train, y_pred_train_poly_4)</span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>r2_poly_4_train <span class="op">=</span> r2_score(y_train, y_pred_train_poly_4)</span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Polynomial Model Performance:"</span>)</span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training Set:"</span>)</span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MSE:"</span>, mse_poly_4_train)</span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R2:"</span>, r2_poly_4_train)</span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Testing Set:"</span>)</span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MSE:"</span>, mse_poly_4)</span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R2:"</span>, r2_poly_4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Polynomial Model Performance:
-Training Set:
-MSE: 8.633776015235346
-R2: 0.98706356387817
-
-Testing Set:
-MSE: 8.991410070128255
-R2: 0.9865785020821749</code></pre>
-</div>
-</div>
-<div id="cell-22" class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the feature names for the polynomial degree 4 model</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Number of Features:"</span>, <span class="bu">len</span>(poly_4.get_feature_names_out()))</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Transformed Feature Names:"</span>)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly_4.get_feature_names_out())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Number of Features: 14
-
-Transformed Feature Names:
-['x0' 'x1' 'x0^2' 'x0 x1' 'x1^2' 'x0^3' 'x0^2 x1' 'x0 x1^2' 'x1^3' 'x0^4'
- 'x0^3 x1' 'x0^2 x1^2' 'x0 x1^3' 'x1^4']</code></pre>
-</div>
-</div>
-</section>
-<section id="key-takeaway" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="key-takeaway"><span class="header-section-number">5.1</span> Key takeaway:</h2>
+<section id="key-takeaway" class="level3" data-number="5.4.6">
+<h3 data-number="5.4.6" class="anchored" data-anchor-id="key-takeaway"><span class="header-section-number">5.4.6</span> Key takeaway:</h3>
 <p>In <code>scikit-learn</code>, the built-in <code>PolynomialFeatures</code> transformer is somewhat “all or nothing”: by default, it generates <strong>all</strong> polynomial terms (including interactions) up to a certain degree. You can toggle:</p>
 <ul>
 <li><code>interaction_only=True</code> to generate only cross-terms</li>
@@ -787,15 +738,15 @@ Transformed Feature Names:
 <p>However, if you want <strong>fine-grained control</strong> over exactly which terms get generated (for example, only certain interaction terms, or only a subset of polynomial terms), you will need to create those features manually or write a custom transformer (skipped for beginner level)</p>
 <p>Use <code>interaction_only</code> for Cross Terms Only</p>
 <p>If your goal is only to capture interaction terms (i.e., $ x_1 x_2 $, but no squares, cubes, etc.), you can set:</p>
-<div id="cell-25" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>poly_int <span class="op">=</span> PolynomialFeatures(degree<span class="op">=</span><span class="dv">6</span>, </span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>                             interaction_only<span class="op">=</span><span class="va">True</span>, </span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>                             include_bias<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>X_transformed <span class="op">=</span> poly_int.fit_transform(X)</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Transformed Feature Names:"</span>)</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly_int.get_feature_names_out())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-26" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>poly_int <span class="op">=</span> PolynomialFeatures(degree<span class="op">=</span><span class="dv">6</span>, </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                             interaction_only<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                             include_bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>X_transformed <span class="op">=</span> poly_int.fit_transform(X)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Transformed Feature Names:"</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly_int.get_feature_names_out())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Transformed Feature Names:
@@ -803,23 +754,30 @@ Transformed Feature Names:
 </div>
 </div>
 <p>If you want to be very selective—say, just add <span class="math inline">\(x_1^2\)</span> and $ x_1 x_2 $ but not <span class="math inline">\(x_2^2\)</span> —the simplest approach is to create columns by hand. For example:</p>
-<div id="cell-27" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> X[:, <span class="dv">0</span>].reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)  <span class="co"># feature 1</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> X[:, <span class="dv">1</span>].reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)  <span class="co"># feature 2</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Manually create specific transformations</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>X1_sq <span class="op">=</span> X1<span class="op">**</span><span class="dv">2</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>X1X2 <span class="op">=</span> X1 <span class="op">*</span> X2</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine them as you like</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>X_new <span class="op">=</span> np.hstack([X1, X2, X1_sq, X1X2])</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Transformed Feature Names:"</span>)</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([<span class="st">'x1'</span>, <span class="st">'x2'</span>, <span class="st">'x1^2'</span>, <span class="st">'x1*x2'</span>])</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>X_new[:<span class="dv">5</span>]  <span class="co"># Display the first 5 rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-28" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set a random seed for reproducibility</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of samples</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">5000</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate features from uniform distributions</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> np.random.uniform(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, N)</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> np.random.uniform(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, N)</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a nonlinear relationship with Gaussian noise</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="fl">1.5</span> <span class="op">*</span> (x1 <span class="op">**</span> <span class="dv">2</span>) <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> (x2 <span class="op">**</span> <span class="dv">3</span>) <span class="op">+</span> np.random.normal(loc<span class="op">=</span><span class="dv">3</span>, scale<span class="op">=</span><span class="dv">3</span>, size<span class="op">=</span>N)</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a pandas DataFrame</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">'x1'</span>: x1, <span class="st">'x2'</span>: x2, <span class="st">'y'</span>: y})</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Save to CSV (optional)</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>df.to_csv(<span class="st">'nonlinear_dataset.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">10</span>)  <span class="co"># Display the first 10 rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Transformed Feature Names:
@@ -836,6 +794,7 @@ Transformed Feature Names:
 <p>When using <code>PolynomialFeatures</code> (or any other scikit-learn transformer), the fitting step is always done on the training data—not on the test data. This is a fundamental principle of machine learning pipelines: we do not use the test set for any part of model training (including feature encoding, feature generation, scaling, etc.).</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -1258,8 +1217,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./Lec3_VariableTransformations_and_Interactions.html" class="pagination-link" aria-label="Extending Linear Regression (statsmodels)">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Extending Linear Regression (statsmodels)</span></span>
+      <a href="./Lec3_VariableTransformations_and_Interactions.html" class="pagination-link" aria-label="Extending Linear Regression">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Extending Linear Regression</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
