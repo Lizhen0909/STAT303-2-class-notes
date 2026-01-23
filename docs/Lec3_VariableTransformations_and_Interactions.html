@@ -202,7 +202,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./polynominal_features.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Extending Linear Regression (Polynomial transformations)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Extending Linear Regression: Feature Transformations</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -371,7 +371,13 @@ window.Quarto = {
 
 <section id="overview" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">4.1</span> Overview</h2>
-<p>This notebook demonstrates advanced techniques for enhancing linear regression models by incorporating: - <strong>Interaction terms</strong> between variables - <strong>Qualitative (categorical) predictors</strong> - <strong>Polynomial transformations</strong> - <strong>Mixed interactions</strong> between categorical and continuous variables</p>
+<p>This notebook demonstrates advanced techniques for enhancing linear regression models by incorporating:</p>
+<ul>
+<li><strong>Interaction terms</strong> between variables</li>
+<li><strong>Qualitative (categorical) predictors</strong></li>
+<li><strong>Polynomial transformations</strong></li>
+<li><strong>Mixed interactions</strong> between categorical and continuous variables</li>
+</ul>
 <p><strong>Prerequisites:</strong> Read sections 3.3.1 and 3.3.2 of the textbook before using these notes.</p>
 <p><strong>Note:</strong> These notes focus on practical implementation. The textbook provides the theoretical foundation.</p>
 <div id="5e464f8a" class="cell" data-execution_count="1">
@@ -562,7 +568,11 @@ window.Quarto = {
 <section id="the-problem-with-additive-models" class="level4" data-number="4.4.1.1">
 <h4 data-number="4.4.1.1" class="anchored" data-anchor-id="the-problem-with-additive-models"><span class="header-section-number">4.4.1.1</span> The Problem with Additive Models</h4>
 <p>In a standard linear model: <code>price = β₀ + β₁×age + β₂×engineSize + ε</code></p>
-<p>This assumes the effect of <code>engineSize</code> on <code>price</code> is <strong>constant</strong> regardless of the car’s <code>age</code>. But what if: - Larger engines depreciate faster with age? - The value premium for larger engines changes over time?</p>
+<p>This assumes the effect of <code>engineSize</code> on <code>price</code> is <strong>constant</strong> regardless of the car’s <code>age</code>. But what if:</p>
+<ul>
+<li>Larger engines depreciate faster with age?</li>
+<li>The value premium for larger engines changes over time?</li>
+</ul>
 </section>
 <section id="solution-add-an-interaction-term" class="level4" data-number="4.4.1.2">
 <h4 data-number="4.4.1.2" class="anchored" data-anchor-id="solution-add-an-interaction-term"><span class="header-section-number">4.4.1.2</span> Solution: Add an Interaction Term</h4>
@@ -831,7 +841,12 @@ Name: count, dtype: int64</code></pre>
 <li><strong>Overfitting</strong> risk</li>
 <li><strong>Unstable predictions</strong> on new data</li>
 </ul>
-<p><strong>Common Solutions:</strong> 1. <strong>Remove</strong> the rare category (what we’ll do here) 2. <strong>Combine</strong> with the most similar category 3. <strong>Create</strong> a “Rare” category grouping multiple small categories</p>
+<p><strong>Common Solutions:</strong></p>
+<ol type="1">
+<li><strong>Remove</strong> the rare category (what we’ll do here)</li>
+<li><strong>Combine</strong> with the most similar category</li>
+<li><strong>Create</strong> a “Rare” category grouping multiple small categories</li>
+</ol>
 <div id="2c450135" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the rare 'Other' category</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>train_updated <span class="op">=</span> train[train.transmission <span class="op">!=</span> <span class="st">'Other'</span>].copy()</span>
@@ -1406,7 +1421,12 @@ Note: Evaluated on 2671 test samples
 <section id="understanding-polynomialfeatures" class="level4" data-number="4.5.1.1">
 <h4 data-number="4.5.1.1" class="anchored" data-anchor-id="understanding-polynomialfeatures"><span class="header-section-number">4.5.1.1</span> Understanding PolynomialFeatures</h4>
 <p>The <code>PolynomialFeatures</code> transformer is incredibly versatile:</p>
-<p><strong>Key Parameters:</strong> - <code>degree</code>: Maximum degree of polynomial features - <code>interaction_only</code>: If True, only interaction terms (no x²) - <code>include_bias</code>: Whether to include intercept column</p>
+<p><strong>Key Parameters:</strong></p>
+<ul>
+<li><code>degree</code>: Maximum degree of polynomial features</li>
+<li><code>interaction_only</code>: If True, only interaction terms (no x²)</li>
+<li><code>include_bias</code>: Whether to include intercept column</li>
+</ul>
 <p><strong>Example with 2 features [x₁, x₂]:</strong></p>
 <table class="caption-top table">
 <thead>
@@ -1500,7 +1520,12 @@ R²:   0.7234</code></pre>
 </section>
 <section id="limitations-of-polynomialfeatures" class="level3" data-number="4.5.3">
 <h3 data-number="4.5.3" class="anchored" data-anchor-id="limitations-of-polynomialfeatures"><span class="header-section-number">4.5.3</span> Limitations of PolynomialFeatures</h3>
-<p>⚠️ <strong>Key Limitation</strong>: Unlike <code>statsmodels</code>, <code>PolynomialFeatures</code> applies transformations to <strong>ALL</strong> features: - ✅ <strong>Advantage</strong>: Quick, systematic feature generation - ❌ <strong>Disadvantage</strong>: No selective control over which interactions to include - ❌ <strong>Risk</strong>: Can create too many features with high-dimensional data</p>
+<p>⚠️ <strong>Key Limitation</strong>: Unlike <code>statsmodels</code>, <code>PolynomialFeatures</code> applies transformations to <strong>ALL</strong> features:</p>
+<ul>
+<li>✅ <strong>Advantage</strong>: Quick, systematic feature generation</li>
+<li>❌ <strong>Disadvantage</strong>: No selective control over which interactions to include</li>
+<li>❌ <strong>Risk</strong>: Can create too many features with high-dimensional data</li>
+</ul>
 <p><strong>Trade-off</strong>: Convenience vs.&nbsp;Control</p>
 <p>Let’s compare interaction-only vs.&nbsp;full polynomial features:</p>
 <div id="12c1f9e7" class="cell" data-execution_count="24">
@@ -2733,8 +2758,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./polynominal_features.html" class="pagination-link" aria-label="Extending Linear Regression (Polynomial transformations)">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Extending Linear Regression (Polynomial transformations)</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./polynominal_features.html" class="pagination-link" aria-label="Extending Linear Regression: Feature Transformations">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Extending Linear Regression: Feature Transformations</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
